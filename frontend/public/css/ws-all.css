@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+}
+
+/* name-section */
+
+.name-section {
+    /* width: 100%; */
+    background-color: antiquewhite;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.name-section h1 {
+    font-family: "Cinzel", serif;
+    font-size: 30px;
+}
+
+/* dress-grid */
+
+.dress-grid {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: center;
+    gap: 20px;
+}
+
+/* dres-div */
+
+.dress-div {
+    width: 300px;
+    height: fit-content;
+}
+
+.dress-img {
+    width: 100%;
+    height: 400px;
+}
+
+.dress-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.dress-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.dress-np {
+    flex: 1;
+}
+
+.name {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.add .bx {
+    color: rgb(255, 0, 43);
+    font-size: 25px;
+}

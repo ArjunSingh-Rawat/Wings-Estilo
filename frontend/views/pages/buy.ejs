@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("../partials/head") %>
+        <link rel="stylesheet" href="/css/ws-product.css" />
+        <title>Product buy page</title>
+    </head>
+    <body>
+        <%- include("../partials/header") %>
+        <section class="product-section">
+            <div class="product-img">
+                <div class="image">
+                    <img src="<%= imagePath %>" alt="" id="productImg" />
+                </div>
+                <div class="more-img">
+                    <div class="img">
+                        <img src="<%= imagePath%>" alt="" class="smallImg" />
+                    </div>
+                    <div class="img">
+                        <img
+                            src="/clothing-images/product/red-gown1.jpg"
+                            alt=""
+                            class="smallImg"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-info">
+                <h1>Beautiful Red Gown</h1>
+                <h2>&#8377;<span>949</span></h2>
+                <div class="size-div">
+                    <p>Select Size</p>
+                    <div class="sizes">
+                        <a href="#">XS</a>
+                        <a href="#">S</a>
+                        <a href="#">M</a>
+                        <a href="#">L</a>
+                        <a href="#">XL</a>
+                    </div>
+                    <a href="#" id="size-chart">Size Chart</a>
+                </div>
+                <div class="btns">
+                    <a href="#">Add To Bag</a>
+                    <a href="#">Add to Wishlist</a>
+                </div>
+
+                <div class="product-details">
+                    <h3>About Product</h3>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Officia ea, error et maiores repellendus dolorum
+                        aperiam deleniti a iste deserunt. Veniam cumque, magni
+                        maxime aperiam ab sed nemo perferendis ratione.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="more-section">
+            <h1>More in Gowns</h1>
+            <div class="more-grid">
+                <div class="dress-div">
+                    <div class="dress-img">
+                        <img src="/clothing-images/Gowns/gown-2.jpeg" alt="" />
+                    </div>
+                    <div class="dress-info">
+                        <div class="dress-np">
+                            <p class="name">Red Ball Gown</p>
+                            <p class="price">&#8377;<span>1000</span></p>
+                        </div>
+                        <div class="add">
+                            <i class="bx bx-heart heart"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dress-div">
+                    <div class="dress-img">
+                        <img src="/clothing-images/Gowns/gown-3.jpeg" alt="" />
+                    </div>
+                    <div class="dress-info">
+                        <div class="dress-np">
+                            <p class="name">Red Ball Gown</p>
+                            <p class="price">&#8377;<span>1000</span></p>
+                        </div>
+                        <div class="add">
+                            <i class="bx bx-heart heart"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dress-div">
+                    <div class="dress-img">
+                        <img src="/clothing-images/Gowns/gown-4.jpeg" alt="" />
+                    </div>
+                    <div class="dress-info">
+                        <div class="dress-np">
+                            <p class="name">Red Ball Gown</p>
+                            <p class="price">&#8377;<span>1000</span></p>
+                        </div>
+                        <div class="add">
+                            <i class="bx bx-heart heart"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dress-div">
+                    <div class="dress-img">
+                        <img src="/clothing-images/Gowns/gown-5.jpg" alt="" />
+                    </div>
+                    <div class="dress-info">
+                        <div class="dress-np">
+                            <p class="name">Red Ball Gown</p>
+                            <p class="price">&#8377;<span>1000</span></p>
+                        </div>
+                        <div class="add">
+                            <i class="bx bx-heart heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            let productImg = document.getElementById("productImg");
+            let smallImg = document.getElementsByClassName("smallImg");
+
+            smallImg[0].onclick = function () {
+                productImg.src = smallImg[0].src;
+            };
+            smallImg[1].onclick = function () {
+                productImg.src = smallImg[1].src;
+            };
+        </script>
+    </body>
+</html>

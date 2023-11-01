@@ -1,0 +1,67 @@
+[
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-1.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-10.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-11.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-12.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-13.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-2.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-3.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-4.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-5.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-6.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-7.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-8.jpeg"]
+    },
+    {
+        "name": "Kids dress",
+        "price": 1000,
+        "image": ["/image/kids/kids-9.jpeg"]
+    }
+]

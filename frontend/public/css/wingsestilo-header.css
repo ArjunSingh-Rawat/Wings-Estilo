@@ -1,15 +1,14 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 /* HEADER */
 
 header {
-    /* background-color: lightpink; */
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
     height: 80px;
     padding: 0 50px;
+    z-index: 100;
 }
 
 nav {
@@ -19,10 +18,8 @@ nav {
     align-items: center;
 }
 
-.logo h1 {
-    font-family: "Cinzel Decorative", serif;
-    font-weight: 400;
-    font-size: 35px;
+.logo img {
+    height: 60px;
 }
 
 .nav-middle,
@@ -54,6 +51,7 @@ nav {
 
 .nav-a:hover {
     border-bottom: 5px solid black;
+    color: #a20000;
     background-color: rgb(242, 240, 240);
 }
 
@@ -91,6 +89,7 @@ nav {
     position: absolute;
     padding: 5px;
     background-color: rgb(251, 250, 250);
+    box-shadow: 0 0 10px rgb(120, 120, 120);
 }
 
 .categories-dropbtn:hover .categories-dropdown {
@@ -98,7 +97,7 @@ nav {
 }
 
 .categories-dropbtn:hover > a {
-    border-bottom: 5px solid red;
+    border-bottom: 5px solid #a20000;
     background-color: rgb(242, 240, 240);
 }
 
@@ -160,7 +159,8 @@ nav {
 }
 
 .profile-dropbtn:hover a {
-    border-bottom: 5px solid red;
+    border-bottom: 5px solid #a20000;
+    color: #a20000;
     background-color: rgb(242, 240, 240);
 }
 
