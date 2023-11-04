@@ -5,3 +5,5 @@
 /backend/images
 
 /backend/db/temp.js
+
+.env
