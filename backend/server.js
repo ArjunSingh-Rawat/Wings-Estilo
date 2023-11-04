@@ -1,20 +1,30 @@
 const express = require("express");
 const path = require("path");
+const mongoose = require("mongoose");
+
+require("dotenv").config();
+require("./db/connection");
+
+const PORT = process.env.PORT || 5000;
+
 const app = express();
 
-const images_router = require("./routes/images.router");
-const static_router = require("./routes/static.router");
+const imagesRouter = require("./routes/images.router");
+const staticRouter = require("./routes/static.router");
+const userRouter = require("./api/routes/userRouter");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "../frontend/public")));
-
-app.set("views", path.join(__dirname, "../frontend/views"));
 app.set("view engine", "ejs");
 
-app.use("/image", images_router);
-app.use("/", static_router);
+app.set("views", path.join(__dirname, "../frontend/views"));
 
-app.get("/", function (req, res) {
-    res.render("pages/homepage");
-});
+app.use("/", staticRouter);
+app.use("/image", imagesRouter);
+app.use("/api/users", userRouter);
 
-app.listen(5000);
+app.listen(PORT, () =>
+    console.log(`server started on http://localhost:${PORT}`)
+);

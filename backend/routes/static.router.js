@@ -3,8 +3,16 @@ const path = require("path");
 
 const router = express.Router();
 
+router.get("/", function(req, res) {
+    res.render("pages/homepage");
+});
+
 router.get("/login", (req, res) => {
     res.render("pages/login");
+});
+
+router.get("/sign-up", (req, res) => {
+    res.render("pages/signup");
 });
 
 router.get("/admin", (req, res) => {
