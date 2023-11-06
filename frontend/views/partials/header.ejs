@@ -107,18 +107,25 @@
                 </a>
             </li>
             <li class="profile-dropbtn nav-li">
-                <a href="#" class="nav-a">
-                    <i class="bx bx-user user"></i>
-                    Profile
-                </a>
-                <div class="profile-dropdown">
-                    <p class="profile-dropdown-p1">Welcome</p>
-                    <p class="profile-dropdown-p2">
-                        To access account and manage orders
-                    </p>
-                    <button onclick="navigateToURL('login')">Log in</button>
-                    <button onclick="navigateToURL('signup')">Sign up</button>
-                </div>
+                <% if (user) { %>
+                    <a href="/profile" class="nav-a">
+                        <i class="bx bx-user user"></i>
+                        <%= user%>
+                    </a>
+                  <% } else { %>
+                    <a href="#" class="nav-a">
+                        <i class="bx bx-user user"></i>
+                        Profile
+                    </a>
+                    <div class="profile-dropdown">
+                        <p class="profile-dropdown-p1">Welcome</p>
+                        <p class="profile-dropdown-p2">
+                            To access account and manage orders
+                        </p>
+                        <button onclick="navigateToURL('login')">Log in</button>
+                        <button onclick="navigateToURL('signup')">Sign up</button>
+                    </div>
+                  <% } %>
             </li>
         </ul>
     </nav>

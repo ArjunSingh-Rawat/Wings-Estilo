@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("../partials/head") %>
+</head>
+<body>
+    <%- include("../partials/header") %>
+    <h1>this is profile page</h1>
+
+    <button onclick="logout()">Logout</button>
+    <script>
+        const logout = async ()=>{
+            let response = await fetch("/api/users/logout")
+            window.location.href = response.url;
+        }
+    </script>
+</body>
+</html>

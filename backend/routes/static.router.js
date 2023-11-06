@@ -1,9 +1,12 @@
 const express = require("express");
 const path = require("path");
+const User = require("../api/models/User");
 
 const router = express.Router();
 
-router.get("/", function(req, res) {
+router.route("/");
+
+router.get("/", async function(req, res) {
     res.render("pages/homepage");
 });
 
@@ -13,6 +16,10 @@ router.get("/login", (req, res) => {
 
 router.get("/sign-up", (req, res) => {
     res.render("pages/signup");
+});
+
+router.get("/profile", (req, res) => {
+    res.render("pages/profile");
 });
 
 router.get("/admin", (req, res) => {
