@@ -1,200 +1,203 @@
 /* HOME-SECTION */
 
 .home-img-div img {
-    width: 100%;
+  width: 100%;
 }
 
 /* CATEGORY-SECTION */
 
 .category-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0 50px 0;
-    background-image: url(clothing-images/catgegory-bg.png);
-    background-size: cover;
-    background-position: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 50px 0;
+  background-image: url(clothing-images/catgegory-bg.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .ct-h1 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .ct-h1 h1 {
-    font-family: "Cinzel", serif;
-    font-size: 35px;
+  font-family: "Cinzel", serif;
+  font-size: 35px;
 }
 
 .ct-grid {
-    width: 100%;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(6, 200px);
-    grid-template-rows: 300px;
-    column-gap: 30px;
+  width: 100%;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(6, 200px);
+  grid-template-rows: 300px;
+  column-gap: 30px;
 }
 
 .ct img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .ct {
-    position: relative;
+  position: relative;
 }
 
 .ct:hover .ct-p {
-    background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .ct-p {
-    color: white;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    padding: 15px 0;
-    font-family: "Quicksand", sans-serif;
-    font-weight: 500;
-    font-size: 18px;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 15px 0;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
 }
 
 .ct-p span {
-    font-size: 12px;
-    font-weight: 300;
+  font-size: 12px;
+  font-weight: 300;
 }
 
 /* RENTAL-SECTION */
 
 .rental-section {
-    padding: 20px;
+  padding: 20px;
 }
 
 .rental-banner {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .rental-banner img {
-    width: 100%;
+  width: 100%;
 }
 
 .rental-grid {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    justify-content: center;
-    column-gap: 10px;
-    padding: 30px 0;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  column-gap: 10px;
+  padding: 30px 0;
 }
 
 .rental-div {
-    width: 350px;
+  width: 350px;
 }
 
 .r-img {
-    width: 350px;
-    height: 450px;
+  width: 350px;
+  height: 450px;
 }
 
 .r-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .r-info {
-    /* background-color: aqua; */
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
+  /* background-color: aqua; */
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
 }
 
 .name p {
-    font-family: "Quicksand", sans-serif;
-    font-size: 18px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 18px;
 }
 
 .add .bx {
-    color: rgb(255, 0, 43);
-    font-size: 25px;
+  color: rgb(255, 0, 43);
+  font-size: 25px;
 }
 
 .rental-viewall {
-    text-align: center;
+  text-align: center;
 }
 
 .rental-viewall a {
-    text-decoration: none;
-    color: white;
-    background-color: black;
-    font-family: "Quicksand", sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    border: 2px solid black;
-    padding: 10px 30px;
-    transition: background-color 0.3s, color 0.3s;
-    display: inline-block;
+  text-decoration: none;
+  color: white;
+  background-color: black;
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  border: 2px solid black;
+  padding: 10px 30px;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  display: inline-block;
 }
 
 .rental-viewall a:hover {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 /* accessories-section */
 
 .accessories-section {
-    padding: 20px 0;
-}
-.a-banner img{
-    margin-top: 300px;
+  padding: 20px 0;
 }
 
 /* Media Queries */
 @media (max-width: 480px) {
-    .rental-section{
-        height: 450px;
-    }
-    .rental-div{
-        width: 150px;
-    }
+  .rental-section {
+    height: 450px;
+  }
+  .rental-div {
+    width: 150px;
+  }
 
-    .r-img{
-        width: 100%;
-        height: 220px;
-    }
+  .r-img {
+    width: 100%;
+    height: 220px;
+  }
 
-    .ct-grid{
-        grid-template-columns: repeat(3, 100px);
-        grid-template-rows: 150px;
-        column-gap: 10px;
-        row-gap: 10px;
-    }
+  .ct-grid {
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: 150px;
+    column-gap: 10px;
+    row-gap: 10px;
+  }
 
-    .rental-grid {
-        grid-template-columns: repeat(2, auto);
-    }
-    .ct-p{
-        font-size: 10px;
-    } 
-    
-  .rental-viewall a{
+  .rental-grid {
+    grid-template-columns: repeat(2, auto);
+  }
+  .ct-p {
+    font-size: 10px;
+  }
+
+  .rental-viewall a {
     margin-top: -20px;
     padding: 5px 10px;
   }
 
-  .rental-banner{
+  .rental-banner {
     margin-top: -40px;
     margin-bottom: -10px;
   }
-  .ct-h1 h1{
+  .ct-h1 h1 {
     font-size: 25px;
   }
 
-  .a-banner{
+  .a-banner {
     margin-top: -70px;
+  }
+
+  .a-banner img {
+    margin-top: 300px;
   }
 }

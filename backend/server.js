@@ -28,5 +28,5 @@ app.use("/image", imagesRouter);
 app.use("/api/users", userRouter);
 
 app.listen(PORT, () =>
-    console.log(`server started on http://localhost:${PORT}`)
+  console.log(`server started on http://localhost:${PORT}`)
 );

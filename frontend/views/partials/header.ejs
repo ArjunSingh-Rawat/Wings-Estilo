@@ -1,132 +1,127 @@
 <header>
-    <nav>
-        <div class="logo">
-            <a href="/">
-                <img src="/clothing-images/wingsestilo.png" alt="" />
-            </a>
+  <nav>
+    <div class="logo">
+      <a href="/">
+        <img src="/Images/general-img/logo.png" alt="" />
+      </a>
+    </div>
+
+    <ul class="nav-middle">
+      <li class="nav-li">
+        <a href="#" class="nav-a">RENTAL DRESSES</a>
+      </li>
+      <li class="nav-li categories-dropbtn">
+        <a href="#" class="nav-a">
+          CATEGORIES
+          <i class="bx bxs-chevron-down"></i>
+        </a>
+
+        <div class="categories-dropdown">
+          <div class="navArea">
+            <ul>
+              <li>
+                <a
+                  href="/gowns
+                  "
+                  onmouseenter="
+                      changeImage('/Images/category-img/gowns.jpg')
+                    "
+                  >Gowns</a
+                >
+              </li>
+              <li>
+                <a
+                  href="ws-dresses.html"
+                  onmouseenter="
+                      changeImage('/Images/category-img/dresses.jpeg')
+                    "
+                  >Dresses</a
+                >
+              </li>
+              <li>
+                <a
+                  href="ws-lehenga.html"
+                  onmouseenter="
+                      changeImage('/Images/category-img/lehengas.jpeg')
+                    "
+                  >Lehenga</a
+                >
+              </li>
+              <li>
+                <a
+                  href="ws-sarees.html"
+                  onmouseenter="
+                      changeImage('/Images/category-img/sarees.jpeg')
+                    "
+                  >Sarees</a
+                >
+              </li>
+              <li>
+                <a
+                  href="ws-mgowns.html"
+                  onmouseenter="
+                      changeImage('/Images/category-img/maternity-gowns.jpg')
+                    "
+                  >Maternity Gowns</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/kids"
+                  onmouseenter="
+                      changeImage('/Images/category-img/kids.jpeg')
+                    "
+                  >Kids</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="imgArea">
+            <img src="/Images/category-img/gowns.jpg" alt="" id="slider" />
+          </div>
         </div>
+      </li>
+      <li class="nav-li">
+        <a href="#" class="nav-a">CONTACT</a>
+      </li>
+      <li class="nav-li">
+        <a href="/about-us" class="nav-a">ABOUT US</a>
+      </li>
+    </ul>
 
-        <ul class="nav-middle">
-            <li class="nav-li">
-                <a href="#" class="nav-a">RENTAL DRESSES</a>
-            </li>
-            <li class="nav-li categories-dropbtn">
-                <a href="#" class="nav-a">
-                    CATEGORIES
-                    <i class="bx bxs-chevron-down"></i>
-                </a>
-
-                <div class="categories-dropdown">
-                    <div class="navArea">
-                        <ul>
-                            <li>
-                                <a
-                                    href="/gowns"
-                                    onmouseenter="
-                                    changeImage('/clothing-images/categories/gowns.jpg')  
-                                    "
-                                    >Gowns</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/dresses"
-                                    onmouseenter="
-                                    changeImage('/clothing-images/categories/long-dress.jpeg')  
-                                    "
-                                    >Dresses</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/lehenga"
-                                    onmouseenter="
-                                    changeImage('/clothing-images/categories/lehenga.jpeg')  
-                                    "
-                                    >Lehenga</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="ws-sarees.html"
-                                    onmouseenter="
-                                    changeImage('/clothing-images/categories/sarees.jpeg')  
-                                    "
-                                    >Sarees</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/mgowns"
-                                    onmouseenter="
-                                    changeImage('/clothing-images/categories/maternity-dress.jpg')  
-                                    "
-                                    >Maternity Gowns</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="kids"
-                                    onmouseenter="
-                                    changeImage('/clothing-images/categories/kids.jpeg')  
-                                    "
-                                    >Kids</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="imgArea">
-                        <img
-                            src="/clothing-images/categories/gowns.jpg"
-                            alt=""
-                            id="slider"
-                        />
-                    </div>
-                </div>
-            </li>
-            <li class="nav-li">
-                <a href="#" class="nav-a">CONTACT</a>
-            </li>
-            <li class="nav-li">
-                <a href="#" class="nav-a">ABOUT US</a>
-            </li>
-        </ul>
-
-        <ul class="nav-right">
-            <li class="nav-li">
-                <a href="wingsestilo-bag" class="nav-a">
-                    <i class="bx bx-shopping-bag bag"></i>
-                    Bag
-                </a>
-            </li>
-            <li class="nav-li">
-                <a href="wingsestilo-wishlist.html" class="nav-a">
-                    <i class="bx bx-heart heart"></i>
-                    Wishlist
-                </a>
-            </li>
-            <li class="profile-dropbtn nav-li">
-                <% if (user) { %>
-                    <a href="/profile" class="nav-a">
-                        <i class="bx bx-user user"></i>
-                        <%= user%>
-                    </a>
-                  <% } else { %>
-                    <a href="#" class="nav-a">
-                        <i class="bx bx-user user"></i>
-                        Profile
-                    </a>
-                    <div class="profile-dropdown">
-                        <p class="profile-dropdown-p1">Welcome</p>
-                        <p class="profile-dropdown-p2">
-                            To access account and manage orders
-                        </p>
-                        <button onclick="navigateToURL('login')">Log in</button>
-                        <button onclick="navigateToURL('signup')">Sign up</button>
-                    </div>
-                  <% } %>
-            </li>
-        </ul>
-    </nav>
+    <ul class="nav-right">
+      <li class="nav-li">
+        <a href="/my-bag" class="nav-a">
+          <i class="bx bx-shopping-bag bag"></i>
+          Bag
+        </a>
+      </li>
+      <li class="nav-li">
+        <a href="/my-wishlist" class="nav-a">
+          <i class="bx bx-heart heart"></i>
+          Wishlist
+        </a>
+      </li>
+      <li class="profile-dropbtn nav-li">
+        <% if (user) { %>
+        <a href="/profile" class="nav-a">
+          <i class="bx bx-user user"></i>
+          <%= user%>
+        </a>
+        <% } else { %>
+        <a href="#" class="nav-a">
+          <i class="bx bx-user user"></i>
+          Profile
+        </a>
+        <div class="profile-dropdown">
+          <p class="profile-dropdown-p1">Welcome</p>
+          <p class="profile-dropdown-p2">To access account and manage orders</p>
+          <button onclick="navigateToURL('login')">Log in</button>
+          <button onclick="navigateToURL('signup')">Sign up</button>
+        </div>
+        <% } %>
+      </li>
+    </ul>
+  </nav>
 </header>

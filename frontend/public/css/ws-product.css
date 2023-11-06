@@ -1,193 +1,193 @@
 .product-section {
-    width: 100%;
-    /* height: 100vh; */
-    /* background-color: aquamarine; */
-    display: flex;
-    padding: 50px 0;
+  width: 100%;
+  /* height: 100vh; */
+  /* background-color: aquamarine; */
+  display: flex;
+  padding: 50px 0;
 }
 
 /* product-image */
 
 .product-img {
-    width: 50%;
-    height: 100%;
-    /* background-color: lightcoral; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 50%;
+  height: 100%;
+  /* background-color: lightcoral; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .image {
-    width: 495px;
-    height: 600px;
-    background-color: antiquewhite;
-    margin-bottom: 10px;
+  width: 495px;
+  height: 600px;
+  background-color: antiquewhite;
+  margin-bottom: 10px;
 }
 
 .image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .more-img {
-    width: 495px;
-    display: grid;
-    grid-template-columns: repeat(4, 120px);
-    gap: 5px;
+  width: 495px;
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
+  gap: 5px;
 }
 
 .img {
-    width: 120px;
-    height: 140px;
-    cursor: pointer;
+  width: 120px;
+  height: 140px;
+  cursor: pointer;
 }
 .img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* product-info */
 
 .product-info {
-    width: 50%;
-    height: 100%;
-    /* background-color: lightsalmon; */
+  width: 50%;
+  height: 100%;
+  /* background-color: lightsalmon; */
 }
 
 .product-info h1 {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 .product-info h2 {
-    font-size: 25px;
-    font-weight: 600;
-    padding: 10px 0;
+  font-size: 25px;
+  font-weight: 600;
+  padding: 10px 0;
 }
 
 .size-div {
-    margin: 40px 0;
+  margin: 40px 0;
 }
 
 .size-div p {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .sizes {
-    display: flex;
-    margin: 10px 0;
+  display: flex;
+  margin: 10px 0;
 }
 
 .sizes a {
-    background-color: rgb(255, 165, 165);
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 10px;
+  background-color: rgb(255, 165, 165);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
 
-    text-decoration: none;
-    color: black;
-    font-size: 18px;
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 .sizes a:hover {
-    background-color: lightgray;
-    font-weight: 700;
+  background-color: lightgray;
+  font-weight: 700;
 }
 
 #size-chart {
-    color: black;
+  color: black;
 }
 
 .btns {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 .btns a {
-    text-decoration: none;
-    text-transform: uppercase;
-    color: white;
-    display: inline-block;
-    background-color: #a20000;
-    padding: 15px 50px;
-    border: 1px solid #a20000;
-    transition: all 0.3s;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: white;
+  display: inline-block;
+  background-color: #a20000;
+  padding: 15px 50px;
+  border: 1px solid #a20000;
+  transition: all 0.3s;
 }
 
 .btns a:hover {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 .product-details {
-    width: 80%;
+  width: 80%;
 }
 
 .product-details h3 {
-    font-weight: 400;
-    text-decoration: underline;
+  font-weight: 400;
+  text-decoration: underline;
 }
 
 /* more-section */
 
 .more-section h1 {
-    text-align: center;
-    padding: 20px 0;
-    font-size: 30px;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
 }
 
 .more-grid {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    justify-content: center;
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  gap: 20px;
 }
 
 /* dres-div */
 
 .dress-div {
-    width: 300px;
-    height: fit-content;
+  width: 300px;
+  height: fit-content;
 }
 
 .dress-img {
-    width: 100%;
-    height: 400px;
+  width: 100%;
+  height: 400px;
 }
 
 .dress-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .dress-info {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
 }
 
 .dress-np {
-    flex: 1;
+  flex: 1;
 }
 
 .name {
-    font-size: 18px;
-    margin-bottom: 5px;
+  font-size: 18px;
+  margin-bottom: 5px;
 }
 
 .price {
-    font-size: 20px;
-    font-weight: 500;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .add .bx {
-    color: rgb(255, 0, 43);
-    font-size: 25px;
+  color: rgb(255, 0, 43);
+  font-size: 25px;
 }

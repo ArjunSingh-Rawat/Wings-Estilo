@@ -6,62 +6,72 @@ const router = express.Router();
 
 router.route("/");
 
-router.get("/", async function(req, res) {
-    res.render("pages/homepage");
+router.get("/", async function (req, res) {
+  res.render("pages/homepage");
 });
 
 router.get("/login", (req, res) => {
-    res.render("pages/login");
+  res.render("pages/login");
 });
 
 router.get("/sign-up", (req, res) => {
-    res.render("pages/signup");
+  res.render("pages/signup");
+});
+
+router.get("/about-us", (req, res) => {
+  res.render("pages/about");
+});
+router.get("/my-bag", (req, res) => {
+  res.render("pages/bag");
+});
+router.get("/my-wishlist", (req, res) => {
+  res.render("pages/wishlist");
 });
 
 router.get("/profile", (req, res) => {
-    res.render("pages/profile");
+  res.render("pages/profile");
 });
 
 router.get("/admin", (req, res) => {
-    res.render("pages/admin");
+  res.render("pages/admin");
 });
 
 router.get("/:path", (req, res) => {
-    res.render("pages/product");
+  res.render("pages/product");
 });
 
 router.get("/:path/products", (req, res) => {
-    let requestedPath = req.params.path;
+  let requestedPath = req.params.path;
 
-    const extension = path.extname(requestedPath);
-    if (extension !== ".json") {
-        requestedPath += ".json";
-    }
+  const extension = path.extname(requestedPath);
+  if (extension !== ".json") {
+    requestedPath += ".json";
+  }
 
-    const safePath = path.join(__dirname, "../db", requestedPath);
+  const safePath = path.join(__dirname, "../db", requestedPath);
 
-    try {
-        const data = require(safePath);
-        res.json(data);
-    } catch (error) {
-        res.status(404).json({ error: "Data not found" });
-    }
+  try {
+    const data = require(safePath);
+    res.json(data);
+  } catch (error) {
+    res.status(404).json({ error: "Data not found" });
+  }
 });
 
 router.get("/:category/:title/:name/:id/buy", (req, res) => {
-    let products = require(`../db/gowns`);
+  let products = require(`../db/gowns`);
 
-    let imageSrc = "";
+  let imageSrc = "";
 
-    for (const item of products) {
-        if (item.id === +req.params.id) {
-            imageSrc = item.image[0];
-            break;
-        }
+  for (const item of products) {
+    if (item.id === +req.params.id) {
+      imageSrc = item.image[0];
+      break;
     }
+  }
 
-    res.render("pages/buy", {
-        imagePath: imageSrc,
-    });
+  res.render("pages/buy", {
+    imagePath: imageSrc,
+  });
 });
 module.exports = router;
