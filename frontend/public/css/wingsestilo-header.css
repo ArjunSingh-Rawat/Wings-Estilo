@@ -204,3 +204,12 @@ nav {
     background-color: black;
     color: white;
 }
+
+/* Media Queries */
+@media (max-width:480px) {
+    .logo img{
+        height: 30px;
+    }
+
+    
+}
