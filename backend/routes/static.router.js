@@ -4,6 +4,12 @@ const User = require("../api/models/User");
 
 const router = express.Router();
 
+let categoryNmaes = {
+  gowns: "GOWNS",
+  mgowns: "MATERNITY GOWNS",
+  kids: "KIDS DRESSES",
+};
+
 router.route("/");
 
 router.get("/", async function (req, res) {
@@ -37,7 +43,10 @@ router.get("/admin", (req, res) => {
 });
 
 router.get("/:path", (req, res) => {
-  res.render("pages/product");
+  const categoryName = categoryNmaes[req.params.path];
+  res.render("pages/product", {
+    categoryName: categoryName,
+  });
 });
 
 router.get("/:path/products", (req, res) => {
@@ -59,7 +68,7 @@ router.get("/:path/products", (req, res) => {
 });
 
 router.get("/:category/:title/:name/:id/buy", (req, res) => {
-  let products = require(`../db/gowns`);
+  let products = require(`../db/${req.params.category}`);
 
   let imageSrc = "";
 
