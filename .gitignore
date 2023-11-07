@@ -3,8 +3,8 @@
 
 /node_modules
 
-/frontend/public/Images
+# /frontend/public/Images
 
-/backend/images
+# backend/images
 
 /backend/db/temp.js
