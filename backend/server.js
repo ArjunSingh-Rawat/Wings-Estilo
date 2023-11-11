@@ -13,6 +13,7 @@ const app = express();
 const imagesRouter = require("./routes/images.router");
 const staticRouter = require("./routes/static.router");
 const userRouter = require("./api/routes/userRouter");
+const productRouter = require("./api/routes/productRouter");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -26,6 +27,7 @@ app.set("views", path.join(__dirname, "../frontend/views"));
 app.use("/", isUserLogedIn, staticRouter);
 app.use("/image", imagesRouter);
 app.use("/api/users", userRouter);
+app.use("/api/products/", productRouter);
 
 app.listen(PORT, () =>
   console.log(`server started on http://localhost:${PORT}`)

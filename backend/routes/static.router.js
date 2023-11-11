@@ -10,8 +10,6 @@ let categoryNmaes = {
   kids: "KIDS DRESSES",
 };
 
-router.route("/");
-
 router.get("/", async function (req, res) {
   res.render("pages/homepage");
 });
@@ -49,7 +47,7 @@ router.get("/:path", (req, res) => {
   });
 });
 
-router.get("/:path/products", (req, res) => {
+router.get("/:path/products", (req, res, next) => {
   let requestedPath = req.params.path;
 
   const extension = path.extname(requestedPath);
@@ -63,7 +61,8 @@ router.get("/:path/products", (req, res) => {
     const data = require(safePath);
     res.json(data);
   } catch (error) {
-    res.status(404).json({ error: "Data not found" });
+    // res.status(404).json({ error: "Data not found" });
+    next();
   }
 });
 
