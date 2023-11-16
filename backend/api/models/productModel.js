@@ -25,7 +25,8 @@ const productSchema = new mongoose.Schema(
     ],
     category: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
         required: true,
       },
     ],
@@ -36,8 +37,8 @@ const productSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      min: 0,
-      max: 5,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      max: [5, "should not be mroe than 5 gor {VALUE}"],
       default: 0,
     },
     isFeatured: {

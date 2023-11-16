@@ -4,6 +4,7 @@ async function addNewCategory(req, res) {
   try {
     let category = new Category({
       categoryName: req.body.categoryName,
+      isParentCategory: req.body.isParentCategory,
     });
     category = await category.save();
     res.status(200).json({
@@ -85,13 +86,13 @@ async function getAllCategories(req, res) {
 
 async function getSubCategories(req, res) {
   try {
-    const categories = await Category.find({ _id: req.params.id })
+    const categories = await Category.findOne({ _id: req.params.id })
       .populate("subCategory", "categoryName")
       .select("subCategory");
     res.status(200).json({
       success: true,
       message: "success!",
-      categories,
+      subCategories: categories.subCategory,
     });
   } catch (error) {
     res.status(500).json({

@@ -37,7 +37,19 @@ router.get("/profile", (req, res) => {
 });
 
 router.get("/admin", (req, res) => {
-  res.render("pages/admin");
+  res.render("pages/admin/admin");
+});
+
+router.get("/admin.css", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "../../frontend/views/pages/admin/", "admin.css")
+  );
+});
+
+router.get("/admin.js", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "../../frontend/views/pages/admin/", "admin.js")
+  );
 });
 
 router.get("/:path", (req, res) => {
@@ -82,4 +94,5 @@ router.get("/:category/:title/:name/:id/buy", (req, res) => {
     imagePath: imageSrc,
   });
 });
+
 module.exports = router;

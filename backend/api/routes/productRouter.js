@@ -7,9 +7,12 @@ const {
   getAllProducts,
 } = require("../controllers/productController");
 
+const multer = require("multer");
+const upload = multer();
+
 const router = express.Router();
 
-router.post("/", addNewProduct);
+router.post("/", upload.array("file", 10), addNewProduct);
 
 router.put("/:id", updateProduct);
 
@@ -18,10 +21,5 @@ router.delete("/:id", deleteProduct);
 router.get("/:id", getOneProduct);
 
 router.get("/", getAllProducts);
-
-router.post("/get/upload", (req, res) => {
-  console.log(req.body);
-  res.end();
-});
 
 module.exports = router;

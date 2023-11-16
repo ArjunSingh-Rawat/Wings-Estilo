@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%-include("../../partials/head")%>
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body>
+    <%-include("../../partials/header")%>
+    <section id="admin-toggle">
+      <button id="product-section">Products</button>
+      <button id="category-section">Categories</button>
+    </section>
+
+    <!-- Category Section -->
+
+    <section id="category-editor">
+      <div class="categories" id="main-cat">
+        <div id="a">Categories</div>
+        <div id="b"></div>
+        <div id="main-toggle" class="toggle">
+          <div id="add-cat" class="">Add</div>
+          <div id="delete-cat">Delete</div>
+          <div id="edit-cat">Edit</div>
+        </div>
+      </div>
+      <div class="categories" id="sub-cat">
+        <div id="a">Sub Categories</div>
+        <div id="sub-cat-name">Gowns</div>
+        <div id="b"></div>
+        <div id="sub-toggle" class="toggle">
+          <div id="add-cat" class="">Add</div>
+          <div id="delete-cat">Delete</div>
+          <div id="edit-cat">Edit</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Section -->
+
+    <section id="product-editor">
+      <form id="submit-product" enctype="multipart/form-data">
+        <div class="flex">
+          <div id="product-img">
+            <div id="image-div">
+              <input id="input-image" type="file" name="file" />
+              <div id="image">
+                <span id="no-image-added" style="display: block"
+                  >No image added</span
+                >
+                <img id="main-image" style="display: none" src="" alt="" />
+              </div>
+            </div>
+            <div id="more-img"></div>
+            <span>Add more images</span>
+            <input id="input-more-image" type="file" name="file" multiple />
+          </div>
+          <div id="product-info">
+            <input
+              type="text"
+              name="name"
+              placeholder="Product Name"
+              required
+            />
+            <input type="text" name="price" placeholder="Price" required />
+            <textarea
+              name="description"
+              placeholder="Description...."
+              id="input-description"
+              cols="30"
+              rows="5"
+            ></textarea>
+            <div id="category-box">
+              <div>
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                  <option disabled selected value="">select</option>
+                </select>
+              </div>
+              <div>
+                <label for="sub-category">Sub Category</label>
+                <select id="sub-category" name="subCategory">
+                  <option disabled selected value="">select</option>
+                </select>
+              </div>
+            </div>
+
+            <input
+              type="number"
+              name="countInStock"
+              placeholder="Stock"
+              required
+            />
+            <div id="input-rent">
+              <label for="rent">Available on rent :</label>
+              <div id="rent-y-n">
+                <label
+                  >Yes<input
+                    id="indoor"
+                    type="radio"
+                    name="isOnRent"
+                    value="true"
+                  />
+                </label>
+                <label
+                  >No<input
+                    id="outdoor"
+                    type="radio"
+                    name="isOnRent"
+                    value="false"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="submit-div">
+          <input id="submit" type="submit" />
+        </div>
+      </form>
+    </section>
+    <script src="/admin.js"></script>
+  </body>
+</html>
