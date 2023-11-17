@@ -5,22 +5,34 @@ const path = require("path");
 
 const imageFolderPath = path.join(
   __dirname,
-  "../../../frontend/public/Images/temp/"
+  "../../../frontend/public/Images/"
 );
 
 async function addNewProduct(req, res) {
   try {
-    await addImage(req.files, req.body.category, req.body.name);
+    const images = await addImage(req.files, req.body.category, req.body.name);
+
+    if (images) {
+      console.log(images);
+      console.log(images.slice(1));
+    }
+
+    let categories = [req.body.category];
+    categories.push(req.body.subCategory);
+
     let product = new Product({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      image: req.files[0].originalname,
-      category: req.body.category,
+      image: images[0],
+      category: categories,
       countInStock: req.body.countInStock,
       isOnRent: req.body.isOnRent,
+      images: images.splice(1),
     });
-    // await product.save();
+
+    await product.save();
+
     res.status(201).json({
       succsess: true,
       message: "Success!",
@@ -45,16 +57,21 @@ async function addImage(files, categoryId, productName) {
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }
+
     let i = 0;
+    let images = [];
     for (const file of files) {
       const imageName = `${Date.now()}-${productName
         .split(" ")
         .join("-")}-${i}.${file.originalname.split(".").pop()}`;
-      console.log(imageName);
-      const imagePath = path.join(folderPath, `${file.originalname}`);
+
+      let imagePath = path.join(folderPath, `${imageName}`);
       fs.writeFileSync(imagePath, file.buffer);
       i++;
+      imagePath = `/Images/${categoryName}/${imageName}`;
+      images.push(imagePath);
     }
+    return images;
   } catch (error) {
     throw error;
   }

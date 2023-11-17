@@ -102,10 +102,55 @@ async function getSubCategories(req, res) {
   }
 }
 
+async function deleteCategory(req, res) {
+  try {
+    const deletedCategory = await Category.findOneAndDelete({
+      _id: req.params.id,
+    });
+    res.status(200).json({
+      success: true,
+      message: "success!",
+      deletedCategory: deletedCategory,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+async function deleteSubCategory(req, res) {
+  try {
+    console.log("fkasfjsklj;fjkj", req.body.parentCategoryId);
+    await Category.findOneAndUpdate(
+      { _id: req.body.parentCategoryId },
+      { $pull: { subCategory: req.params.id } }
+    );
+
+    const deletedCategory = await Category.findOneAndDelete({
+      _id: req.params.id,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "success!",
+      deletedCategory: deletedCategory,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   addNewCategory,
   addNewSubCategory,
   updateCategory,
   getAllCategories,
   getSubCategories,
+  deleteCategory,
+  deleteSubCategory,
 };
