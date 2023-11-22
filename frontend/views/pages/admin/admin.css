@@ -63,8 +63,9 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 }
-#submit {
+.form-btn {
   background-color: rgb(246, 95, 95);
   padding: 8px 15px;
 }

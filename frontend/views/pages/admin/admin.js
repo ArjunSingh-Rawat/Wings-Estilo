@@ -112,6 +112,16 @@ async function getFile(file) {
   }
 }
 
+document.querySelector("#form-reset").addEventListener("click", () => {
+  imagesDivReset();
+});
+
+function imagesDivReset() {
+  document.querySelector("#main-image").style.display = "none";
+  document.querySelector("#no-image-added").style.display = "block";
+  document.querySelector("#more-img").innerHTML = "";
+}
+
 // submit product
 
 const submitForm = document.querySelector("#submit-product");
@@ -119,6 +129,7 @@ const submitForm = document.querySelector("#submit-product");
 submitForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const productData = new FormData(submitForm);
+
   const res = await fetch("/api/products", {
     method: "POST",
     body: productData,
@@ -126,6 +137,7 @@ submitForm.addEventListener("submit", async (event) => {
 
   if (res.ok) {
     submitForm.reset();
+    imagesDivReset();
   }
 });
 
@@ -151,7 +163,7 @@ mainCategorydiv.addEventListener("click", (event) => {
     !event.target.classList.contains("new") &&
     !event.target.classList.contains("active-cat")
   ) {
-    previousActive.classList.remove("active-cat");
+    if (previousActive) previousActive.classList.remove("active-cat");
     event.target.classList.add("active-cat");
     selectedParentCategoryId = event.target.dataset.catId;
 
@@ -350,7 +362,7 @@ async function setSubCategorydiv(categoryId) {
   const categories = await getAllSubCategory(categoryId);
 
   subCategoryDiv.innerHTML = "";
-  if (categories.length) {
+  if (categories !== undefined && categories.length) {
     for (const category of categories) {
       const div = document.createElement("div");
 

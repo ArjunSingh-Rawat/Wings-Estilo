@@ -10,28 +10,29 @@ const imageFolderPath = path.join(
 
 async function addNewProduct(req, res) {
   try {
-    const images = await addImage(req.files, req.body.category, req.body.name);
-
-    if (images) {
-      console.log(images);
-      console.log(images.slice(1));
-    }
+    const imageObj = await addImage(
+      req.files,
+      req.body.category,
+      req.body.name
+    );
 
     let categories = [req.body.category];
-    categories.push(req.body.subCategory);
+    if (req.body.subCategory) categories.push(req.body.subCategory);
 
     let product = new Product({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      image: images[0],
+      image: imageObj.images[0],
       category: categories,
       countInStock: req.body.countInStock,
       isOnRent: req.body.isOnRent,
-      images: images.splice(1),
+      images: imageObj.images.splice(1),
     });
 
     await product.save();
+
+    await saveImage(req.files, imageObj.imageNames, imageObj.folderPath);
 
     res.status(201).json({
       succsess: true,
@@ -54,24 +55,43 @@ async function addImage(files, categoryId, productName) {
     const categoryName = category.categoryName;
     const folderPath = path.join(imageFolderPath + `${categoryName}`);
 
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-
     let i = 0;
     let images = [];
+    let imageNames = [];
+
     for (const file of files) {
       const imageName = `${Date.now()}-${productName
         .split(" ")
         .join("-")}-${i}.${file.originalname.split(".").pop()}`;
 
-      let imagePath = path.join(folderPath, `${imageName}`);
-      fs.writeFileSync(imagePath, file.buffer);
-      i++;
+      imageNames.push(imageName);
+
       imagePath = `/Images/${categoryName}/${imageName}`;
       images.push(imagePath);
+
+      i++;
     }
-    return images;
+    return {
+      images,
+      imageNames,
+      folderPath,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function saveImage(files, fileNames, folderPath) {
+  try {
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
+    let i = 0;
+    for (const file of files) {
+      const imagePath = path.join(folderPath, `${fileNames[i]}`);
+      fs.writeFileSync(imagePath, file.buffer);
+      i++;
+    }
   } catch (error) {
     throw error;
   }
