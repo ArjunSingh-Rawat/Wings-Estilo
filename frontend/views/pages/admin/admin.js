@@ -6,6 +6,7 @@ adminToggle.addEventListener("click", (event) => {
   if (event.target.id === "product-section") {
     document.querySelector("#product-editor").style.display = "block";
     document.querySelector("#category-editor").style.display = "none";
+    setSelectCategory();
   }
   if (event.target.id === "category-section") {
     document.querySelector("#product-editor").style.display = "none";
@@ -36,6 +37,8 @@ async function setSelectSubCategory(catId) {
 async function setSelectCategory() {
   const categories = await getAllCategories();
   const categoryDiv = document.querySelector("#category");
+  categoryDiv.innerHTML = `<option disabled selected value="">select</option>`;
+
   for (const category of categories) {
     const option = document.createElement("option");
     option.value = category._id;
