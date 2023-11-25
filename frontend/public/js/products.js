@@ -13,7 +13,7 @@ fetch(`/${path}/products`)
   .then((data) => {
     console.log(data);
     data.forEach((element) => {
-      const productHtml = `<a href="/${path}/title/name/${element.id}/buy" target = "_blank">
+      const productHtml = `<a href="/${path}/title/name/${element.id}/buy" target = "_blank" class="product">
                                     <div class="dress-div">
                                         <div class="dress-img">
                                             <img src="${element.image[0]}" alt="" />

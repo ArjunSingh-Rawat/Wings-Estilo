@@ -15,6 +15,11 @@
 
 /* dress-grid */
 
+.product {
+  text-decoration: none;
+  color: black;
+}
+
 .dress-grid {
   display: grid;
   grid-template-columns: repeat(4, auto);
