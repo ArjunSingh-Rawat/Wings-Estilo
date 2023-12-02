@@ -131,6 +131,13 @@ const submitForm = document.querySelector("#submit-product");
 
 submitForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  const descriptionElement = document.querySelector("#input-description");
+  let description = descriptionElement.value;
+
+  description = description.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+  descriptionElement.value = description;
+
   const productData = new FormData(submitForm);
 
   const res = await fetch("/api/products", {

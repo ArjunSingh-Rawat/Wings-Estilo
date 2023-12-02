@@ -168,7 +168,6 @@ async function getOneProduct(req, res) {
 }
 
 async function getAllProducts(req, res) {
-  console.log(imageFolderPath);
   try {
     const products = await Product.find();
     res.status(200).json({

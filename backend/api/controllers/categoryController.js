@@ -122,7 +122,6 @@ async function deleteCategory(req, res) {
 
 async function deleteSubCategory(req, res) {
   try {
-    console.log("fkasfjsklj;fjkj", req.body.parentCategoryId);
     await Category.findOneAndUpdate(
       { _id: req.body.parentCategoryId },
       { $pull: { subCategory: req.params.id } }

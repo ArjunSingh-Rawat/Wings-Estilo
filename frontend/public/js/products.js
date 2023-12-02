@@ -11,7 +11,6 @@ fetch(`/${path}/products`)
     return response.json();
   })
   .then((data) => {
-    console.log(data);
     data.forEach((element) => {
       const productHtml = `<a href="/${path}/title/name/${element.id}/buy" target = "_blank" class="product">
                                     <div class="dress-div">
@@ -35,3 +34,9 @@ fetch(`/${path}/products`)
   .catch((error) => {
     console.error("Fetch error:", error);
   });
+
+document.querySelector(".dress-grid").addEventListener("click", (event) => {
+  if (event.target.classList.contains("heart")) {
+    event.preventDefault();
+  }
+});
