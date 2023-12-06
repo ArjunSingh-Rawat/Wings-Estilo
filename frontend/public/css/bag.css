@@ -39,3 +39,66 @@
 .bag-div a:hover {
   background-color: #a20000;
 }
+
+.cart-page {
+  margin: 80px auto;
+}
+table {
+  margin-left: 80px;
+  width: 80%;
+  border-collapse: collapse;
+}
+.cart-info {
+  display: flex;
+  flex-wrap: wrap;
+}
+th {
+  text-align: left;
+  padding: 5px;
+  color: #fff;
+  background: #ff523b;
+  font-weight: normal;
+}
+td {
+  padding: 10px 5px;
+  font-weight: 500;
+  font-size: poppins, sans-serif;
+}
+td input {
+  width: 40px;
+  height: 30px;
+  padding: 5px;
+}
+td .remove-btn {
+  margin-top: 5px;
+  color: #ff523b;
+  font-size: 12px;
+  text-decoration: none;
+  border: none;
+}
+td img {
+  width: 120px;
+  height: 120px;
+  margin-right: 10px;
+}
+#gown {
+  margin-bottom: 10px;
+}
+.total-price {
+  margin-left: 80px;
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+}
+.total-price table {
+  border-top: 3px solid #ff523b;
+  width: 100%;
+  max-width: 300px;
+}
+td:last-child {
+  text-align: right;
+}
+th:last-child {
+  text-align: right;
+}
+
