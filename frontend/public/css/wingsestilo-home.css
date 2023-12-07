@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px 0 50px 0;
-  background-image: url(clothing-images/catgegory-bg.png);
+  background-image: url(/Images/general-img/catgegory-bg.png);
   background-size: cover;
   background-position: center;
 }

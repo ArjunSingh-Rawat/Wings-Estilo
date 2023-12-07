@@ -2,79 +2,79 @@
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-1.jpg"],
+    "image": ["/Images/gowns/gown-1.jpg"],
     "id": 1
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-10.jpeg"],
+    "image": ["/Images/gowns/gown-10.jpeg"],
     "id": 2
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-11.jpeg"],
+    "image": ["/Images/gowns/gown-11.jpeg"],
     "id": 3
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-12.jpg"],
+    "image": ["/Images/gowns/gown-12.jpg"],
     "id": 4
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-13.jpg"],
+    "image": ["Images/gowns/gown-13.jpg"],
     "id": 5
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-2.jpeg"],
+    "image": ["/Images/gowns/gown-2.jpeg"],
     "id": 6
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-3.jpeg"],
+    "image": ["/Images/gowns/gown-3.jpeg"],
     "id": 7
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-4.jpeg"],
+    "image": ["/Images/gowns/gown-4.jpeg"],
     "id": 8
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-5.jpg"],
+    "image": ["/Images/gowns/gown-5.jpg"],
     "id": 9
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-6.jpeg"],
+    "image": ["/Images/gowns/gown-6.jpeg"],
     "id": 10
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-7.jpeg"],
+    "image": ["/Images/gowns/gown-7.jpeg"],
     "id": 11
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-8.jpeg"],
+    "image": ["/Images/gowns/gown-8.jpeg"],
     "id": 12
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/gowns/gown-9.jpeg"],
+    "image": ["Images/gowns/gown-9.jpeg"],
     "id": 13
   }
 ]

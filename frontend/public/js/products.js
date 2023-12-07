@@ -38,5 +38,25 @@ fetch(`/${path}/products`)
 document.querySelector(".dress-grid").addEventListener("click", (event) => {
   if (event.target.classList.contains("heart")) {
     event.preventDefault();
+
+    const heart = event.target;
+
+    if (heart.classList.contains("bx-heart")) {
+      heart.classList.remove("bx-heart");
+      heart.classList.add("bxs-heart");
+      heartTransform(heart);
+    } else {
+      heart.classList.remove("bxs-heart");
+      heart.classList.add("bx-heart");
+      heartTransform(heart);
+    }
   }
 });
+
+function heartTransform(heart) {
+  heart.style.transform = "scale(2,2)";
+
+  setTimeout(() => {
+    heart.style.transform = "";
+  }, 300);
+}

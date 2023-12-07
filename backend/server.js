@@ -10,8 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-const imagesRouter = require("./routes/images.router");
-const staticRouter = require("./routes/static.router");
+const appRouter = require("./app/index");
 const userRouter = require("./api/routes/userRouter");
 const categoryRouter = require("./api/routes/categoryRouter");
 const productRouter = require("./api/routes/productRouter");
@@ -25,8 +24,7 @@ app.set("view engine", "ejs");
 
 app.set("views", path.join(__dirname, "../frontend/views"));
 
-app.use("/", isUserLogedIn, staticRouter);
-app.use("/image", imagesRouter);
+app.use("/", isUserLogedIn, appRouter);
 app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/products", productRouter);

@@ -2,43 +2,43 @@
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/mgowns/mgowns-1.jpg"],
+    "image": ["/Images/m-gowns/mgowns-1.jpg"],
     "id": 1
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/mgowns/mgowns-2.jpg"],
+    "image": ["/Images/m-gowns/mgowns-2.jpg"],
     "id": 2
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/mgowns/mgowns-3.jpg"],
+    "image": ["/Images/m-gowns/mgowns-3.jpg"],
     "id": 3
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/mgowns/mgowns-4.jpeg"],
+    "image": ["/Images/m-gowns/mgowns-4.jpeg"],
     "id": 4
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/mgowns/mgowns-5.jpg"],
+    "image": ["/Images/m-gowns/mgowns-5.jpg"],
     "id": 5
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/mgowns/mgowns-6.jpeg"],
+    "image": ["/Images/m-gowns/mgowns-6.jpeg"],
     "id": 6
   },
   {
     "name": "Red Ball Gown",
     "price": 1000,
-    "image": ["/image/mgowns/mgowns-7.jpeg"],
+    "image": ["/Images/m-gowns/mgowns-7.jpeg"],
     "id": 7
   }
 ]

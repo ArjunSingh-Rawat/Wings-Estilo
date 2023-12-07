@@ -69,6 +69,7 @@
 .add .bx {
   color: rgb(255, 0, 43);
   font-size: 25px;
+  transition: 0.4s;
 }
 
 /* Media Queries */

@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/userModel");
 const { verifyToken } = require("../middleware/authMiddlewares");
 
 const router = express.Router();
@@ -48,10 +48,10 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET
     );
     const expireTime = new Date();
-    expireTime.setSeconds(expireTime.getSeconds() + 50);
+    expireTime.setSeconds(expireTime.getSeconds() + 150);
     res.cookie("jswet", token, {
       expires: expireTime,
-      httpOnly: true,
+      httpOnly: false,
     });
     res.status(200).json("ok!");
   } catch (error) {
@@ -74,6 +74,40 @@ router.get("/:id", verifyToken, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(402).json("bad request", error);
+  }
+});
+
+router.put("/add-to-bag/", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.userid;
+
+    const data = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        $addToSet: {
+          bag: req.body.productId,
+        },
+      },
+      { new: true }
+    );
+
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    res.status(202).json({
+      succsess: true,
+      message: "Success!",
+      newItem: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      succsess: false,
+      message: error.message,
+    });
   }
 });
 

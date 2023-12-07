@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-const User = require("../api/models/User");
 
 const router = express.Router();
 
