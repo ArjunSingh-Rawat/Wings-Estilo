@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 
+const { categories } = require("../constants");
+
 const router = express.Router();
 
 let categoryNmaes = {
@@ -13,22 +15,24 @@ router.get("/", async function (req, res) {
   res.render("pages/homepage");
 });
 
+router.get("/my-bag", (req, res) => {
+  res.render("pages/bag");
+});
+
+router.get("/my-wishlist", (req, res) => {
+  res.render("pages/wishlist");
+});
+
+router.get("/about-us", (req, res) => {
+  res.render("pages/about");
+});
+
 router.get("/login", (req, res) => {
   res.render("pages/login");
 });
 
 router.get("/sign-up", (req, res) => {
   res.render("pages/signup");
-});
-
-router.get("/about-us", (req, res) => {
-  res.render("pages/about");
-});
-router.get("/my-bag", (req, res) => {
-  res.render("pages/bag");
-});
-router.get("/my-wishlist", (req, res) => {
-  res.render("pages/wishlist");
 });
 
 router.get("/profile", (req, res) => {
@@ -51,11 +55,16 @@ router.get("/admin.js", (req, res) => {
   );
 });
 
-router.get("/:path", (req, res) => {
+router.get("/:path", (req, res, next) => {
   const categoryName = categoryNmaes[req.params.path];
-  res.render("pages/product", {
-    categoryName: categoryName,
-  });
+
+  if (categories.includes(req.path.split("/")[1])) {
+    res.render("pages/product", {
+      categoryName: categoryName,
+    });
+  } else {
+    next();
+  }
 });
 
 router.get("/:path/products", (req, res, next) => {
@@ -72,7 +81,6 @@ router.get("/:path/products", (req, res, next) => {
     const data = require(safePath);
     res.json(data);
   } catch (error) {
-    // res.status(404).json({ error: "Data not found" });
     next();
   }
 });
