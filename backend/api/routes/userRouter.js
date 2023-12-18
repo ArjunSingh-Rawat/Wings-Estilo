@@ -3,7 +3,6 @@ const { verifyToken } = require("../middleware/authMiddlewares");
 
 const {
   addToWishlist,
-  addToBag,
   loginUser,
   registerUser,
   logoutUser,
@@ -17,8 +16,6 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 router.get("/logout", verifyToken, logoutUser);
-
-router.put("/add-to-bag/", verifyToken, addToBag);
 
 router.put("/add-to-wishlist", verifyToken, addToWishlist);
 

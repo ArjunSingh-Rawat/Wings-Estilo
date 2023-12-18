@@ -173,40 +173,6 @@ async function addToWishlist(req, res) {
   }
 }
 
-async function addToBag(req, res) {
-  try {
-    const userId = req.user.userid;
-
-    const data = await User.findOneAndUpdate(
-      { _id: userId },
-      {
-        $addToSet: {
-          bag: req.body.productId,
-        },
-      },
-      { new: true }
-    );
-
-    if (!data) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
-    }
-
-    res.status(202).json({
-      succsess: true,
-      message: "Success!",
-      newItem: data,
-    });
-  } catch (error) {
-    res.status(500).json({
-      succsess: false,
-      message: error.message,
-    });
-  }
-}
-
 async function getOneUser(req, res) {
   try {
     const user = await User.findOne({ _id: req.params.id }).select(
@@ -232,7 +198,6 @@ async function getOneUser(req, res) {
 
 module.exports = {
   addToWishlist,
-  addToBag,
   loginUser,
   registerUser,
   logoutUser,

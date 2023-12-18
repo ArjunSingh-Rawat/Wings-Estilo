@@ -39,12 +39,6 @@ const userSchema = new mongoose.Schema(
         ref: "Product",
       },
     ],
-    bag: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
     refreshToken: {
       type: String,
     },
