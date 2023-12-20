@@ -9,6 +9,7 @@ const bagItemSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       default: 1,
+      min: [1, "should not be less than 1 got {VALUE}"],
     },
   },
   { _id: false }

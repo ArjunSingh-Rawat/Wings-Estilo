@@ -79,9 +79,11 @@ async function incrementOrDecrementProduct(req, res) {
 
     if (itemIndex !== -1) {
       if (incOrDecFlag === "inc") {
+        if (bag.items[itemIndex].quantity + 1 > product.countInStock) {
+          throw new Error("cannot add more than stock");
+        }
         bag.items[itemIndex].quantity += 1;
         bag.totalAmount += product.price;
-        console.log(bag.totalAmount);
       } else {
         bag.items[itemIndex].quantity -= 1;
         bag.totalAmount -= product.price;
@@ -129,13 +131,44 @@ async function removeFromBag(req, res) {
 
     bag.items.pull({ product: productId });
 
-    console.log(itemQuantity);
     bag = await bag.save({ new: true });
 
     res.status(202).json({
       succsess: true,
       message: "Success!",
       newItem: bag,
+    });
+  } catch (error) {
+    res.status(500).json({
+      succsess: false,
+      message: error.message,
+    });
+  }
+}
+
+async function getProduct(req, res) {
+  try {
+    const userId = req.user.userid;
+    const productId = req.params.productId;
+
+    const bag = await Bag.findOne({
+      user: userId,
+      "items.product": productId,
+    }).populate({
+      path: "items.product",
+      select: "name price image isOnRent countInStock",
+    });
+
+    if (!bag) {
+      throw new Error("product not found in bag!!");
+    }
+
+    const item = bag.items.find((item) => item.product.equals(productId));
+
+    res.status(202).json({
+      succsess: true,
+      message: "Success!",
+      item,
     });
   } catch (error) {
     res.status(500).json({
@@ -153,14 +186,38 @@ async function getProducts(req, res) {
       user: userId,
     }).populate({
       path: "items.product",
-      select: "name price image isOnRent",
+      select: "name price image isOnRent countInStock",
     });
 
     res.status(202).json({
       succsess: true,
       message: "Success!",
-      newItem: data,
-      length: data.items.length,
+      data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      succsess: false,
+      message: error.message,
+    });
+  }
+}
+
+async function getTotalAmount(req, res) {
+  try {
+    const userId = req.user.userid;
+
+    const bag = await Bag.findOne({
+      user: userId,
+    });
+
+    if (!bag) {
+      throw new Error("Product not found!!");
+    }
+
+    res.status(202).json({
+      succsess: true,
+      message: "Success!",
+      totalAmount: bag.totalAmount,
     });
   } catch (error) {
     res.status(500).json({
@@ -174,5 +231,7 @@ module.exports = {
   addProduct,
   incrementOrDecrementProduct,
   removeFromBag,
+  getProduct,
   getProducts,
+  getTotalAmount,
 };

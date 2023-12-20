@@ -6,7 +6,9 @@ const {
   addProduct,
   incrementOrDecrementProduct,
   removeFromBag,
+  getProduct,
   getProducts,
+  getTotalAmount,
 } = require("../controllers/bagController");
 
 router.post("/add-to-bag", verifyToken, addProduct);
@@ -14,6 +16,10 @@ router.post("/add-to-bag", verifyToken, addProduct);
 router.put("/add-quantity", verifyToken, incrementOrDecrementProduct);
 
 router.delete("/remove-from-bag", verifyToken, removeFromBag);
+
+router.get("/totalAmount", verifyToken, getTotalAmount);
+
+router.get("/:productId", verifyToken, getProduct);
 
 router.get("/", verifyToken, getProducts);
 

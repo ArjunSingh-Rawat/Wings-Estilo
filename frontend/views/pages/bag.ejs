@@ -18,28 +18,10 @@
     <section class="bag-item-section">
       <div class="bag-items">
         <div class="item-num">
-          <p>TOTAL ITEMS: <span>3</span></p>
+          <p>TOTAL ITEMS: <span class="total-items"></span></p>
         </div>
         <!-- items -->
-        <div class="items">
-          <div class="item">
-            <div class="item-img">
-              <img src="/Images/gowns/gown-1.jpg" alt="" />
-            </div>
-            <div class="item-details">
-              <p class="item-name">Red flare Ball Gown</p>
-              <p class="item-price">Rs.1200</p>
-              <div class="item-buttons">
-                <div class="quantity-button">
-                  <button class="q-minus">-</button>
-                  <p class="q-number">3</p>
-                  <button class="q-plus">+</button>
-                </div>
-                <button class="remove-button">REMOVE</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="items"></div>
 
         <!-- items -->
         <div class="place-order">
@@ -51,8 +33,8 @@
         <P class="price-details">PRICE DETAILS</P>
         <div class="item-price-total">
           <div class="total">
-            <p>Price(3 items)</p>
-            <p>Rs.3000</p>
+            <p>Price(<span class="total-items"></span> items)</p>
+            <p class="total-amount">Rs.00</p>
           </div>
           <div class="dc">
             <p>Delivery Charges</p>
@@ -61,9 +43,10 @@
         </div>
         <div class="total-amt">
           <p>Total Amount</p>
-          <p>Rs.3000</p>
+          <p class="net-amount">Rs.3000</p>
         </div>
       </div>
     </section>
+    <script src="/js/bag.js"></script>
   </body>
 </html>
