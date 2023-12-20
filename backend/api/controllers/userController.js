@@ -57,7 +57,6 @@ async function registerUser(req, res) {
       data: createdUser,
     });
   } catch (err) {
-    console.log("came", err);
     res.status(500).json({
       success: false,
       message: err.message,
@@ -108,7 +107,10 @@ async function loginUser(req, res) {
         },
       });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 }
 

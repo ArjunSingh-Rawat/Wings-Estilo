@@ -1,42 +1,58 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
-function verifyToken(req, res, next) {
-  const token = req.cookies.accessToken;
-  if (token) {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if (err) {
-        res.status(403).json("Token is invalid!");
-      }
-      req.user = user;
-      next();
+async function verifyToken(req, res, next) {
+  try {
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
+
+    if (!token) {
+      throw new Error("Unauthorized request");
+    }
+    const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    if (!user) {
+      throw new Error("Invalid Access Token");
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
     });
-  } else {
-    res.status(401).json("your are not authenticated");
   }
 }
 
 async function setUserInLocalsIfLoggedIn(req, res, next) {
-  const token = req.cookies.accessToken;
+  try {
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
 
-  if (token) {
-    let userId;
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, userData) => {
-      if (err) res.locals.user = null;
-      else userId = userData.userid;
-    });
-
-    let user = await User.findOne({ _id: userId }).select("fullname");
-    if (user) {
-      res.locals.user = user.fullname;
-    } else {
-      res.locals.user = null;
+    if (!token) {
+      throw new Error();
     }
-  } else {
+
+    let user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    if (!user) {
+      throw new Error();
+    }
+
+    user = await User.findOne({ _id: user.userid }).select("fullname");
+
+    if (!user) {
+      throw new Error();
+    }
+    res.locals.user = user.fullname;
+    next();
+  } catch (error) {
     res.locals.user = null;
+    next();
   }
-  next();
 }
 
 module.exports = {
