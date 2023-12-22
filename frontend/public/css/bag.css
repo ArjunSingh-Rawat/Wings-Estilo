@@ -42,13 +42,10 @@
 
 /* bag */
 
-body {
-  background-color: rgb(246, 245, 245);
-}
-
 .bag-item-section {
   display: flex;
   padding: 20px 100px;
+  background-color: rgb(246, 245, 245);
 }
 
 /* bag-item */
