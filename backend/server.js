@@ -17,6 +17,7 @@ const userRouter = require("./api/routes/userRouter");
 const categoryRouter = require("./api/routes/categoryRouter");
 const productRouter = require("./api/routes/productRouter");
 const bagRouter = require("./api/routes/bagRouter");
+const wishListRouter = require("./api/routes/wishlistRouter");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -32,6 +33,7 @@ app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/products", productRouter);
 app.use("/api/bag/", bagRouter);
+app.use("/api/wishlist", wishListRouter);
 
 app.use((req, res) => {
   if (req.originalUrl.startsWith("/api")) {

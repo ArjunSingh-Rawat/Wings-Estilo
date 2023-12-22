@@ -68,9 +68,10 @@ router.get("/:name/:id/buy", async (req, res) => {
       _id: req.params.id,
     });
 
-    const { name, price, description, image, images } = product;
+    const { _id, name, price, description, image, images } = product;
 
     res.render("pages/buy", {
+      _id,
       name,
       price,
       description,
