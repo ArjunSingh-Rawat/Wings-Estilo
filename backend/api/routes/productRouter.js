@@ -5,6 +5,7 @@ const {
   deleteProduct,
   getOneProduct,
   getAllProducts,
+  getProductsByCategory,
 } = require("../controllers/productController");
 
 const multer = require("multer");
@@ -21,5 +22,7 @@ router.delete("/:id", deleteProduct);
 router.get("/:id", getOneProduct);
 
 router.get("/", getAllProducts);
+
+router.get("/category/:name", getProductsByCategory);
 
 module.exports = router;

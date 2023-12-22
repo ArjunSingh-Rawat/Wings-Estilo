@@ -10,21 +10,21 @@
     <section class="product-section">
       <div class="product-img">
         <div class="image">
-          <img src="<%= imagePath %>" alt="" id="productImg" />
+          <img src="<%= image %>" alt="" id="productImg" />
         </div>
         <div class="more-img">
           <div class="img">
-            <img src="<%= imagePath %>" alt="" class="smallImg" />
+            <img src="<%= image %>" alt="" class="smallImg" />
           </div>
           <div class="img">
-            <img src="<%= imagePath %>" alt="" class="smallImg" />
+            <img src="<%= image %>" alt="" class="smallImg" />
           </div>
         </div>
       </div>
 
       <div class="product-info">
-        <h1>Beautiful Red Gown</h1>
-        <h2>&#8377;<span>949</span></h2>
+        <h1><%= name %></h1>
+        <h2>&#8377;<span><%=price%></span></h2>
         <div class="size-div">
           <p>Select Size</p>
           <div class="sizes">
@@ -43,12 +43,7 @@
 
         <div class="product-details">
           <h3>About Product</h3>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia
-            ea, error et maiores repellendus dolorum aperiam deleniti a iste
-            deserunt. Veniam cumque, magni maxime aperiam ab sed nemo
-            perferendis ratione.
-          </p>
+          <p><%=description%></p>
         </div>
       </div>
     </section>
@@ -58,7 +53,10 @@
       <div class="more-grid">
         <div class="dress-div">
           <div class="dress-img">
-            <img src="/Images/gowns/gown-2.jpeg" alt="" />
+            <img
+              src="/Images/gowns/1703232558458-beautiful-maternity-gown-0.jpeg"
+              alt=""
+            />
           </div>
           <div class="dress-info">
             <div class="dress-np">
@@ -72,7 +70,7 @@
         </div>
         <div class="dress-div">
           <div class="dress-img">
-            <img src="/Images/gowns/gown-3.jpeg" alt="" />
+            <img src="/Images/gowns/1703070518259-red-gown-0.jpg" alt="" />
           </div>
           <div class="dress-info">
             <div class="dress-np">
@@ -86,7 +84,10 @@
         </div>
         <div class="dress-div">
           <div class="dress-img">
-            <img src="/Images/gowns/gown-4.jpeg" alt="" />
+            <img
+              src="/Images/gowns/1703094810498-Maroon-full-body-gown-0.jpeg"
+              alt=""
+            />
           </div>
           <div class="dress-info">
             <div class="dress-np">
@@ -100,7 +101,7 @@
         </div>
         <div class="dress-div">
           <div class="dress-img">
-            <img src="/Images/gowns/gown-5.jpg" alt="" />
+            <img src="/Images/gowns/1703095744729-orange-gown-0.jpeg" alt="" />
           </div>
           <div class="dress-info">
             <div class="dress-np">

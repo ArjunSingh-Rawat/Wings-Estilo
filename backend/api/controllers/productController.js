@@ -173,7 +173,35 @@ async function getAllProducts(req, res) {
     res.status(200).json({
       succsess: true,
       message: "success!",
-      products: products,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      succsess: false,
+      message: error.message,
+    });
+  }
+}
+
+async function getProductsByCategory(req, res) {
+  try {
+    const categoryName = req.params.name;
+
+    const categoryId = await Category.findOne({ categoryName }).select("_id");
+
+    const products = await Product.find({
+      category: categoryId,
+    });
+
+    if (!products || !products.length) {
+      throw new Error("No products found!!");
+    }
+
+    res.status(200).json({
+      succsess: true,
+      message: "success!",
+      products,
+      quantity: products.length,
     });
   } catch (error) {
     res.status(500).json({
@@ -189,4 +217,5 @@ module.exports = {
   deleteProduct,
   getOneProduct,
   getAllProducts,
+  getProductsByCategory,
 };

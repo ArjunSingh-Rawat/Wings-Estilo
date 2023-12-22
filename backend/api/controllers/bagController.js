@@ -189,6 +189,10 @@ async function getProducts(req, res) {
       select: "name price image isOnRent countInStock",
     });
 
+    if (!data) {
+      throw new Error("No products in bag");
+    }
+
     res.status(202).json({
       succsess: true,
       message: "Success!",

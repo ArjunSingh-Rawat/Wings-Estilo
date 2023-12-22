@@ -1,15 +1,10 @@
 const express = require("express");
 const path = require("path");
-
-const { categories } = require("../constants");
+const { categoryNmaes, categories } = require("../constants");
+const Product = require("../api/models/productModel");
+const { default: mongoose } = require("mongoose");
 
 const router = express.Router();
-
-let categoryNmaes = {
-  gowns: "GOWNS",
-  mgowns: "MATERNITY GOWNS",
-  kids: "KIDS DRESSES",
-};
 
 router.get("/", async function (req, res) {
   res.render("pages/homepage");
@@ -67,39 +62,24 @@ router.get("/:path", (req, res, next) => {
   }
 });
 
-router.get("/:path/products", (req, res, next) => {
-  let requestedPath = req.params.path;
-
-  const extension = path.extname(requestedPath);
-  if (extension !== ".json") {
-    requestedPath += ".json";
-  }
-
-  const safePath = path.join(__dirname, "../db", requestedPath);
-
+router.get("/:name/:id/buy", async (req, res) => {
   try {
-    const data = require(safePath);
-    res.json(data);
+    const product = await Product.findOne({
+      _id: req.params.id,
+    });
+
+    const { name, price, description, image, images } = product;
+
+    res.render("pages/buy", {
+      name,
+      price,
+      description,
+      image,
+      images,
+    });
   } catch (error) {
-    next();
+    console.log(error.message);
   }
-});
-
-router.get("/:category/:title/:name/:id/buy", (req, res) => {
-  let products = require(`../db/${req.params.category}`);
-
-  let imageSrc = "";
-
-  for (const item of products) {
-    if (item.id === +req.params.id) {
-      imageSrc = item.image[0];
-      break;
-    }
-  }
-
-  res.render("pages/buy", {
-    imagePath: imageSrc,
-  });
 });
 
 module.exports = router;
