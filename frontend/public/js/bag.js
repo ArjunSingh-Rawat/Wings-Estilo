@@ -30,6 +30,14 @@ itemsDiv.addEventListener("click", async (event) => {
       await updateProductDetails(itemsDiv.children[itemIndex], productId);
       await updateTotalPrice();
     }
+  } else if (element.classList.contains("remove-button")) {
+    if (await removeItemFromBag(productId)) {
+      const itemToRemove = itemsDiv.children[itemIndex];
+      itemsDiv.removeChild(itemToRemove);
+
+      await updateItemsQuantity(itemsDiv.children);
+      await updateTotalPrice();
+    }
   }
 });
 
@@ -40,14 +48,14 @@ function renderBagPage(items) {
     const { name, image, price, isOnRent, _id } = product;
 
     let html = `
-    <div class="item" data-product-Id = "${_id}">
+    <div id="item${i}" class="item" data-product-Id = "${_id}">
             <div class="item-img" >
               <img src="${image}" alt="" />
             </div>
             <div class="item-details">
               <p class="item-name">${name}</p>
               <p class="item-price">Rs.${price * quantity}</p>
-              <div class="item-buttons" data-item-Id = "${i++}">
+              <div class="item-buttons" data-item-Id = "item${i}">
                 <div class="quantity-button">
                   <button class="q-minus">-</button>
                   <p class="q-number">${quantity}</p>
@@ -57,6 +65,7 @@ function renderBagPage(items) {
               </div>
             </div>
           </div>`;
+    i++;
     itemsDiv.innerHTML += html;
   }
 
@@ -88,9 +97,8 @@ function getItemIdex(item) {
 
 async function updateItemsQuantity(items) {
   numberOfItems = items.length;
-
   const itemsToUpdate = document.querySelectorAll(".total-items");
-  console.log(itemsToUpdate);
+
   itemsToUpdate.forEach((item) => {
     item.innerText = numberOfItems;
   });
@@ -157,4 +165,17 @@ async function getTotalAmount() {
     return data.totalAmount;
   }
   return false;
+}
+
+async function removeItemFromBag(productId) {
+  const res = await fetch("/api/bag", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      productId,
+    }),
+  });
+  return res.ok ? true : false;
 }

@@ -15,7 +15,7 @@ router.post("/add-to-bag", verifyToken, addProduct);
 
 router.put("/add-quantity", verifyToken, incrementOrDecrementProduct);
 
-router.delete("/remove-from-bag", verifyToken, removeFromBag);
+router.delete("/", verifyToken, removeFromBag);
 
 router.get("/totalAmount", verifyToken, getTotalAmount);
 
