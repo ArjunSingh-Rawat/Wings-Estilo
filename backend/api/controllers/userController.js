@@ -56,10 +56,10 @@ async function registerUser(req, res) {
       message: "Success!",
       data: createdUser,
     });
-  } catch (err) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: err.message,
+      message: error.message,
     });
   }
 }
@@ -109,7 +109,7 @@ async function loginUser(req, res) {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: err.message,
+      message: error.message,
     });
   }
 }
