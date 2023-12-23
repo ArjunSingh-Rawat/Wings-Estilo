@@ -39,6 +39,9 @@ itemsDiv.addEventListener("click", async (event) => {
       await updateTotalPrice();
     }
   }
+  if (itemsDiv.children.length <= 0) {
+    displayEmptyPage();
+  }
 });
 
 function renderBagPage(items) {

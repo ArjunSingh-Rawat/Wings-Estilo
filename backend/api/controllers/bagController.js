@@ -189,7 +189,7 @@ async function getProducts(req, res) {
       select: "name price image isOnRent countInStock",
     });
 
-    if (!data) {
+    if (!data || !data.items.length) {
       throw new Error("No products in bag");
     }
 
