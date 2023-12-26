@@ -2,12 +2,55 @@
 <html lang="en">
   <head>
     <%- include("../partials/head") %>
+    <link rel="stylesheet" href="/css/profile.css" />
   </head>
   <body>
     <%- include("../partials/header") %>
-    <h1>this is profile page</h1>
 
-    <button onclick="logout()">Logout</button>
+    <section class="profile-section">
+      <div class="user-div">
+        <div class="user-details">
+          <div class="user-img">
+            <img src="/Images/general-img/profile-picture.png" alt="" />
+          </div>
+          <div class="user-info">
+            <p class="user-name">Vijay Singh Rawat</p>
+            <p class="user-id">vijaysinghrawat1506@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="notification">
+          <i class="bx bxs-bell"></i>
+        </div>
+      </div>
+
+      <div class="user-div1">
+        <div class="left-div">
+          <a class="myOrders" href="#">
+            <i class="bx bxs-shopping-bags"></i> MY ORDERS
+          </a>
+          <a class="acnt-info" href="#">
+            <i class="bx bxs-user"></i> ACCOUNT SETTINGS
+            <a class="sub-a" href="#">Profile Information</a>
+            <a class="sub-a" href="#">Manage Adresses</a>
+          </a>
+          <a class="myStuff" href="#">
+            <i class="bx bxs-file"></i> MY STUFF
+            <a class="sub-a" href="#">My Reviews & Ratings</a>
+            <a class="sub-a" href="#">All Notifications</a>
+            <a class="sub-a" href="#">My Wishlist</a>
+          </a>
+
+          <button class="logout-btn" onclick="logout()">
+            <i class="bx bx-power-off"></i>
+            <p>Logout</p>
+          </button>
+        </div>
+
+        <div class="right-div">div 2</div>
+      </div>
+    </section>
+
     <script>
       const logout = async () => {
         let response = await fetch("/api/users/logout");
