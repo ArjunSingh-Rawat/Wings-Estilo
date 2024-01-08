@@ -47,7 +47,100 @@
           </button>
         </div>
 
-        <div class="right-div">div 2</div>
+        <div class="right-div">
+          <div class="profile-info">
+            <div class="personal-info">
+              <div class="heading">
+                <p>Personal Information</p>
+                <button
+                  class="js-edit-btn"
+                  onclick="
+                  editToCancel();
+                "
+                >
+                  Edit
+                </button>
+              </div>
+              <div class="input">
+                <input
+                  type="text"
+                  name="firstName"
+                  required
+                  disabled
+                  value="vijay"
+                />
+                <input
+                  type="text"
+                  name="lastName"
+                  required
+                  disabled
+                  value="Rawat"
+                />
+
+                <button
+                  class="save-button"
+                  onclick="
+                  onSave()
+                "
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <div class="gender">
+              <p>Your Gender</p>
+              <input
+                type="radio"
+                id="male"
+                name="gender"
+                value="Male"
+                required
+                disabled
+                checked
+              />
+              <label for="male">Male</label>
+
+              <input
+                type="radio"
+                id="female"
+                name="gender"
+                value="Female"
+                required
+                disabled
+              />
+              <label for="female">Female</label>
+            </div>
+
+            <div class="email">
+              <div class="heading">
+                <p>Email Address</p>
+                <button onclick="func2">Edit</button>
+              </div>
+              <input
+                type="email"
+                name="email"
+                required
+                value="vijaysinghrawat1506@gmail.com"
+                disabled
+              />
+            </div>
+
+            <div class="mobileNum">
+              <div class="heading">
+                <p>Mobile Number</p>
+                <button onclick="func3">Edit</button>
+              </div>
+              <input
+                type="text"
+                name="phoneNumber"
+                required
+                value="9174142690"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -56,6 +149,24 @@
         let response = await fetch("/api/users/logout");
         window.location.href = response.url;
       };
+
+      const editButton = document.querySelector(".js-edit-btn");
+      const saveButton = document.querySelector(".save-button");
+
+      function editToCancel() {
+        if (editButton.innerText === "Edit") {
+          editButton.innerText = "Cancel";
+          saveButton.classList.add("js-save-button");
+        } else {
+          editButton.innerText = "Edit";
+          saveButton.classList.remove("js-save-button");
+        }
+      }
+
+      function onSave() {
+        saveButton.classList.remove("js-save-button");
+        editButton.innerText = "Edit";
+      }
     </script>
   </body>
 </html>

@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const { categoryNmaes, categories } = require("../constants");
 const Product = require("../api/models/productModel");
-const { default: mongoose } = require("mongoose");
+const { verifyToken } = require("../api/middleware/authMiddlewares");
 
 const router = express.Router();
 
@@ -30,7 +30,7 @@ router.get("/sign-up", (req, res) => {
   res.render("pages/signup");
 });
 
-router.get("/profile", (req, res) => {
+router.get("/profile", verifyToken, (req, res) => {
   res.render("pages/profile");
 });
 
