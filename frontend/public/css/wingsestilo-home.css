@@ -1,203 +1,214 @@
-/* HOME-SECTION */
-
-.home-img-div img {
+/* carousel */
+.slick-slide div {
   width: 100%;
 }
 
-/* CATEGORY-SECTION */
+.slick-slide div img {
+  width: 100%;
+}
+
+/* category-section */
 
 .category-section {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0 50px 0;
-  background-image: url(/Images/general-img/catgegory-bg.png);
-  background-size: cover;
-  background-position: center;
-}
-
-.ct-h1 {
-  margin-bottom: 20px;
-}
-
-.ct-h1 h1 {
-  font-family: "Cinzel", serif;
-  font-size: 35px;
-}
-
-.ct-grid {
-  width: 100%;
-  display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(6, 200px);
-  grid-template-rows: 300px;
-  column-gap: 30px;
-}
-
-.ct img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ct {
-  position: relative;
-}
-
-.ct:hover .ct-p {
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.ct-p {
-  color: white;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  padding: 15px 0;
-  font-family: "Quicksand", sans-serif;
-  font-weight: 500;
-  font-size: 18px;
-}
-
-.ct-p span {
-  font-size: 12px;
-  font-weight: 300;
-}
-
-/* RENTAL-SECTION */
-
-.rental-section {
-  padding: 20px;
-}
-
-.rental-banner {
-  display: flex;
-  justify-content: center;
-}
-
-.rental-banner img {
-  width: 100%;
-}
-
-.rental-grid {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  justify-content: center;
-  column-gap: 10px;
   padding: 30px 0;
 }
 
-.rental-div {
-  width: 350px;
+.category-section h1 {
+  font-family: "Charmonman", cursive;
+  font-size: 30px;
+  text-align: center;
 }
 
-.r-img {
-  width: 350px;
-  height: 450px;
+.categories {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.r-img img {
+.category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.category img {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+/* home gowns section*/
+
+.home-gown-section {
+  padding: 50px 0;
+  background-color: #fff9f9;
+}
+
+.home-gowns {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.home-gown-section h1 {
+  font-family: "Charmonman", cursive;
+  font-size: 30px;
+  text-align: center;
+}
+
+.home-gown-section h2 {
+  font-size: 30px;
+  color: #ff8080;
+  text-align: center;
+  margin-top: -15px;
+}
+
+/* home-gown-item */
+
+.home-gowns-item {
+  margin: 0 20px;
+}
+
+.home-gown-img img {
+  width: 320px;
+}
+
+.item-info {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-info .bx {
+  color: #ff8080;
+  font-size: 25px;
+  margin-right: 10px;
+}
+
+.name {
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.price {
+  font-size: 15px;
+  font-weight: 500;
+  color: #ff8080;
+}
+
+/* view all button */
+
+.viewAll-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.viewAll-btn a {
+  padding: 10px 30px;
+  background-color: #ff8080;
+  color: white;
+}
+
+/* m-gown-section */
+
+.m-gown-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.m-gown-slider {
+  width: 50%;
+}
+
+.m-gown-title {
+  margin-left: 100px;
+}
+
+.m-gown-title h1 {
+  font-family: "Charmonman", cursive;
+  font-size: 50px;
+  text-align: center;
+}
+
+.m-gown-btn {
+  margin-top: 50px;
+}
+
+.m-gown-title h2 {
+  font-size: 40px;
+  color: #ff8080;
+  text-align: center;
+  margin-top: -10px;
+}
+
+.m-gown-btn a {
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: #ff8080;
+  color: white;
+  font-size: 18px;
+  margin: 0 20px;
+}
+
+/* more-gown-sectin */
+
+.more-gown-section {
+  padding-bottom: 50px;
+}
+
+.mg-items {
+  display: flex;
+  justify-content: center;
+}
+
+.mg-item {
+  margin: 0 20px;
+}
+
+.mg-img {
+  width: 330px;
+  height: 500px;
+}
+
+.mg-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.r-info {
-  /* background-color: aqua; */
+/* lehenga-section */
+
+.lehenga-section {
+  padding: 50px 0;
+  background-color: rgb(255, 220, 220);
+}
+
+.l-div {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
+  justify-content: center;
 }
 
-.name p {
-  font-family: "Quicksand", sans-serif;
-  font-size: 18px;
+.l-div a {
+  width: 35%;
+  margin: 30px 20px;
 }
 
-.add .bx {
-  color: rgb(255, 0, 43);
-  font-size: 25px;
+.l-div a img {
+  width: 100%;
 }
 
-.rental-viewall {
+.lehenga-section h1 {
+  font-family: "Charmonman", cursive;
+  font-size: 30px;
   text-align: center;
 }
 
-.rental-viewall a {
-  text-decoration: none;
-  color: white;
-  background-color: black;
-  font-family: "Quicksand", sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  border: 2px solid black;
-  padding: 10px 30px;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-  display: inline-block;
-}
-
-.rental-viewall a:hover {
-  background-color: white;
-  color: black;
-}
-
-/* accessories-section */
-
-.accessories-section {
-  padding: 20px 0;
-}
-
-/* Media Queries */
-@media (max-width: 480px) {
-  .rental-section {
-    height: 450px;
-  }
-  .rental-div {
-    width: 150px;
-  }
-
-  .r-img {
-    width: 100%;
-    height: 220px;
-  }
-
-  .ct-grid {
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: 150px;
-    column-gap: 10px;
-    row-gap: 10px;
-  }
-
-  .rental-grid {
-    grid-template-columns: repeat(2, auto);
-  }
-  .ct-p {
-    font-size: 10px;
-  }
-
-  .rental-viewall a {
-    margin-top: -20px;
-    padding: 5px 10px;
-  }
-
-  .rental-banner {
-    margin-top: -40px;
-    margin-bottom: -10px;
-  }
-  .ct-h1 h1 {
-    font-size: 25px;
-  }
-
-  .a-banner {
-    margin-top: -70px;
-  }
-
-  .a-banner img {
-    margin-top: 300px;
-  }
+.lehenga-section h2 {
+  font-size: 30px;
+  color: #ff8080;
+  text-align: center;
+  margin-top: -15px;
 }

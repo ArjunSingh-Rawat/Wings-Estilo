@@ -2,9 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Quicksand", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-body {
-  padding-top: 80px;
+a {
+  text-decoration: none;
+  color: black;
 }
