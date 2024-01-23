@@ -1,9 +1,3 @@
-// category js
-
-function changeImage(anything) {
-  document.getElementById("slider").src = anything;
-}
-
 function navigateToURL(location) {
   switch (location) {
     case "login":
