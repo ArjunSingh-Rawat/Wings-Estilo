@@ -6,12 +6,31 @@
   </head>
   <body>
     <%- include("../partials/header") %>
-    <section class="name-section">
-      <h1><%= categoryName %></h1>
-    </section>
+
     <section class="dress-section">
-      <div class="dress-grid"></div>
+      <div class="filter-sidebar">
+        <div class="price-filter">
+          <select>
+            <option value="0">Select Price:</option>
+            <option value="1">Rs.500 - Rs.1000</option>
+            <option value="2">Rs.1000 - Rs.2000</option>
+            <option value="3">Rs.2000 - Rs.3000</option>
+            <option value="4">Rs.3000 - Rs.4000</option>
+            <option value="4">Rs.4000 - Rs.5000</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="dress-div">
+        <div class="dress-title">
+          <h1><%= categoryName %></h1>
+          <p class="total-products">40 Products</p>
+        </div>
+
+        <div class="dress-grid"></div>
+      </div>
     </section>
+
     <script src="/js/products.js"></script>
   </body>
 </html>

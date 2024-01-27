@@ -28,22 +28,21 @@ function createProductHtml(product, productInWishlist) {
   const productName = product.name.replace(/ /g, "-");
 
   const productHtml = `
-    <a href="/${productName}/${product._id}/buy" target = "_blank" class="product">
-      <div class="dress-div">
-          <div class="dress-img">
-              <img src="${product.image}" alt="" />
-          </div>
-          <div class="dress-info">
-              <div class="dress-np">
-                  <p class="name">${product.name}</p>
-                  <p class="price">&#8377;<span>${product.price}</span></p>
-              </div>
-              <div class="add">
-                  <i class="bx ${classOfHeart} heart" data-product-id=${product._id}></i>
-              </div>
-          </div>
-      </div>
-    </a>`;
+      <div class="item">
+        <a class="item-img" href="/${productName}/${product._id}/buy" target = "_blank">
+          <img src="${product.image}" alt="" />
+        </a>
+        <div class="item-info">
+            <div class="name-price">
+              <a class="name" href="/${productName}/${product._id}/buy" target = "_blank">${product.name}</a>
+              <p class="price">&#8377;<span>${product.price}</p>
+            </div>
+
+            <div class="add">
+              <i class="bx ${classOfHeart} heart" data-product-id=${product._id}></i>
+            </div>
+        </div>
+      </div>`;
   contentBox.innerHTML += productHtml;
 }
 

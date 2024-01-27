@@ -46,20 +46,27 @@
   justify-content: center;
 }
 
+#logo {
+  height: 45px;
+}
+
 .right-nav {
   justify-content: right;
 }
 
-#logo {
-  height: 50px;
+.right-nav a {
+  margin-left: 20px;
 }
 
 .right-nav img {
   height: 30px;
-  margin-left: 20px;
 }
 
 /* nav2 */
+
+.nav2 {
+  background-color: #fff6f2;
+}
 
 #photoshoot,
 #rental-dresses {
@@ -75,13 +82,13 @@
   display: flex;
   justify-content: center;
   list-style: none;
-  border-bottom: 1px solid grey;
 }
 
 .nav-links li a {
   height: 100%;
-  font-weight: 600;
-  padding: 10px 25px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 30px;
   display: flex;
   align-items: center;
   border-bottom: 3px solid #ff808000;
@@ -120,8 +127,8 @@
 
 .dropdown-content li a {
   border: none;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  padding: 10px 30px;
+  padding: 15px 30px;
   white-space: nowrap;
 }
