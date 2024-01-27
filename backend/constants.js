@@ -5,6 +5,7 @@ const categories = [
   "sarees",
   "dresses",
   "lehengas",
+  "accessories",
 ];
 
 let categoryNmaes = {
@@ -12,8 +13,9 @@ let categoryNmaes = {
   kids: "KIDS DRESSES",
   sarees: "SAREES",
   dresses: "DRESSES",
-  lehengas: "LEHNGAS",
+  lehengas: "LEHENGAS",
   "maternity-gowns": "MATERNITY GOWNS",
+  accessories: "ACCESSORIES",
 };
 
 module.exports = { categories, categoryNmaes };

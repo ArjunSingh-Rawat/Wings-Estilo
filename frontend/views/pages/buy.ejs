@@ -11,42 +11,30 @@
       <div class="product">
         <div class="product-small-img">
           <img
-            src="/carousel/images/product1.png"
-            alt=""
-            onclick="myFunction(this)"
-          />
-          <img
-            src="/carousel/images/product2.png"
-            alt=""
-            onclick="myFunction(this)"
-          />
-          <img
-            src="/carousel/images/product3.png"
-            alt=""
-            onclick="myFunction(this)"
-          />
-          <img
-            src="/carousel/images/product4.png"
-            alt=""
-            onclick="myFunction(this)"
-          />
-          <img
-            src="/carousel/images/product1.png"
-            alt=""
-            onclick="myFunction(this)"
-          />
+              src="<%= image %>"
+              alt=""
+              onclick="myFunction(this)"
+            />
+          <% for(let i=0; i<images.length; i++){ %>
+          
+            <img
+              src="<%= images[i]%>"
+              alt=""
+              onclick="myFunction(this)"
+            />
+            <% } %>
         </div>
 
         <div class="img-container">
-          <img id="imageBox" src="/carousel/images/product1.png" alt="" />
+          <img id="imageBox" src="<%= image %>" alt="" />
         </div>
       </div>
 
       <div class="product-info">
         <p class="brand-name">Wings Estilo</p>
-        <h1 class="product-name">Wings Estilo Gown name</h1>
+        <h1 class="product-name"><%= name %></h1>
         <p class="product-short-description">Dress short description</p>
-        <p class="product-price">Rs. 3,990</p>
+        <p class="product-price">Rs. <%= price %></p>
 
         <div class="product-size-div">
           <div class="size-chart">
@@ -77,10 +65,7 @@
           <details>
             <summary>DESCRIPTION</summary>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam
-              hic corporis voluptate ducimus esse accusantium, sint dicta
-              praesentium cupiditate! Voluptatem rerum consequuntur amet sunt
-              consectetur corrupti sint illo, repudiandae cupiditate!
+              <%= description %>
             </p>
           </details>
           <details>

@@ -18,8 +18,20 @@ router.get("/my-wishlist", (req, res) => {
   res.render("pages/wishlist");
 });
 
+router.get("/contact", (req, res) => {
+  res.render("pages/contact");
+});
+
 router.get("/about-us", (req, res) => {
   res.render("pages/about");
+});
+
+router.get("/photoshoot", (req, res) => {
+  res.render("pages/photoshoot");
+});
+
+router.get("/rental", (req, res) => {
+  res.render("pages/rental-home");
 });
 
 router.get("/login", (req, res) => {
