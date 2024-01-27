@@ -86,7 +86,8 @@
 }
 
 .name {
-  display: inline-block;
+  font-size: 15px;
+  display: block;
   margin-bottom: 8px;
 }
 
@@ -108,6 +109,37 @@
   padding: 10px 30px;
   background-color: #ff8080;
   color: white;
+}
+
+/* video-section */
+
+.video-section {
+  padding: 50px 0;
+}
+
+.videos {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.video-section .videos video {
+  width: 230px;
+  border-radius: 10px;
+}
+
+.video-section h1 {
+  font-family: "Charmonman", cursive;
+  font-size: 30px;
+  text-align: center;
+}
+
+.video-section h2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ff8080;
+  text-align: center;
 }
 
 /* m-gown-section */
@@ -153,7 +185,7 @@
   margin: 0 20px;
 }
 
-/* more-gown-sectin */
+/* more-gown-section */
 
 .more-gown-section {
   padding-bottom: 50px;
@@ -169,8 +201,9 @@
 }
 
 .mg-img {
-  width: 330px;
-  height: 500px;
+  display: block;
+  width: 300px;
+  height: 450px;
 }
 
 .mg-img img {
@@ -183,7 +216,7 @@
 
 .lehenga-section {
   padding: 50px 0;
-  background-color: rgb(255, 220, 220);
+  background-color: #fff9f9;
 }
 
 .l-div {
@@ -193,7 +226,7 @@
 
 .l-div a {
   width: 35%;
-  margin: 30px 20px;
+  margin: 30px;
 }
 
 .l-div a img {
@@ -211,4 +244,89 @@
   color: #ff8080;
   text-align: center;
   margin-top: -15px;
+}
+
+/* insta-section */
+
+.insta-section {
+  padding: 50px 0;
+}
+
+.insta-section h1 {
+  font-family: "Charmonman", cursive;
+  font-size: 25px;
+  text-align: center;
+}
+
+.insta-section h2 {
+  font-size: 15px;
+  font-weight: 400;
+  color: #ff8080;
+  text-align: center;
+}
+
+.insta-img {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 30px 0;
+}
+
+.insta-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-box {
+  width: 280px;
+  height: 280px;
+  position: relative;
+}
+
+.img-box:hover .overlay {
+  opacity: 1;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.overlay .bx {
+  color: white;
+  font-size: 20px;
+}
+
+.follow-div {
+  display: flex;
+  justify-content: center;
+}
+
+.follow-btn {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px 30px;
+  background-color: #ff8080;
+  color: white;
+  border-radius: 5px;
+}
+
+.follow-btn .bx {
+  font-size: 25px;
+  margin-right: 10px;
 }
