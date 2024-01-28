@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: montserrat, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #ff8080;
+}
+.para {
+  margin: 10px 20px;
+  text-align: center;
+  width: 90%;
+  font-size: 18px;
+  /* font-weight: 500; */
+}
+
+.box1 {
+  text-align: center;
+  margin: 5% 0 0 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.box2 {
+  margin: 50px 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.contact {
+  margin: 2% 0 0 0;
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+form {
+  margin: 20px 0;
+  width: 60%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.map {
+  margin: 5% 0 0 0;
+}
+.google-map iframe {
+  margin: 50px 150px;
+}
