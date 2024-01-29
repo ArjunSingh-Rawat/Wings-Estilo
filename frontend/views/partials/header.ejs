@@ -7,8 +7,8 @@
 
   <div class="nav1">
     <div class="left-nav">
-      <a href="/contact"><i class="bx bxs-phone"></i> CONTACT US</a>
-      <a href="/about-us">ABOUT US</a>
+      <a href="/contact"> <i class="bx bxs-phone"></i> Contact us</a>
+      <a href="/about-us"><i class="bx bxs-user-rectangle"></i>About us</a>
     </div>
 
     <div class="logo">
@@ -28,9 +28,9 @@
       <a href="/my-wishlist">
         <img src="/Images/home-images/icons/heart-thin.svg" alt="" />
       </a>
-      <a href="">
+      <button id="profile-btn" onclick="togglePopup()">
         <img src="/Images/home-images/icons/user-thin.svg" alt="" />
-      </a>
+      </button>
     </div>
   </div>
 
@@ -79,3 +79,6 @@
     </ul>
   </div>
 </header>
+
+<!-- signup-popup -->
+<%- include('../partials/popup') %>

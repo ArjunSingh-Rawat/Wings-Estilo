@@ -1,0 +1,37 @@
+<div class="popup" id="popup-1">
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="close-btn" onclick="togglePopup()">&times;</div>
+
+    <div class="popup-content">
+      <div class="popup-info">
+        <img
+          id="popup-logo"
+          src="/Images/home-images/icons/wingsEstilo-logo.png"
+          alt=""
+        />
+
+        <p id="popup-title">SIGN IN/SIGN UP</p>
+        <P id="via-google">via google account</P>
+
+        <button class="google-btn">
+          <img src="/Images/general-img/google-symbol.png" alt="" />
+          Continue with Google
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <button onclick="togglePopup()">Show Popup</button> -->
+
+<script>
+  function togglePopup() {
+    const Popup = document.getElementById("popup-1");
+    if (Popup.classList.toggle("active")) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "visible";
+    }
+  }
+</script>

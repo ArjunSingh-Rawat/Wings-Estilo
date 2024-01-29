@@ -9,15 +9,90 @@
 
     <section class="dress-section">
       <div class="filter-sidebar">
-        <div class="price-filter">
-          <select>
-            <option value="0">Select Price:</option>
-            <option value="1">Rs.500 - Rs.1000</option>
-            <option value="2">Rs.1000 - Rs.2000</option>
-            <option value="3">Rs.2000 - Rs.3000</option>
-            <option value="4">Rs.3000 - Rs.4000</option>
-            <option value="4">Rs.4000 - Rs.5000</option>
-          </select>
+        <div class="filters">
+          <p id="filter-title">FILTERS</p>
+          <p id="clear-all">Clear all</p>
+        </div>
+
+        <button class="accordion">CATEGORY</button>
+        <div class="panel">
+          <div class="select-filter">
+            <input
+              type="radio"
+              id="pre-wedding-gown"
+              name="fav_language"
+              value="pre-wedding-gown"
+            />
+            <label for="pre-wedding-gown">Pre-Wedding Gowns</label><br />
+
+            <input
+              type="radio"
+              id="maternity-gown"
+              name="fav_language"
+              value="maternity-gown"
+            />
+            <label for="maternity-gown">Maternity Gowns</label><br />
+            <input
+              type="radio"
+              id="engagement-gown"
+              name="fav_language"
+              value="engagement-gown"
+            />
+            <label for="engagement-gown">Engagement Gowns</label><br />
+
+            <input
+              type="radio"
+              id="partywear-gown"
+              name="fav_language"
+              value="partywear-gown"
+            />
+            <label for="partywear-gown">Party Wear Gowns</label><br />
+          </div>
+        </div>
+
+        <button class="accordion">PRICE</button>
+        <div class="panel">
+          <div class="select-filter">
+            <input
+              type="radio"
+              id="1000"
+              name="fav_language"
+              value="500-1000"
+            />
+            <label for="1000">500-1000</label><br />
+
+            <input
+              type="radio"
+              id="2000"
+              name="fav_language"
+              value="1000-2000"
+            />
+            <label for="2000">1000-2000</label><br />
+
+            <input
+              type="radio"
+              id="3000"
+              name="fav_language"
+              value="2000-3000"
+            />
+            <label for="3000">2000-3000</label><br />
+
+            <input
+              type="radio"
+              id="4000"
+              name="fav_language"
+              value="3000-4000"
+            />
+            <label for="4000">3000-4000</label><br />
+
+            <input
+              type="radio"
+              id="5000"
+              name="fav_language"
+              value="4000-5000"
+            />
+            <label for="5000">4000-5000</label><br />
+          </div>
         </div>
       </div>
 
@@ -33,6 +108,24 @@
 
     <!-- footer -->
     <%- include('../partials/footer') %>
+
+    <!-- accordion js -->
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      }
+    </script>
 
     <script src="/js/products.js"></script>
   </body>

@@ -37,9 +37,20 @@
 .left-nav a {
   margin-right: 20px;
   font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  color: rgb(100, 100, 100);
 }
+.left-nav a:hover {
+  border-bottom: 2px solid black;
+}
+
 .left-nav a .bx {
-  font-size: 15px;
+  font-size: 18px;
+  margin-right: 5px;
+  color: #ff8080;
 }
 
 .logo {
@@ -60,6 +71,13 @@
 
 .right-nav img {
   height: 30px;
+}
+
+.right-nav #profile-btn {
+  background-color: white;
+  border: none;
+  margin-left: 20px;
+  cursor: pointer;
 }
 
 /* nav2 */

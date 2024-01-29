@@ -17,7 +17,7 @@
 
 .product-small-img img {
   width: 100px;
-  height: 130px;
+  height: 150px;
   object-fit: cover;
   margin-bottom: 10px;
   cursor: pointer;
@@ -31,7 +31,7 @@
 
 .img-container {
   width: 600px;
-  height: 700px;
+  height: 750px;
   margin-left: 10px;
 }
 
@@ -110,9 +110,10 @@
   border-radius: 3px;
   font-size: 18px;
   color: grey;
+  cursor: pointer;
 }
 
-.sizes .active {
+.sizes .selected {
   background-color: #ff8080;
   border-color: #ff8080;
   color: white;
@@ -127,6 +128,7 @@
 
 .add-button button {
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .wishlist-btn {
@@ -157,7 +159,6 @@
   padding: 10px 50px;
   background-color: white;
   color: #ff8080;
-  cursor: pointer;
 }
 
 /* product-detail */
@@ -166,18 +167,53 @@
   margin: 50px 0;
 }
 
-.product-detail details summary {
-  padding: 10px 30px;
-  border: 1px solid black;
-}
+/* accordion */
 
-.product-detail details {
-  margin-bottom: 10px;
-}
-
-.product-detail details p {
+.accordion {
+  background-color: white;
+  border: solid lightgrey;
+  border-width: 1px 1px 0 1px;
   color: grey;
+  cursor: pointer;
+  padding: 15px 20px;
+  width: 100%;
+  text-align: left;
+  outline: none;
   font-size: 15px;
+  font-weight: 500;
+  transition: 0.4s;
+}
+
+.active,
+.accordion:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.panel {
+  padding: 0 20px;
+  border: solid lightgrey;
+  border-width: 0 1px 1px 1px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.panel p {
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+.accordion:after {
+  content: "\002B";
+  color: grey;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
 }
 
 /* more-product-section */
