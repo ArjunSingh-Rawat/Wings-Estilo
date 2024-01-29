@@ -44,7 +44,7 @@
 
           <div class="sizes">
             <ul>
-              <li class="active">S</li>
+              <li class="selected">S</li>
               <li>M</li>
               <li>L</li>
               <li>XL</li>
@@ -62,26 +62,34 @@
         </div>
 
         <div class="product-detail">
-          <details>
-            <summary>DESCRIPTION</summary>
-            <p>
-              <%= description %>
-            </p>
-          </details>
-          <details>
-            <summary>WASH CARE</summary>
-            <p>Dry clean only!</p>
-          </details>
-          <details>
-            <summary>SHIPPING INFORMATION</summary>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam
-              hic corporis voluptate ducimus esse accusantium, sint dicta
-              praesentium cupiditate! Voluptatem rerum consequuntur amet sunt
-              consectetur corrupti sint illo, repudiandae cupiditate!
-            </p>
-          </details>
+          
+          <button class="accordion">DESCRIPTION</button>
+            <div class="panel">
+                <p>
+                  <%= description %>
+                </p>
+            </div>
+
+          <button class="accordion">WASH CARE</button>
+            <div class="panel">
+                <p>
+                    Dry clean only!
+                </p>
+            </div>
+
+          <button class="accordion">SHIPPING INFORMATION</button>
+          <div class="panel">
+              <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                  nisi ut aliquip ex ea commodo consequat.
+              </p>
+          </div>
+          
         </div>
+
+
       </div>
     </section>
 
@@ -146,12 +154,32 @@
     <!-- footer -->
     <%- include('../partials/footer') %>
 
+    <!-- image change js -->
     <script>
       function myFunction(smallImg) {
         let fullImg = document.getElementById("imageBox");
         fullImg.src = smallImg.src;
       }
     </script>
+
+    <!-- accordion js -->
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function() {
+              this.classList.toggle("active");
+              var panel = this.nextElementSibling;
+              if (panel.style.maxHeight) {
+                  panel.style.maxHeight = null;
+              } else {
+                  panel.style.maxHeight = panel.scrollHeight + "px";
+              }
+          });
+      }
+  </script>
+  
     <script src="/js/buypage.js"></script>
   </body>
 </html>

@@ -8,7 +8,84 @@
 /* filter-sidebar */
 
 .filter-sidebar {
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
+  padding: 40px 20px;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid lightgrey;
+}
+
+.filters #filter-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.filters #clear-all {
+  font-size: 14px;
+  color: grey;
+  text-decoration: underline;
+}
+
+/* accordion */
+
+.accordion {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px 0;
+  width: 200px;
+  text-align: left;
+  outline: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: 0.4s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* .active,
+.accordion:hover {
+  background-color: rgb(250, 250, 250);
+} */
+
+.panel {
+  /* padding: 0 20px; */
+  border-bottom: 1px solid lightgrey;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.panel .select-filter {
+  padding-bottom: 15px;
+}
+
+.select-filter input {
+  margin-bottom: 15px;
+}
+
+.select-filter label {
+  font-size: 13px;
+}
+
+.accordion:after {
+  content: "\002B";
+  color: grey;
+  font-size: 30px;
+  font-weight: 300;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
 }
 
 /* dress-title */
