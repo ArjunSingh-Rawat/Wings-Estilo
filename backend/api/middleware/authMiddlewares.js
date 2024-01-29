@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
 
 async function verifyToken(req, res, next) {
   try {
@@ -26,36 +25,30 @@ async function verifyToken(req, res, next) {
   }
 }
 
-async function setUserInLocalsIfLoggedIn(req, res, next) {
+async function verifyTokenForStaticRoute(req, res, next) {
   try {
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      throw new Error();
+      throw new Error("Unauthorized request");
     }
-
-    let user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
     if (!user) {
-      throw new Error();
+      throw new Error("Invalid Access Token");
     }
 
-    user = await User.findOne({ _id: user.userid }).select("fullname");
-
-    if (!user) {
-      throw new Error();
-    }
-    res.locals.user = user.fullname;
+    req.user = user;
     next();
   } catch (error) {
-    res.locals.user = null;
+    req.error = error;
     next();
   }
 }
 
 module.exports = {
   verifyToken,
-  setUserInLocalsIfLoggedIn,
+  verifyTokenForStaticRoute,
 };

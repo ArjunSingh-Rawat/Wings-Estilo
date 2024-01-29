@@ -8,7 +8,7 @@ const categories = [
   "accessories",
 ];
 
-let categoryNmaes = {
+let categoryNames = {
   gowns: "GOWNS",
   kids: "KIDS DRESSES",
   sarees: "SAREES",
@@ -18,4 +18,4 @@ let categoryNmaes = {
   accessories: "ACCESSORIES",
 };
 
-module.exports = { categories, categoryNmaes };
+module.exports = { categories, categoryNames };

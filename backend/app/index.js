@@ -1,8 +1,10 @@
 const express = require("express");
 const path = require("path");
-const { categoryNmaes, categories } = require("../constants");
+const { categoryNames, categories } = require("../constants");
 const Product = require("../api/models/productModel");
-const { verifyToken } = require("../api/middleware/authMiddlewares");
+const {
+  verifyTokenForStaticRoute,
+} = require("../api/middleware/authMiddlewares");
 
 const router = express.Router();
 
@@ -34,16 +36,12 @@ router.get("/rental", (req, res) => {
   res.render("pages/rental-home");
 });
 
-router.get("/login", (req, res) => {
-  res.render("pages/login");
-});
-
-router.get("/sign-up", (req, res) => {
-  res.render("pages/signup");
-});
-
-router.get("/profile", verifyToken, (req, res) => {
-  res.render("pages/profile");
+router.get("/profile", verifyTokenForStaticRoute, (req, res) => {
+  if (req.error) {
+    res.redirect("/?logged=n");
+  } else {
+    res.render("pages/profile");
+  }
 });
 
 router.get("/admin", (req, res) => {
@@ -63,7 +61,7 @@ router.get("/admin.js", (req, res) => {
 });
 
 router.get("/:path", (req, res, next) => {
-  const categoryName = categoryNmaes[req.params.path];
+  const categoryName = categoryNames[req.params.path];
 
   if (categories.includes(req.path.split("/")[1])) {
     res.render("pages/product", {
