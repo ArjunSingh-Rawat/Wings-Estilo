@@ -22,25 +22,25 @@
         </div>
 
         <div class="profile-nav">
-          <a class="nav" href="#">
+          <a id="profile-nav" class="nav" href="#">
             <img src="/Images/profile-images/my-profile.png" alt="" />
             <span>My Profile</span>
           </a>
-          <a class="nav" href="#">
+          <a id="orders-nav" class="nav" href="#">
             <img src="/Images/profile-images/my-orders.png" alt="" />
             <span>My Orders</span>
           </a>
-          <a class="nav" href="#">
+          <a id="wishlist-nav" class="nav" href="#">
             <img src="/Images/profile-images/my-wishlist.png" alt="" />
             <span>My Wishlist</span>
           </a>
-          <a class="nav" href="#">
+          <a id="addresses-nav" class="nav" href="#">
             <img src="/Images/profile-images/my-addresses.png" alt="" />
             <span>My Addresses</span>
           </a>
         </div>
 
-        <button class="logout-btn">Logout</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
       </section>
 
       <!-- right-sections -->
@@ -51,7 +51,10 @@
           <div class="personal-info info">
             <div class="pi-title">
               <p class="p">PERSONAL INFORMATION</p>
-              <p class="edit-btn">Edit</p>
+              <p id="personal-info-edit" class="edit-btn">Edit</p>
+              <p id="personal-info-save" class="edit-btn" style="display: none">
+                Save
+              </p>
             </div>
 
             <div class="first-name info-div">
@@ -59,7 +62,7 @@
               <input
                 type="text"
                 id="fname"
-                name="fname"
+                name="firstName"
                 value="Panda"
                 disabled
               />
@@ -70,10 +73,35 @@
               <input
                 type="text"
                 id="lname"
-                name="lname"
+                name="lastName"
                 value="Craft"
                 disabled
               />
+            </div>
+
+            <div class="gender">
+              <p id="gender-title">Gender:</p>
+              <div class="gender">
+                <input
+                  type="radio"
+                  id="male"
+                  name="gender"
+                  value="male"
+                  disabled
+                />
+                <label for="male">Male</label>
+                <input
+                  type="radio"
+                  id="female"
+                  name="gender"
+                  value="female"
+                  disabled
+                />
+                <label for="female">Female</label>
+              </div>
+              <p id="gender-field-alert" class="alert" style="display: none">
+                ! Please fill out this field
+              </p>
             </div>
           </div>
 
@@ -103,7 +131,14 @@
 
             <div class="number info-div">
               <label for="fname">Mobile Number:</label>
-              <input type="text" id="fname" name="fname" value="+91" disabled />
+              <input
+                type="text"
+                id="phone-number"
+                name="phoneNumber"
+                value="+91"
+                disabled
+              />
+              <p class="alert">! Please fill out this field</p>
             </div>
           </div>
         </div>
@@ -113,11 +148,6 @@
     <!-- footer -->
     <%- include('../partials/footer') %>
 
-    <script>
-      const logout = async () => {
-        let response = await fetch("/api/users/logout");
-        window.location.href = response.url;
-      };
-    </script>
+    <script src="/js/profile.js"></script>
   </body>
 </html>

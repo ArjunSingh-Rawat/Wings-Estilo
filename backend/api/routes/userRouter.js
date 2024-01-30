@@ -8,6 +8,7 @@ const {
   refreshAccessToken,
   logoutUser,
   getOneUser,
+  updateUserPersonalInfo,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -26,6 +27,8 @@ router.get("/ping-me", verifyToken, (req, res) => {
   res.status(200).end();
 });
 
-router.get("/:id", verifyToken, getOneUser);
+router.get("/info", verifyToken, getOneUser);
+
+router.put("/info", verifyToken, updateUserPersonalInfo);
 
 module.exports = router;

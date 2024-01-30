@@ -99,7 +99,11 @@ async function signInSignUpHandler(req, res) {
     let user = await User.findOne({ email }).select("-password -refreshToken");
 
     if (!user) {
-      user = await registerUser(googleUserData.name, email);
+      user = await registerUser(
+        googleUserData.given_name,
+        googleUserData.family_name,
+        email
+      );
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
@@ -109,12 +113,14 @@ async function signInSignUpHandler(req, res) {
     const options = {
       httpOnly: true,
       secure: true,
+      maxAge: 1000 * 60 * 60,
     };
 
     res
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
+      .cookie("profile_name", user.firstName, { maxAge: 1000 * 60 * 60 })
       .redirect("/");
   } catch (error) {
     res.status(500).json({
@@ -124,10 +130,11 @@ async function signInSignUpHandler(req, res) {
   }
 }
 
-async function registerUser(fullname, email) {
+async function registerUser(firstName, lastName, email) {
   try {
     const newUser = await User.create({
-      fullname,
+      firstName,
+      lastName,
       email,
     });
     const createdUser = await User.findById(newUser._id).select(
@@ -214,6 +221,7 @@ async function logoutUser(req, res) {
       .status(200)
       .clearCookie("accessToken", options)
       .clearCookie("refreshToken", options)
+      .clearCookie("profile_name")
       .redirect("/");
   } catch (error) {
     res.status(500).json({
@@ -254,7 +262,7 @@ async function addToWishlist(req, res) {
 
 async function getOneUser(req, res) {
   try {
-    const user = await User.findOne({ _id: req.params.id }).select(
+    const user = await User.findOne({ _id: req.user.userid }).select(
       "-password -refreshToken"
     );
 
@@ -275,6 +283,40 @@ async function getOneUser(req, res) {
   }
 }
 
+async function updateUserPersonalInfo(req, res) {
+  try {
+    const userInfoToUpdate = {
+      firstName: "",
+      lastName: "",
+      gender: "",
+    };
+
+    for (const field in userInfoToUpdate) {
+      if (req.body[field]) {
+        userInfoToUpdate[field] = req.body[field];
+      } else {
+        delete userInfoToUpdate[field];
+      }
+    }
+
+    const user = await User.findOneAndUpdate(
+      { _id: req.user.userid },
+      userInfoToUpdate,
+      { new: true }
+    ).select("-refreshToken");
+
+    res.status(200).json({
+      success: true,
+      message: "success!",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   redirectToGoogleOauth,
   signInSignUpHandler,
@@ -283,4 +325,5 @@ module.exports = {
   logoutUser,
   addToWishlist,
   getOneUser,
+  updateUserPersonalInfo,
 };

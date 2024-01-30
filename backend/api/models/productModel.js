@@ -38,18 +38,27 @@ const productSchema = new mongoose.Schema(
     rating: {
       type: Number,
       min: [0, "should not be less than 0 got {VALUE}"],
-      max: [5, "should not be mroe than 5 gor {VALUE}"],
+      max: [5, "should not be more than 5 gor {VALUE}"],
       default: 0,
     },
     isFeatured: {
       type: Boolean,
       default: false,
     },
-    isOnRent: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
+    rentOrSale: [
+      {
+        type: String,
+        required: true,
+        enum: ["sale", "rent"],
+      },
+    ],
+    sizeAvailable: [
+      {
+        type: String,
+        required: true,
+        enum: ["xs", "s", "m", "l", "xl", "xxl"],
+      },
+    ],
   },
   { timestamps: true }
 );

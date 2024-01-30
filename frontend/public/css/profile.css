@@ -130,19 +130,47 @@
   color: #ff8080;
 }
 
+.edit-btn:hover {
+  cursor: pointer;
+}
+
 .info-div {
   display: flex;
   align-items: center;
   padding: 10px 0;
 }
 
-.info-div label {
+.info-div label,
+.gender #gender-title {
   font-size: 14px;
   width: 150px;
 }
 
+.gender {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.gender label {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 5px;
+}
+
+.gender input {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+/* alert */
+.alert {
+  font-size: 12px;
+  text-decoration: underline;
+  color: red;
+}
+
 .info-div input {
-  background-color: white;
   padding: 5px 10px;
   width: 250px;
   border: none;
@@ -150,6 +178,7 @@
   font-size: 14px;
   font-weight: 600;
   margin: 0 20px;
+  background-color: rgb(245, 245, 245);
 }
 
 .info {

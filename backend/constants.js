@@ -18,4 +18,17 @@ let categoryNames = {
   accessories: "ACCESSORIES",
 };
 
-module.exports = { categories, categoryNames };
+const publicPages = {
+  "/": "homepage",
+  "my-bag": "bag",
+  "my-wishlist": "wishlist",
+  contact: "contact",
+  "about-us": "about",
+  photoshoot: "photoshoot",
+  rental: "rental-home",
+};
+module.exports = {
+  categories,
+  categoryNames,
+  publicPages,
+};

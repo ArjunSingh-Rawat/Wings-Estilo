@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const { categoryNames, categories } = require("../constants");
+const { categoryNames, categories, publicPages } = require("../constants");
 const Product = require("../api/models/productModel");
 const {
   verifyTokenForStaticRoute,
@@ -8,33 +8,11 @@ const {
 
 const router = express.Router();
 
-router.get("/", async function (req, res) {
-  res.render("pages/homepage");
-});
-
-router.get("/my-bag", (req, res) => {
-  res.render("pages/bag");
-});
-
-router.get("/my-wishlist", (req, res) => {
-  res.render("pages/wishlist");
-});
-
-router.get("/contact", (req, res) => {
-  res.render("pages/contact");
-});
-
-router.get("/about-us", (req, res) => {
-  res.render("pages/about");
-});
-
-router.get("/photoshoot", (req, res) => {
-  res.render("pages/photoshoot");
-});
-
-router.get("/rental", (req, res) => {
-  res.render("pages/rental-home");
-});
+for (const page in publicPages) {
+  router.get(`/${page}`, (req, res) => {
+    res.render(`pages/${publicPages[page]}`);
+  });
+}
 
 router.get("/profile", verifyTokenForStaticRoute, (req, res) => {
   if (req.error) {
