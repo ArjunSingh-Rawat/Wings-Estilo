@@ -22,6 +22,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding: 10px 50px;
+  background-color: white;
 }
 
 .left-nav,
@@ -78,6 +79,29 @@
   border: none;
   margin-left: 20px;
   cursor: pointer;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#profile-btn .bx {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  color: white;
+  border-radius: 50%;
+  background-color: rgb(0, 180, 0);
+}
+
+.login-name {
+  font-size: 15px;
+  text-decoration: underline;
 }
 
 /* nav2 */
