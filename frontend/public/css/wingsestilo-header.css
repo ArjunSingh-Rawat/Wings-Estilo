@@ -77,7 +77,8 @@
 .right-nav #profile-btn {
   background-color: white;
   border: none;
-  margin-left: 20px;
+  margin-left: 10px;
+  width: fit-content;
   cursor: pointer;
   position: relative;
   display: flex;
