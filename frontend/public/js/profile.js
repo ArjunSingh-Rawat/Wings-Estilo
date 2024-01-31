@@ -1,3 +1,51 @@
+// toggle profile sections
+
+let previousNav = "profile-section";
+let previousSection = "my-profile-section";
+
+document.querySelector(".profile-nav").addEventListener("click", (event) => {
+  if (
+    event.target.id === "profile-section" ||
+    event.target.parentElement.id === "profile-section"
+  ) {
+    toggleClass("profile-section", previousNav);
+    previousNav = "profile-section";
+  } else if (
+    event.target.id === "orders-section" ||
+    event.target.parentElement.id === "orders-section"
+  ) {
+    toggleClass("orders-section", previousNav);
+    previousNav = "orders-section";
+  } else if (
+    event.target.id === "addresses-section" ||
+    event.target.parentElement.id === "addresses-section"
+  ) {
+    toggleClass("addresses-section", previousNav);
+    previousNav = "addresses-section";
+  }
+});
+
+function toggleClass(currentDiv, previousDiv) {
+  console.log(currentDiv, previousDiv);
+  if (currentDiv !== previousDiv) {
+    document
+      .querySelector(`#${currentDiv}`)
+      .classList.toggle("nav-active", true);
+    if (previousDiv !== "") {
+      document
+        .querySelector(`#${previousDiv}`)
+        .classList.toggle("nav-active", false);
+    } else {
+      document
+        .querySelector(`#profile-section  `)
+        .classList.toggle("nav-active", false);
+    }
+
+    document.querySelector(`.my-${currentDiv}`).style.display = "flex";
+    document.querySelector(`.my-${previousDiv}`).style.display = "none";
+  }
+}
+
 // editing user info
 const personalInfoDiv = document.querySelector(".personal-info");
 document

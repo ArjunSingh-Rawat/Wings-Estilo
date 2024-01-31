@@ -22,22 +22,18 @@
         </div>
 
         <div class="profile-nav">
-          <a id="profile-nav" class="nav" href="#">
+          <button id="profile-section" class="nav nav-active">
             <img src="/Images/profile-images/my-profile.png" alt="" />
             <span>My Profile</span>
-          </a>
-          <a id="orders-nav" class="nav" href="#">
+          </button>
+          <button id="orders-section" class="nav">
             <img src="/Images/profile-images/my-orders.png" alt="" />
             <span>My Orders</span>
-          </a>
-          <a id="wishlist-nav" class="nav" href="#">
-            <img src="/Images/profile-images/my-wishlist.png" alt="" />
-            <span>My Wishlist</span>
-          </a>
-          <a id="addresses-nav" class="nav" href="#">
+          </button>
+          <button id="addresses-section" class="nav">
             <img src="/Images/profile-images/my-addresses.png" alt="" />
             <span>My Addresses</span>
-          </a>
+          </button>
         </div>
 
         <button class="logout-btn" onclick="logout()">Logout</button>
@@ -141,6 +137,160 @@
               <p class="alert">! Please fill out this field</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- my-orders-section -->
+      <section class="my-orders-section" style="display: none">
+        <!-- no-orders-div -->
+        <div class="no-orders-div" style="display: none">
+          <p id="no-p1">No orders has been placed yet</p>
+          <p id="no-p2">Add items into your cart to place an order</p>
+          <button class="continue-shopping-btn">CONTINUE SHOPPING</button>
+        </div>
+
+        <!-- orders-div -->
+        <div class="orders-div">
+          <h2>MY ORDERS</h2>
+          <div class="orders-list">
+            <div class="order">
+              <div class="order-info">
+                <div class="order-img">
+                  <img
+                    src="/Images/gowns/1703231878146-beautiful-gown-0.jpeg"
+                    alt=""
+                  />
+                </div>
+                <div class="ordered-product-info">
+                  <p id="ordered-product-name">Ordered Gown name</p>
+                  <p id="ordered-product-size">Size: M</p>
+                  <p id="ordered-product-prize">Rs. 699</p>
+                </div>
+              </div>
+
+              <div class="order-delivery-info">
+                <p id="order-date">
+                  <i class="bx bx-check"></i
+                  ><span>Delivered on Jan 1, 2024</span>
+                </p>
+                <p id="order-alert">Your item has been delivered.</p>
+                <a id="detail-info" href="#">Detail Information</a>
+              </div>
+            </div>
+
+            <div class="order">
+              <div class="order-info">
+                <div class="order-img">
+                  <img
+                    src="/Images/gowns/1703231878146-beautiful-gown-0.jpeg"
+                    alt=""
+                  />
+                </div>
+                <div class="ordered-product-info">
+                  <p id="ordered-product-name">Ordered Gown name</p>
+                  <p id="ordered-product-size">Size: M</p>
+                  <p id="ordered-product-prize">Rs. 699</p>
+                </div>
+              </div>
+
+              <div class="order-delivery-info">
+                <p id="order-date">
+                  <i class="bx bx-check"></i
+                  ><span>Delivered on Jan 1, 2024</span>
+                </p>
+                <p id="order-alert">Your item has been delivered.</p>
+                <a id="detail-info" href="#">Detail Information</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- address-section -->
+      <section class="my-addresses-section" style="display: none">
+        <!-- no-address-div -->
+        <div class="no-address-div" style="display: none">
+          <p id="no-p1">No Address added yet</p>
+          <p id="no-p2">
+            Click “Add Address” button below to add your delivery address
+          </p>
+          <button class="add-new-address-btn">ADD NEW ADDRESS</button>
+        </div>
+
+        <!-- address-form-->
+
+        <div class="add-new-address-div">
+          <p class="add-title">ADD NEW ADDRESS</p>
+
+          <form class="address-form" action="">
+            <div class="box1">
+              <div class="name">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" />
+              </div>
+
+              <div class="mobile-number">
+                <label for="mobile-number">10-digit mobile number:</label>
+                <input
+                  type="text"
+                  id="mobile-number"
+                  name="mobile-number"
+                  maxlength="10"
+                />
+              </div>
+            </div>
+
+            <div class="box2">
+              <div class="pincode">
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" maxlength="6" />
+              </div>
+
+              <div class="locality">
+                <label for="locality">Locality:</label>
+                <input type="text" id="locality" name="locality" />
+              </div>
+            </div>
+
+            <div class="box3">
+              <label for="textarea">Address (Area and Street)</label>
+              <textarea id="textarea" name="address"></textarea>
+            </div>
+
+            <div class="box4">
+              <div class="city">
+                <label for="city">City/Town:</label>
+                <input type="text" id="city" name="city" />
+              </div>
+
+              <div class="district">
+                <label for="district">District:</label>
+                <select id="district" name="district">
+                  <option value="volvo">--Select District--</option>
+                  <option value="saab">Saab</option>
+                  <option value="fiat">Fiat</option>
+                  <option value="audi">Audi</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="box5">
+              <div class="state">
+                <label for="state">State:</label>
+                <select id="state" name="state">
+                  <option value="volvo">--Select State--</option>
+                  <option value="saab">Saab</option>
+                  <option value="fiat">Fiat</option>
+                  <option value="audi">Audi</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-btn">
+              <button id="save-btn">SAVE</button>
+              <button id="cancel-btn">CANCEL</button>
+            </div>
+          </form>
         </div>
       </section>
     </section>
