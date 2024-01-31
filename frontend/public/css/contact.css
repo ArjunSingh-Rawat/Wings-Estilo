@@ -73,7 +73,7 @@ textarea {
   border-radius: 3px;
 }
 
-button {
+.submit-btn {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -83,7 +83,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.submit-btn:hover {
   background-color: #0056b3;
 }
 .map {
