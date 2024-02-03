@@ -1,3 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
 .heading {
   text-align: center;
   font-family: "Charmonman", cursive;
@@ -165,7 +168,7 @@ pre-wedding-section {
 
 /* FAQ */
 
-.faq-para{
+.faq-para {
   padding: 10px 0;
 }
 .faq {
