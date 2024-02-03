@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <%- include("../partials/head")%>
-    <link rel="stylesheet" href="/css/photoshoot.css">
+    <link rel="stylesheet" href="/css/photoshoot.css" />
     <title>Document</title>
   </head>
   <body>
@@ -60,8 +60,6 @@
           </a>
         </div>
         <!-- <span class="price">Rs.3000</span> -->
-      </div>
-      </span>
       </div>
     </section>
 
@@ -258,7 +256,97 @@
         </div>
       </div>
     </section>
+
+    <section class="FAQ">
+      <h1 class="faq">FREQUENTLY ASKED QUESTIONS</h1>
+
+      <div class="questions">
+        <button class="accordion">When should I do baby bump shoot?</button>
+        <div class="panel">
+          <p class="faq-para">
+            The best time to plan for the pre baby shoot is after the 7th month
+            i.e. the start of the 8th month or 32nd week of pregnancy. Though
+            the best time is inbetween 34th-36th week. For twin pregnancy
+            photoshoot 7.5 month or 30th week is ideal.
+          </p>
+        </div>
+
+        <button class="accordion">
+          Where will our Maternity Photoshoot in Gwalior take place?
+        </button>
+        <div class="panel">
+          <p class="faq-para">
+            The location of Photoshoot Studio will be.<br /><br />
+            Near Sai Baba Mandir, Infront of Vishal Mega Mart, Fort Road,
+            PhoolBagh Gwalior(M.P.)
+          </p>
+        </div>
+
+        <button class="accordion">Do you provide Maternity dress?</button>
+        <div class="panel">
+          <p class="faq-para">
+            Yes, We do have a beautiful collection of dresses or Gowns and
+            accessories for the expecting mothers kept hygienically at our
+            studio.<br /><br />
+            You are also welcomed to bring any of yours to be used as a
+            maternity photoshoot dress.
+          </p>
+        </div>
+        <button class="accordion">
+          What shall I wear for Maternity pictures?
+        </button>
+        <div class="panel">
+          <p class="faq-para">
+            We provide Maternity Photoshoot Gowns, dresses, Sarees, and Western
+            Dresses in which you will be comfortable.
+          </p>
+        </div>
+        <button class="accordion">
+          How many types of maternity photoshoots do we provide?
+        </button>
+        <div class="panel">
+          <p class="faq-para">
+            We provide two types of Maternity Photoshoot, one is Indoor
+            Maternity Photoshoot and the other is Outdoor Maternity Photoshoot.
+          </p>
+        </div>
+
+        <button class="accordion">
+          When will we receiving our Maternity Photoshoot Pics?
+        </button>
+        <div class="panel">
+          <p class="faq-para">
+            It generally takes 7-10 Working days post the Maternity Photoshoot
+            to handover final pics.
+          </p>
+        </div>
+      </div>
+    </section>
     <!-- footer -->
     <%- include('../partials/footer') %>
+
+    <!-- FAQ js -->
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+          } else {
+            for (var j = 0; j < acc.length; j++) {
+              if (acc[j] !== this && acc[j].classList.contains("active")) {
+                acc[j].classList.remove("active");
+                acc[j].nextElementSibling.style.maxHeight = null;
+              }
+            }
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      }
+    </script>
   </body>
 </html>
