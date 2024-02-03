@@ -209,11 +209,16 @@
       <!-- address-section -->
       <section class="my-addresses-section" style="display: none">
         <!-- no-address-div -->
-        <div class="no-address-div" style="display: none">
+        <div class="no-address-div">
           <p id="no-p1">No Address added yet</p>
           <p id="no-p2">
             Click “Add Address” button below to add your delivery address
           </p>
+          <button class="add-new-address-btn">ADD NEW ADDRESS</button>
+        </div>
+
+        <div class="address-container">
+          <div class="address-div"></div>
           <button class="add-new-address-btn">ADD NEW ADDRESS</button>
         </div>
 
@@ -222,11 +227,11 @@
         <div class="add-new-address-div">
           <p class="add-title">ADD NEW ADDRESS</p>
 
-          <form class="address-form" action="">
+          <form class="address-form" action="#">
             <div class="box1">
               <div class="name">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" />
+                <input type="text" id="name" name="name" required />
               </div>
 
               <div class="mobile-number">
@@ -234,8 +239,10 @@
                 <input
                   type="text"
                   id="mobile-number"
-                  name="mobile-number"
+                  name="phoneNumber"
                   maxlength="10"
+                  minlength="10"
+                  required
                 />
               </div>
             </div>
@@ -243,51 +250,106 @@
             <div class="box2">
               <div class="pincode">
                 <label for="pincode">Pincode:</label>
-                <input type="text" id="pincode" name="pincode" maxlength="6" />
+                <input
+                  type="text"
+                  id="pincode"
+                  name="pinCode"
+                  maxlength="6"
+                  minlength="6"
+                  required
+                />
               </div>
 
               <div class="locality">
                 <label for="locality">Locality:</label>
-                <input type="text" id="locality" name="locality" />
+                <input
+                  type="text"
+                  id="locality"
+                  name="addressLine2"
+                  autocomplete="address-line2"
+                  required
+                />
               </div>
             </div>
 
             <div class="box3">
               <label for="textarea">Address (Area and Street)</label>
-              <textarea id="textarea" name="address"></textarea>
+              <textarea
+                id="textarea"
+                name="addressLine1"
+                autocomplete="address-level1"
+                required
+              ></textarea>
             </div>
 
             <div class="box4">
               <div class="city">
-                <label for="city">City/Town:</label>
-                <input type="text" id="city" name="city" />
+                <label for="city">District:</label>
+                <input
+                  type="text"
+                  id="city"
+                  name="district"
+                  autocomplete="address-level2"
+                  required
+                />
               </div>
 
-              <div class="district">
-                <label for="district">District:</label>
-                <select id="district" name="district">
-                  <option value="volvo">--Select District--</option>
-                  <option value="saab">Saab</option>
-                  <option value="fiat">Fiat</option>
-                  <option value="audi">Audi</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="box5">
               <div class="state">
                 <label for="state">State:</label>
-                <select id="state" name="state">
+                <select
+                  id="state"
+                  name="state"
+                  autocomplete="address-level1"
+                  required
+                >
                   <option value="volvo">--Select State--</option>
-                  <option value="saab">Saab</option>
-                  <option value="fiat">Fiat</option>
-                  <option value="audi">Audi</option>
+                  <option value="Andaman And Nicobar Islands">
+                    Andaman And Nicobar Islands
+                  </option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jammu And Kashmir">Jammu And Kashmir</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Ladakh">Ladakh</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Puducherry">Puducherry</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="The Dadra And Nagar Haveli And Daman And Diu">
+                    The Dadra And Nagar Haveli And Daman And Diu
+                  </option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="West Bengal">West Bengal</option>
                 </select>
               </div>
             </div>
 
             <div class="form-btn">
-              <button id="save-btn">SAVE</button>
+              <p id="form-alerts" style="display: none"></p>
+              <button id="save-btn" type="submit">SAVE</button>
               <button id="cancel-btn">CANCEL</button>
             </div>
           </form>

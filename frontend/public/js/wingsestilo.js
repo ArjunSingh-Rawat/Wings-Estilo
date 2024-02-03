@@ -1,56 +1,37 @@
-window.addEventListener("load", () => {
-  const urlParams = new URLSearchParams(window.location.search);
+const urlParams = new URLSearchParams(window.location.search);
 
-  if (urlParams.get("logged") === "n") {
-    togglePopup();
-  }
+if (urlParams.get("logged") === "n") {
+  togglePopup();
+}
 
-  // user login and profile logic
+// user login and profile logic
 
-  const profileBtn = document.querySelector("#profile-btn");
+const profileBtn = document.querySelector("#profile-btn");
 
-  profileBtn.addEventListener("click", async () => {
-    const res = await fetch("/api/user/ping-me");
-    if (!res.ok) {
-      if (await refreshAccessToken()) {
-        window.location.href = "/profile";
-      } else {
-        togglePopup();
-      }
+profileBtn.addEventListener("click", async () => {
+  const res = await fetch("/api/user/ping-me");
+  if (!res.ok) {
+    if (await refreshAccessToken()) {
+      window.location.href = "/profile";
     } else {
-      renderName();
+      togglePopup();
+    }
+  } else {
+    if (window.location.href.split("/").pop() !== "profile") {
       window.location.href = "/profile";
     }
-  });
-
-  async function refreshAccessToken() {
-    const res = await fetch("/api/user/refresh-access-token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return res.ok;
   }
-
-  //set name in header if logged in
-  function renderName() {
-    const cookieData = parseCookies();
-
-    if (cookieData.profile_name) {
-      const i = document.createElement("i");
-      const span = document.createElement("span");
-      i.classList.add("bx", "bx-check");
-      span.classList.add("login-name");
-
-      span.innerText = `Hello ${cookieData.profile_name}`;
-      profileBtn.appendChild(i);
-      profileBtn.appendChild(span);
-    }
-  }
-
-  renderName();
 });
+
+async function refreshAccessToken() {
+  const res = await fetch("/api/user/refresh-access-token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.ok;
+}
 
 function parseCookies() {
   var cookies = document.cookie.split(";");

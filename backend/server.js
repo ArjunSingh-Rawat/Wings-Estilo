@@ -1,6 +1,10 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const {
+  setUserInLocalsIfLoggedIn,
+  verifyToken,
+} = require("./api/middleware/authMiddlewares");
 
 require("dotenv").config("./.env");
 require("./db/connection");
@@ -15,6 +19,7 @@ const categoryRouter = require("./api/routes/categoryRouter");
 const productRouter = require("./api/routes/productRouter");
 const bagRouter = require("./api/routes/bagRouter");
 const wishListRouter = require("./api/routes/wishlistRouter");
+const addressRouter = require("./api/routes/addressRouter");
 
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -25,8 +30,9 @@ app.set("view engine", "ejs");
 
 app.set("views", path.join(__dirname, "../frontend/views"));
 
-app.use("/", appRouter);
+app.use("/", setUserInLocalsIfLoggedIn, appRouter);
 app.use("/api/user", userRouter);
+app.use("/api/user/addresses", verifyToken, addressRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/products", productRouter);
 app.use("/api/bag/", bagRouter);
@@ -35,7 +41,7 @@ app.use("/api/wishlist", wishListRouter);
 app.use((req, res) => {
   if (req.originalUrl.startsWith("/api")) {
     res.status(404).json({
-      succsess: false,
+      success: false,
       message: "Cannot get what you want to search",
     });
   } else {

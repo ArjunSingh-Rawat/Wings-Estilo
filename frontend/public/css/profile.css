@@ -380,10 +380,6 @@
   margin: 20px 0;
 }
 
-.box5 {
-  margin: 20px 0;
-}
-
 .name,
 .pincode,
 .city {
@@ -393,8 +389,7 @@
 .box1 div label,
 .box2 div label,
 .box3 label,
-.box4 div label,
-.box5 div label {
+.box4 div label {
   display: block;
   font-size: 14px;
   font-weight: 500;

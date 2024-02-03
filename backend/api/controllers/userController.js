@@ -120,7 +120,6 @@ async function signInSignUpHandler(req, res) {
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
-      .cookie("profile_name", user.firstName, { maxAge: 1000 * 60 * 60 })
       .redirect("/");
   } catch (error) {
     res.status(500).json({
@@ -221,7 +220,6 @@ async function logoutUser(req, res) {
       .status(200)
       .clearCookie("accessToken", options)
       .clearCookie("refreshToken", options)
-      .clearCookie("profile_name")
       .redirect("/");
   } catch (error) {
     res.status(500).json({
@@ -262,9 +260,9 @@ async function addToWishlist(req, res) {
 
 async function getOneUser(req, res) {
   try {
-    const user = await User.findOne({ _id: req.user.userid }).select(
-      "-password -refreshToken"
-    );
+    const user = await User.findOne({ _id: req.user.userid })
+      .populate("addresses")
+      .select("-password -refreshToken");
 
     if (!user) {
       return res.status(404).json("user not found!");
