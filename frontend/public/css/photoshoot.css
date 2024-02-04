@@ -1,10 +1,20 @@
 html {
   scroll-behavior: smooth;
 }
+.mater-poster {
+  width: 95%;
+}
+.mater-poster img {
+  margin: 30px 0 30px 50px;
+  width: 100%;
+  object-fit: contain;
+}
+
 .heading {
   text-align: center;
   font-family: "Charmonman", cursive;
 }
+
 .container {
   display: grid;
   grid-template-columns: repeat(4, 300px);
@@ -134,7 +144,6 @@ pre-wedding-section {
   padding: 0;
 }
 .left-para p {
-  letter-spacing: 1px;
   text-shadow: 2px 2px 8px #19d1b0;
   font-size: 20px;
   font-weight: 600;
@@ -144,12 +153,12 @@ pre-wedding-section {
 
 .right {
   width: 520px;
-  height: 700px;
+  height: 600px;
 }
 .img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .book-btn {
   margin: 20px 100px;
@@ -222,4 +231,68 @@ pre-wedding-section {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.4s ease-out;
+}
+
+.contact-sec {
+  /* background-color: lightsalmon; */
+  padding: 10px 0;
+}
+
+.help {
+  margin: 0;
+  text-align: center;
+  font-size: 50px;
+  font-weight: 700;
+  font-family: "Courier New", Courier, monospace;
+  color: #a84d81;
+}
+.query {
+  text-align: center;
+  font-size: 18px;
+  padding: -20px;
+  font-weight: 600;
+  font-family: "Courier New", Courier, monospace;
+}
+.help-section {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.help-section > div {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.connect {
+  padding: 5px 0;
+  color: #a84d81;
+}
+.num,
+.timing {
+  padding: 5px 0;
+  color: grey;
+  font-weight: 600;
+}
+.help-section i {
+  font-size: 70px;
+  color: #a84d81;
+}
+
+.prewed-poster {
+  width: 95%;
+}
+.prewed-poster img {
+  margin: 50px 0 50px 50px;
+  width: 100%;
+  object-fit: contain;
+}
+
+.baby-poster {
+  width: 95%;
+}
+.baby-poster img {
+  margin: 30px 0 50px 50px;
+  width: 100%;
+  object-fit: contain;
 }
