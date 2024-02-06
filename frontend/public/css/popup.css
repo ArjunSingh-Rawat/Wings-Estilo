@@ -5,7 +5,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1;
+  z-index: 20;
   display: none;
 }
 
@@ -17,7 +17,7 @@
   background: #fff;
   width: 350px;
   height: 500px;
-  z-index: 2;
+  z-index: 21;
   text-align: center;
   /* padding: 20px; */
   box-sizing: border-box;

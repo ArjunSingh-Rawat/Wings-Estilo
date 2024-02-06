@@ -8,8 +8,10 @@
 /* filter-sidebar */
 
 .filter-sidebar {
-  /* background-color: aliceblue; */
   padding: 40px 20px;
+  position: sticky;
+  top: 130px;
+  height: fit-content;
 }
 
 .filters {
@@ -49,13 +51,7 @@
   align-items: center;
 }
 
-/* .active,
-.accordion:hover {
-  background-color: rgb(250, 250, 250);
-} */
-
 .panel {
-  /* padding: 0 20px; */
   border-bottom: 1px solid lightgrey;
   background-color: white;
   max-height: 0;
@@ -106,10 +102,13 @@
 
 /* dress-div */
 
+.dress-div {
+  margin-left: 60px;
+}
+
 /* dress-grid */
 
 .dress-grid {
-  padding: 0 60px;
   display: grid;
   grid-template-columns: repeat(3, 350px);
   gap: 15px;

@@ -6,120 +6,174 @@
   </head>
   <body>
     <%-include("../../partials/header")%>
-    <section id="admin-toggle">
-      <button id="product-section">Products</button>
-      <button id="category-section">Categories</button>
-    </section>
 
-    <!-- Category Section -->
-
-    <section id="category-editor">
-      <div class="categories" id="main-cat">
-        <div id="a">Categories</div>
-        <div id="b"></div>
-        <div id="main-toggle" class="toggle">
-          <div id="add-cat" class="">Add</div>
-          <div id="delete-cat">Delete</div>
-          <div id="edit-cat">Edit</div>
+    <!-- product-img-section -->
+    <section class="product-img-section">
+      <h1>Add Product Images</h1>
+      <div class="add-img-div">
+        <div class="main-img-div">
+          <label for="file">
+            <i class="bx bx-image-add"></i>
+          </label>
+          <input type="file" id="file" />
         </div>
-      </div>
-      <div class="categories" id="sub-cat">
-        <div id="a">Sub Categories</div>
-        <div id="sub-cat-name"></div>
-        <div id="b"></div>
-        <div id="sub-toggle" class="toggle">
-          <div id="add-cat" class="">Add</div>
-          <div id="delete-cat">Delete</div>
-          <div id="edit-cat">Edit</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Product Section -->
-
-    <section id="product-editor">
-      <form id="submit-product" enctype="multipart/form-data">
-        <div class="flex">
-          <div id="product-img">
-            <div id="image-div">
-              <input id="input-image" type="file" name="file" required />
-              <div id="image">
-                <span id="no-image-added" style="display: block"
-                  >No image added</span
-                >
-                <img id="main-image" style="display: none" src="" alt="" />
-              </div>
+        <div class="small-img-div">
+          <div class="small-imgs">
+            <div class="small-img">
+              <label for="file">
+                <i class="bx bx-image-add"></i>
+              </label>
+              <input type="file" id="file" />
             </div>
-            <div id="more-img"></div>
-            <span>Add more images</span>
-            <input id="input-more-image" type="file" name="file" multiple />
-          </div>
-          <div id="product-info">
-            <input
-              type="text"
-              name="name"
-              placeholder="Product Name"
-              required
-            />
-            <input type="number" name="price" placeholder="Price" required />
-            <textarea
-              name="description"
-              placeholder="Description...."
-              id="input-description"
-              cols="30"
-              rows="5"
-              required
-            ></textarea>
-            <div id="category-box">
-              <div>
-                <label for="category">Category</label>
-                <select id="category" name="category" required>
-                  <option disabled selected value="">select</option>
-                </select>
-              </div>
-              <div>
-                <label for="sub-category">Sub Category</label>
-                <select id="sub-category" name="subCategory" required>
-                  <option disabled selected value="">select</option>
-                </select>
-              </div>
+            <div class="small-img">
+              <label for="file">
+                <i class="bx bx-image-add"></i>
+              </label>
+              <input type="file" id="file" />
             </div>
-
-            <input
-              type="number"
-              name="countInStock"
-              placeholder="Stock"
-              required
-            />
-            <div id="input-rent">
-              <label for="rent">Available on rent :</label>
-              <div id="rent-y-n">
-                <label
-                  >Yes<input
-                    id="indoor"
-                    type="radio"
-                    name="isOnRent"
-                    value="true"
-                  />
-                </label>
-                <label
-                  >No<input
-                    id="outdoor"
-                    type="radio"
-                    name="isOnRent"
-                    value="false"
-                  />
-                </label>
-              </div>
+            <div class="small-img">
+              <label for="file">
+                <i class="bx bx-image-add"></i>
+              </label>
+              <input type="file" id="file" />
+            </div>
+            <div class="small-img">
+              <label for="file">
+                <i class="bx bx-image-add"></i>
+              </label>
+              <input type="file" id="file" />
+            </div>
+            <div class="small-img">
+              <label for="file">
+                <i class="bx bx-image-add"></i>
+              </label>
+              <input type="file" id="file" />
             </div>
           </div>
         </div>
-        <div id="submit-div">
-          <input id="submit" class="form-btn" type="submit" />
-          <input type="reset" id="form-reset" class="form-btn" />
+      </div>
+    </section>
+
+    <!-- product-info-section -->
+    <section class="product-info-section">
+      <h1>Add Product Information</h1>
+      <form id="product-info-form" action="">
+        <!-- form-left-div -->
+        <div class="form-left-div">
+          <!-- product-name -->
+          <div class="add-product-name">
+            <label for="product-name">Add product name:</label>
+            <input type="text" id="product-name" name="product-name" />
+          </div>
+
+          <!-- sell-rent -->
+          <div class="rent-sell">
+            <div class="sell">
+              <input type="checkbox" id="sell" name="sell" value="sell" />
+              <label for="vehicle1">For selling</label>
+            </div>
+            <div class="rent">
+              <input type="checkbox" id="rent" name="rent" value="rent" />
+              <label for="rent">For rental</label>
+            </div>
+          </div>
+
+          <!-- product-price -->
+          <div class="product-price">
+            <div class="add-product-price">
+              <label for="product-price">Add selling product price:</label>
+              <input type="text" id="product-price" name="product-price" />
+            </div>
+            <div class="add-product-price">
+              <label for="product-price">Add rental product price:</label>
+              <input type="text" id="product-price" name="product-price" />
+            </div>
+          </div>
+
+          <!-- product-category -->
+          <div class="product-category">
+            <div class="main-category">
+              <label for="main-category">Select category:</label>
+              <select id="main-category" name="main-category">
+                <option value="volvo">--Select category--</option>
+                <option value="saab">Saab</option>
+                <option value="fiat">Fiat</option>
+                <option value="audi">Audi</option>
+              </select>
+            </div>
+
+            <div class="sub-category">
+              <label for="sub-category">Select sub category:</label>
+              <select id="sub-category" name="sub-category">
+                <option value="volvo">--Select sub category--</option>
+                <option value="saab">Saab</option>
+                <option value="fiat">Fiat</option>
+                <option value="audi">Audi</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- form-right-div -->
+        <div class="form-right-div">
+          <div class="product-description">
+            <div class="short-description">
+              <label for="short-description">Add short-description:</label>
+              <textarea
+                id="short-description"
+                name="short-description"
+              ></textarea>
+            </div>
+
+            <div class="main-description">
+              <label for="main-description">Add description:</label>
+              <textarea
+                id="main-description"
+                name="main-description"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="product-size">
+            <p id="size-title">Product quantity in size:</p>
+
+            <div class="sizes">
+              <div class="size">
+                <label for="size">S</label>
+                <input type="text" id="size" name="size" />
+              </div>
+              <div class="size">
+                <label for="size">M</label>
+                <input type="text" id="size" name="size" />
+              </div>
+              <div class="size">
+                <label for="size">L</label>
+                <input type="text" id="size" name="size" />
+              </div>
+              <div class="size">
+                <label for="size">XL</label>
+                <input type="text" id="size" name="size" />
+              </div>
+              <div class="size">
+                <label for="size">XXL</label>
+                <input type="text" id="size" name="size" />
+              </div>
+              <div class="size">
+                <label for="size">3XXL</label>
+                <input type="text" id="size" name="size" />
+              </div>
+            </div>
+          </div>
+
+          <!-- form-buttons -->
+          <div class="form-buttons">
+            <button id="submit">SUBMIT</button>
+            <button id="reset">RESET</button>
+          </div>
         </div>
       </form>
     </section>
+
     <script src="/admin.js"></script>
   </body>
 </html>

@@ -16,8 +16,8 @@
 }
 
 .product-small-img img {
-  width: 100px;
-  height: 150px;
+  width: 80px;
+  height: 130px;
   object-fit: cover;
   margin-bottom: 10px;
   cursor: pointer;
@@ -30,8 +30,8 @@
 }
 
 .img-container {
-  width: 600px;
-  height: 750px;
+  width: 550px;
+  height: 700px;
   margin-left: 10px;
 }
 
