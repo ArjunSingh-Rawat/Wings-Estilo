@@ -1,4 +1,4 @@
-<header>
+<header class="main-header">
   <div class="top-bar">
     <marquee>
       ALL INDIAN SHIPPING AVAILABLE | CASH ON DELIVERY AVAILABLE
@@ -79,10 +79,36 @@
         </ul>
       </li>
       <!-- <li><a id="kids" href="#">KIDS</a></li> -->
-      <li><a id="accessories" href="/accessories">ACCESSORIES</a></li>
+      <li class="dropdown">
+        <a class="dropdown-link" id="accessories" href="/accessories">
+          ACCESSORIES
+          <i class="bx bx-chevron-down"></i>
+        </a>
+        <ul class="dropdown-content">
+          <li><a href="#">Tiara</a></li>
+          <li><a href="#">CanCan Skirt</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </header>
+
+<script>
+  //enable hidden nav bar
+
+  const nav = document.querySelector(".main-header");
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener("scroll", () => {
+    if (lastScrollY < window.scrollY && window.scrollY > 130) {
+      nav.classList.add("nav-hidden");
+    } else {
+      nav.classList.remove("nav-hidden");
+    }
+
+    lastScrollY = window.scrollY;
+  });
+</script>
 
 <!-- signup-popup -->
 <%- include('../partials/popup') %>

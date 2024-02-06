@@ -41,7 +41,7 @@
 
       <!-- right-sections -->
 
-      <section class="my-profile-section">
+      <section class="my-profile-section" style="display: none">
         <h2>MY PROFILE</h2>
         <div class="my-profile-info">
           <div class="personal-info info">
@@ -207,9 +207,9 @@
       </section>
 
       <!-- address-section -->
-      <section class="my-addresses-section" style="display: none">
+      <section class="my-addresses-section" style="display: flex">
         <!-- no-address-div -->
-        <div class="no-address-div">
+        <div class="no-address-div" style="display: none">
           <p id="no-p1">No Address added yet</p>
           <p id="no-p2">
             Click “Add Address” button below to add your delivery address
@@ -218,13 +218,29 @@
         </div>
 
         <div class="address-container">
-          <div class="address-div"></div>
+          <p id="address-title">MANAGE ADDRESSES</p>
+          <div class="address-div">
+            <div class="edit-delete-btn">
+              <button>Edit</button>
+              <button>Delete</button>
+            </div>
+
+            <p id="my-name-phone">
+              <span id="address-div-name">Vijay Singh Rawat</span>
+              <span id="address-div-phone">8839526901</span>
+            </p>
+            <p id="my-address">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              voluptatum accusamus explicabo ab provident natus animi, vel,
+              consequuntur, eos inventore praesentium laborum
+            </p>
+          </div>
           <button class="add-new-address-btn">ADD NEW ADDRESS</button>
         </div>
 
         <!-- address-form-->
 
-        <div class="add-new-address-div">
+        <div class="add-new-address-div" style="display: none">
           <p class="add-title">ADD NEW ADDRESS</p>
 
           <form class="address-form" action="#">
@@ -360,6 +376,6 @@
     <!-- footer -->
     <%- include('../partials/footer') %>
 
-    <script src="/js/profile.js"></script>
+    <!-- <script src="/js/profile.js"></script> -->
   </body>
 </html>

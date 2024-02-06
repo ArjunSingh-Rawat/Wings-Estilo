@@ -1,205 +1,227 @@
-#admin-toggle {
-  padding: 10px;
-  background-color: rgb(255, 216, 216);
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-}
+.product-img-section {
+  background-color: #fff6f2;
+  padding: 30px 0;
+  margin-top: 150px;
 
-#product-editor {
-  padding: 20px;
-}
-
-.flex {
-  display: flex;
-  gap: 300px;
-  justify-content: center;
-}
-
-button {
-  padding: 10px;
-  background-color: rgb(223, 88, 88);
-  border: none;
-  border-radius: 5px;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-img {
-  height: 100px;
-}
-
-#image-div {
-  height: 450px;
-  width: 350px;
-  background-color: rgb(246, 181, 167);
-}
-
-#input-image {
-  width: 100%;
-}
-
-#input-image::-webkit-file-upload-button {
-  width: 100%;
-  height: 45px;
-  border: none;
-  background-color: rgb(246, 95, 95);
-}
-
-#image {
-  width: 100%;
-  height: calc(100% - 45px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-}
-#image img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
-#submit-div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-.form-btn {
-  background-color: rgb(246, 95, 95);
-  padding: 8px 15px;
-}
-
-#product-info {
-  padding: 20px;
-  min-width: 260px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.product-img-section h1,
+.product-info-section h1 {
+  font-size: 20px;
+  color: #ff8080;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+/* product-img */
+.add-img-div {
+  display: flex;
+}
+
+.small-img-div {
+  margin-left: 50px;
+}
+
+.small-imgs {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
   gap: 20px;
 }
 
-#product-info input {
-  display: block;
-  margin-bottom: 5px;
-  padding: 5px;
-  font-size: 20px;
+.small-imgs div {
+  width: 120px;
+  height: 170px;
+  background-color: white;
+  box-shadow: 0 0 10px #ffcfcf;
 }
 
-#more-img {
-  margin-top: 10px;
-  display: flex;
-  gap: 5px;
+.main-img-div {
+  width: 400px;
+  height: 550px;
+  background-color: white;
+  box-shadow: 0 0 10px #ffcfcf;
 }
 
-/* categories styling */
+.main-img-div img,
+.small-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-#category-editor {
-  margin-top: 50px;
-  padding: 10px 100px;
-  border: 2px solid black;
-  display: flex;
-  justify-content: center;
-  gap: 100px;
+.main-img-div input,
+.small-img input {
   display: none;
 }
 
-.categories {
-  width: 300px;
-}
-.categories #a {
-  background-color: rgb(255, 98, 98);
-  padding: 5px 10px;
-  text-align: center;
-  color: white;
-}
-
-.categories #b {
-  border: 2px solid rgb(255, 213, 213);
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.categories #b div {
-  background-color: rgb(194, 180, 180);
-  padding: 5px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.categories #b div:hover {
-  background-color: rgb(148, 130, 130);
-}
-
-#sub-cat-name {
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.toggle {
+.main-img-div label,
+.small-img label {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
-  gap: 20px;
-  padding-top: 5px;
-}
-
-.toggle div {
-  padding: 5px 10px;
-  background-color: rgb(148, 130, 130);
-  border-radius: 10px;
+  align-items: center;
   cursor: pointer;
 }
 
-.active-cat {
-  box-shadow: 6px 10px 13px -4px #ea7c7c;
+.main-img-div .bx,
+.small-img .bx {
+  font-size: 30px;
+  color: lightgrey;
 }
 
-.toggle .not-allowed {
-  cursor: not-allowed;
+/* product-info-section */
+
+.product-info-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 500px;
+  background-color: rgb(250, 250, 250);
+  padding: 30px;
 }
 
-#category-box {
+#product-info-form {
+  padding: 20px;
+  display: flex;
+  gap: 100px;
+}
+
+/* form-left-div */
+
+.form-left-div {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.rent-sell label {
+  font-size: 15px;
+}
+
+.rent-sell input {
+  width: 18px;
+  height: 18px;
+}
+
+.sell,
+.rent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.product-price,
+.product-category,
+.product-description {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-#category-box div {
+.add-product-name label,
+.product-price label,
+.product-category label,
+.product-description label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.add-product-name input,
+.product-price input,
+.product-category select {
+  width: 350px;
+  height: 40px;
+  border: 1px solid lightgrey;
+  padding: 0 10px;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  box-shadow: 3px 3px 6px lightgrey;
+  border-radius: 4px;
+}
+
+/* form-right-div */
+
+.form-right-div {
   display: flex;
-  justify-content: space-between;
-  gap: 15px;
+  flex-direction: column;
+  gap: 30px;
 }
 
-#category,
-#sub-category {
-  padding: 5px;
+.product-description textarea {
+  width: 600px;
+  height: 80px;
+  resize: vertical;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+  border: 1px solid lightgrey;
+  box-shadow: 3px 3px 6px lightgrey;
+  border-radius: 4px;
 }
 
-#input-rent {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+#size-title {
+  font-size: 15px;
+  margin-bottom: 5px;
 }
 
-#rent-y-n {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-#rent-y-n input {
-  margin: 0;
+.sizes {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
 }
 
-#rent-y-n label {
-  display: flex;
-  padding: 3px;
-  gap: 5px;
+.product-size .size {
+  margin-bottom: 5px;
 }
 
-#input-description {
-  font-size: 18px;
-  padding: 5px;
+.product-size label {
+  font-size: 16px;
+  width: 50px;
+  display: inline-block;
+}
+
+.product-size input {
+  width: 100px;
+  height: 30px;
+  outline: none;
+  padding: 0 5px;
+  border: 1px solid lightgrey;
+  background-color: white;
+  box-shadow: 3px 3px 6px lightgrey;
+  border-radius: 4px;
+}
+
+/* form-buttons */
+
+.form-buttons button {
+  padding: 10px 30px;
+  border: 1px solid #ff8080;
+  cursor: pointer;
+  box-shadow: 3px 3px 6px lightgrey;
+  border-radius: 4px;
+}
+
+.form-buttons #submit {
+  background-color: #ff8080;
+  color: white;
+  margin-right: 20px;
+}
+
+.form-buttons #reset {
+  background-color: white;
+  color: #ff8080;
+}
+
+.form-buttons #submit:hover,
+.form-buttons #reset:hover {
+  background-color: #fff6f2;
+  color: #ff8080;
 }
