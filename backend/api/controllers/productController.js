@@ -19,15 +19,30 @@ async function addNewProduct(req, res) {
     let categories = [req.body.category];
     if (req.body.subCategory) categories.push(req.body.subCategory);
 
+    const { xs, s, m, l, xl, xxl, countInStock } = req.body;
+
+    if (+countInStock !== +xs + +s + +m + +l + +xl + +xxl) {
+      throw new Error("Stock not matching with total quantity of sizes!");
+    }
+
     let product = new Product({
       name: req.body.name,
-      price: req.body.price,
+      shortDescription: req.body.shortDescription,
       description: req.body.description,
+      sellPrice: req.body.sellPrice,
+      rentPrice: req.body.rentPrice,
       image: imageObj.images[0],
+      images: imageObj.images.splice(1),
       category: categories,
       countInStock: req.body.countInStock,
-      isOnRent: req.body.isOnRent,
-      images: imageObj.images.splice(1),
+      sizeAvailable: {
+        xs: req.body.xs,
+        s: req.body.s,
+        m: req.body.m,
+        l: req.body.l,
+        xl: req.body.xl,
+        xxl: req.body.xxl,
+      },
     });
 
     await product.save();
@@ -35,19 +50,19 @@ async function addNewProduct(req, res) {
     await saveImage(req.files, imageObj.imageNames, imageObj.folderPath);
 
     res.status(201).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       newItem: product,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
 }
 
-async function addImage(files, categoryId, productName) {
+async function addImage(files, categoryId, productName, indexes) {
   try {
     const category = await Category.findOne({ _id: categoryId }).select(
       "categoryName -_id"
@@ -56,10 +71,16 @@ async function addImage(files, categoryId, productName) {
     const folderPath = path.join(imageFolderPath + `${categoryName}`);
 
     let i = 0;
+    let j = 0;
     let images = [];
     let imageNames = [];
-
+    if (indexes) {
+      indexes.sort();
+    }
     for (const file of files) {
+      if (indexes) {
+        i = indexes[j];
+      }
       const imageName = `${Date.now()}-${productName
         .split(" ")
         .join("-")}-${i}.${file.originalname.split(".").pop()}`;
@@ -70,6 +91,7 @@ async function addImage(files, categoryId, productName) {
       images.push(imagePath);
 
       i++;
+      j++;
     }
     return {
       images,
@@ -99,35 +121,89 @@ async function saveImage(files, fileNames, folderPath) {
 
 async function updateProduct(req, res) {
   try {
-    const product = await Product.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        name: req.body.name,
-        price: req.body.price,
-        description: req.body.description,
-        $push: {
-          category: req.body.category,
-        },
-        rating: req.body.rating,
-        countInStock: req.body.countInStock,
-        isOnRent: req.body.isOnRent,
-      },
-      { new: true }
+    const productFields = Object.keys(Product.schema.obj);
+    const sizeFields = Object.keys(Product.schema.obj.sizeAvailable.obj);
+    const fieldsToUpdate = {};
+    const sizeFieldsToUpdate = {};
+
+    for (const field in req.body) {
+      if (productFields.includes(field)) {
+        fieldsToUpdate[field] = req.body[field];
+      }
+      if (sizeFields.includes(field)) {
+        sizeFieldsToUpdate[field] = req.body[field];
+      }
+    }
+
+    const product = await Product.findOne({ _id: req.params.id }).populate(
+      "category"
     );
 
-    if (product.validateSync()) {
-      const error = product.validateSync();
-      throw new Error(error);
+    if (!product) {
+      throw new Error("Product not found!");
+    }
+    if (req.files.length) {
+      const { deletedMainImage, deletedSmallImages } = await deleteImages(
+        product.category,
+        product.image,
+        product.images,
+        req.body.indexes
+      );
+
+      if (deletedMainImage) product.image = "";
+      product.images = product.images.filter(
+        (image) => !deletedSmallImages.includes(image)
+      );
+    }
+
+    const imageObj = await addImage(
+      req.files,
+      req.body.category,
+      req.body.name,
+      req.body.indexes
+    );
+
+    function compareImageNames(a, b) {
+      const regex = /(\d+)\./;
+      const numA = parseInt(a.match(regex)[1]);
+      const numB = parseInt(b.match(regex)[1]);
+      return numA - numB;
+    }
+
+    if (req.body.indexes[0] === "0") {
+      console.log("inside if", req.body.indexes);
+      product.image = imageObj.images[0];
+      product.images = [...product.images, ...imageObj.images.splice(1)];
+      product.images.sort(compareImageNames);
+      console.log("product images after sort", product.images);
+    } else {
+      console.log("inside else");
+      product.images = [...product.images, ...imageObj.images];
+      product.images.sort(compareImageNames);
+      console.log("product images after sort", product.images);
+    }
+
+    for (const field in fieldsToUpdate) {
+      product[field] = fieldsToUpdate[field];
+    }
+    for (const sizeField in sizeFieldsToUpdate) {
+      product.sizeAvailable[sizeField] = sizeFieldsToUpdate[sizeField];
+    }
+
+    await product.save();
+
+    if (req.files.length) {
+      await saveImage(req.files, imageObj.imageNames, imageObj.folderPath);
     }
 
     res.status(202).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       newItem: product,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -137,17 +213,69 @@ async function deleteProduct(req, res) {
   try {
     const deletedProduct = await Product.findOneAndDelete({
       _id: req.params.id,
-    });
+    }).populate("category");
+
+    await deleteImages(
+      deletedProduct.category,
+      deletedProduct.image,
+      deletedProduct.images
+    );
+
     res.status(200).json({
-      succsess: true,
+      success: true,
       message: "Delete success!",
       deletedProduct: deletedProduct,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
+  }
+}
+
+async function deleteImages(categories, image, images, indexes) {
+  try {
+    const parentCategory = categories.find((obj) => obj.isParentCategory);
+    const folderPath = imageFolderPath + parentCategory.categoryName;
+
+    const allImages = [image, ...images];
+    const deletedSmallImages = [];
+    const deletedMainImage = "";
+
+    if (indexes) {
+      console.log("delete by index \n*** allImages:", allImages);
+      for (const image of allImages) {
+        const imageName = image.split("/").pop();
+        const imageIndex = imageName.split("-").pop().split(".")[0];
+        if (indexes.includes(imageIndex)) {
+          const imagePath = folderPath + "\\" + imageName;
+          fs.unlinkSync(imagePath);
+          if (imageIndex === 0) {
+            deletedMainImage = image;
+          } else {
+            deletedSmallImages.push(image);
+          }
+        }
+      }
+      return { deletedMainImage, deletedSmallImages };
+    }
+
+    if (fs.existsSync(folderPath)) {
+      console.log("delete all", image, images, "indexes:", indexes);
+      if (image) {
+        const imagePath = folderPath + "\\" + image.split("/").pop();
+        fs.unlinkSync(imagePath);
+      }
+      if (images.length) {
+        for (const image of images) {
+          const imagePath = folderPath + "\\" + image.split("/").pop();
+          fs.unlinkSync(imagePath);
+        }
+      }
+    }
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -155,13 +283,13 @@ async function getOneProduct(req, res) {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     res.status(200).json({
-      succsess: true,
+      success: true,
       message: "success!",
       product: product,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -169,15 +297,15 @@ async function getOneProduct(req, res) {
 
 async function getAllProducts(req, res) {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("category");
     res.status(200).json({
-      succsess: true,
+      success: true,
       message: "success!",
       products,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -198,14 +326,14 @@ async function getProductsByCategory(req, res) {
     }
 
     res.status(200).json({
-      succsess: true,
+      success: true,
       message: "success!",
       products,
       quantity: products.length,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }

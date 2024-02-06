@@ -1,13 +1,59 @@
 const mongoose = require("mongoose");
 
+const sizeSchema = new mongoose.Schema(
+  {
+    xs: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+    s: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+    m: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+    l: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+    xl: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+    xxl: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
 const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
     },
-    price: {
+    sellPrice: {
       type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+    rentPrice: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
+    shortDescription: {
+      type: String,
       required: true,
     },
     description: {
@@ -33,7 +79,7 @@ const productSchema = new mongoose.Schema(
     countInStock: {
       type: Number,
       required: true,
-      min: 0,
+      min: [0, "should not be less than 0 got {VALUE}"],
     },
     rating: {
       type: Number,
@@ -45,20 +91,15 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    rentOrSale: [
-      {
-        type: String,
-        required: true,
-        enum: ["sale", "rent"],
-      },
-    ],
-    sizeAvailable: [
-      {
-        type: String,
-        required: true,
-        enum: ["xs", "s", "m", "l", "xl", "xxl"],
-      },
-    ],
+    forRent: {
+      type: Boolean,
+      require: true,
+    },
+    forSell: {
+      type: Boolean,
+      require: true,
+    },
+    sizeAvailable: sizeSchema,
   },
   { timestamps: true }
 );

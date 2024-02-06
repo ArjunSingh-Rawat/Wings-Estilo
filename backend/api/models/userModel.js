@@ -56,10 +56,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.path("addresses").validate(function (value) {
-  return value.length <= 10;
-}, "You can only have up to 10 addresses.");
-
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {

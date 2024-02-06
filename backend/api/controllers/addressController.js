@@ -20,6 +20,16 @@ async function addNewAddress(req, res) {
     district = data.district;
     state = data.state;
 
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    if (user.addresses.length + 1 > 6) {
+      throw new Error("Cannot add addresses more than 6");
+    }
+
     const address = await Address.create({
       name,
       phoneNumber,
@@ -34,15 +44,9 @@ async function addNewAddress(req, res) {
       throw new Error("Error in adding new address");
     }
 
-    await User.findOneAndUpdate(
-      { _id: userId },
-      {
-        $addToSet: {
-          addresses: address._id,
-        },
-      },
-      { new: true }
-    );
+    user.addresses.push(address);
+    await user.save();
+
     res.status(200).json({
       success: true,
       message: "successfully added new address",

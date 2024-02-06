@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.post("/", upload.array("file", 10), addNewProduct);
 
-router.put("/:id", updateProduct);
+router.put("/:id", upload.array("file", 10), updateProduct);
 
 router.delete("/:id", deleteProduct);
 
