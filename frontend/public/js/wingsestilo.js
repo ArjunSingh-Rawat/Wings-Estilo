@@ -32,20 +32,3 @@ async function refreshAccessToken() {
   });
   return res.ok;
 }
-
-function parseCookies() {
-  var cookies = document.cookie.split(";");
-  var cookieObject = {};
-
-  cookies.forEach(function (cookie) {
-    var parts = cookie.split("=");
-    var key = parts[0].trim();
-    var value = parts[1];
-
-    value = decodeURIComponent(value);
-
-    cookieObject[key] = value;
-  });
-
-  return cookieObject;
-}

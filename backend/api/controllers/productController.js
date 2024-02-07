@@ -19,22 +19,28 @@ async function addNewProduct(req, res) {
     let categories = [req.body.category];
     if (req.body.subCategory) categories.push(req.body.subCategory);
 
-    const { xs, s, m, l, xl, xxl, countInStock } = req.body;
+    const { xs, s, m, l, xl, xxl } = req.body;
+    const countInStock = +xs + +s + +m + +l + +xl + +xxl;
 
-    if (+countInStock !== +xs + +s + +m + +l + +xl + +xxl) {
-      throw new Error("Stock not matching with total quantity of sizes!");
+    if (
+      !["true", "false"].includes(req.body.forSell) ||
+      !["true", "false"].includes(req.body.forRent)
+    ) {
+      throw new Error("forSell and forRent value should be true/false");
     }
 
     let product = new Product({
       name: req.body.name,
       shortDescription: req.body.shortDescription,
       description: req.body.description,
-      sellPrice: req.body.sellPrice,
-      rentPrice: req.body.rentPrice,
+      forSell: req.body.forSell,
+      forRent: req.body.forRent,
+      sellPrice: req.body.forSell === "true" ? req.body.sellPrice : 0,
+      rentPrice: req.body.forRent === "true" ? req.body.rentPrice : 0,
       image: imageObj.images[0],
       images: imageObj.images.splice(1),
       category: categories,
-      countInStock: req.body.countInStock,
+      countInStock: countInStock,
       sizeAvailable: {
         xs: req.body.xs,
         s: req.body.s,
@@ -142,6 +148,8 @@ async function updateProduct(req, res) {
     if (!product) {
       throw new Error("Product not found!");
     }
+
+    let imageObj = "";
     if (req.files.length) {
       const { deletedMainImage, deletedSmallImages } = await deleteImages(
         product.category,
@@ -154,33 +162,29 @@ async function updateProduct(req, res) {
       product.images = product.images.filter(
         (image) => !deletedSmallImages.includes(image)
       );
-    }
 
-    const imageObj = await addImage(
-      req.files,
-      req.body.category,
-      req.body.name,
-      req.body.indexes
-    );
+      imageObj = await addImage(
+        req.files,
+        req.body.category,
+        req.body.name,
+        req.body.indexes
+      );
 
-    function compareImageNames(a, b) {
-      const regex = /(\d+)\./;
-      const numA = parseInt(a.match(regex)[1]);
-      const numB = parseInt(b.match(regex)[1]);
-      return numA - numB;
-    }
+      function compareImageNames(a, b) {
+        const regex = /(\d+)\./;
+        const numA = parseInt(a.match(regex)[1]);
+        const numB = parseInt(b.match(regex)[1]);
+        return numA - numB;
+      }
 
-    if (req.body.indexes[0] === "0") {
-      console.log("inside if", req.body.indexes);
-      product.image = imageObj.images[0];
-      product.images = [...product.images, ...imageObj.images.splice(1)];
-      product.images.sort(compareImageNames);
-      console.log("product images after sort", product.images);
-    } else {
-      console.log("inside else");
-      product.images = [...product.images, ...imageObj.images];
-      product.images.sort(compareImageNames);
-      console.log("product images after sort", product.images);
+      if (req.body.indexes[0] === "0") {
+        product.image = imageObj.images[0];
+        product.images = [...product.images, ...imageObj.images.splice(1)];
+        product.images.sort(compareImageNames);
+      } else {
+        product.images = [...product.images, ...imageObj.images];
+        product.images.sort(compareImageNames);
+      }
     }
 
     for (const field in fieldsToUpdate) {
@@ -244,7 +248,6 @@ async function deleteImages(categories, image, images, indexes) {
     const deletedMainImage = "";
 
     if (indexes) {
-      console.log("delete by index \n*** allImages:", allImages);
       for (const image of allImages) {
         const imageName = image.split("/").pop();
         const imageIndex = imageName.split("-").pop().split(".")[0];
@@ -262,7 +265,6 @@ async function deleteImages(categories, image, images, indexes) {
     }
 
     if (fs.existsSync(folderPath)) {
-      console.log("delete all", image, images, "indexes:", indexes);
       if (image) {
         const imagePath = folderPath + "\\" + image.split("/").pop();
         fs.unlinkSync(imagePath);

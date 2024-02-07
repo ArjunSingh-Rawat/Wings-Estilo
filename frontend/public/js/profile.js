@@ -15,36 +15,8 @@ async function asyncHandler() {
     userData.addressInfo[address._id] = address;
   }
 
-  handleMyProfile(userInfo);
-
-  document.querySelector(".profile-nav").addEventListener("click", (event) => {
-    if (
-      event.target.id === "profile-section" ||
-      event.target.parentElement.id === "profile-section"
-    ) {
-      toggleClass("profile-section", previousNav);
-      previousNav = "profile-section";
-    } else if (
-      event.target.id === "orders-section" ||
-      event.target.parentElement.id === "orders-section"
-    ) {
-      toggleClass("orders-section", previousNav);
-      previousNav = "orders-section";
-    } else if (
-      event.target.id === "addresses-section" ||
-      event.target.parentElement.id === "addresses-section"
-    ) {
-      toggleClass("addresses-section", previousNav);
-      previousNav = "addresses-section";
-      handleAddresses();
-    }
-  });
-}
-
-asyncHandler();
-
-function handleMyProfile(userData) {
-  renderUserInfo(userData);
+  /* --------- profile handler ----------- */
+  renderUserInfo(userInfo);
 
   const personalInfoDiv = document.querySelector(".personal-info");
   document
@@ -89,9 +61,32 @@ function handleMyProfile(userData) {
         window.location.href = "/profile";
       }
     });
-}
 
-function handleAddresses() {
+  /* -------------------------------- */
+
+  document.querySelector(".profile-nav").addEventListener("click", (event) => {
+    if (
+      event.target.id === "profile-section" ||
+      event.target.parentElement.id === "profile-section"
+    ) {
+      toggleClass("profile-section", previousNav);
+      previousNav = "profile-section";
+    } else if (
+      event.target.id === "orders-section" ||
+      event.target.parentElement.id === "orders-section"
+    ) {
+      toggleClass("orders-section", previousNav);
+      previousNav = "orders-section";
+    } else if (
+      event.target.id === "addresses-section" ||
+      event.target.parentElement.id === "addresses-section"
+    ) {
+      toggleClass("addresses-section", previousNav);
+      previousNav = "addresses-section";
+    }
+  });
+
+  // address Handler
   let edit = false;
   let addressId = "";
   const myAddressesSection = document.querySelector(".my-addresses-section");
@@ -106,7 +101,6 @@ function handleAddresses() {
   });
 
   function renderAddressInfo(addressData) {
-    console.log(addressData, "comminggggg");
     const addressDiv = document.querySelector(".address-div");
     addressDiv.innerHTML = "";
 
@@ -183,7 +177,6 @@ function handleAddresses() {
         );
 
         const cityTownData = await cityTownsRequest.json();
-        console.log(cityTownData);
         if (cityTownData[0].Status !== "Error") {
           district = cityTownData[0].PostOffice[0].District;
           state = cityTownData[0].PostOffice[0].State;
@@ -237,6 +230,8 @@ function handleAddresses() {
       addressForm.reset();
     });
 }
+
+asyncHandler();
 
 function toggleClass(currentDiv, previousDiv) {
   if (currentDiv !== previousDiv) {
