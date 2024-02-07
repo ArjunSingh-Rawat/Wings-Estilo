@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const { categoryNames, categories, publicPages } = require("../constants");
+const { sellCategories, rentCategories, publicPages } = require("../constants");
 const Product = require("../api/models/productModel");
 const {
   verifyTokenForStaticRoute,
@@ -22,6 +22,49 @@ router.get("/profile", verifyTokenForStaticRoute, (req, res) => {
   }
 });
 
+router.get("/sell/:path", (req, res, next) => {
+  if (sellCategories.includes(req.params.path)) {
+    const categoryName = req.params.path.split("-").join(" ").toUpperCase();
+
+    res.render("pages/product", {
+      categoryName: categoryName,
+    });
+  } else {
+    next();
+  }
+});
+
+router.get("/rent/:path", (req, res, next) => {
+  if (rentCategories.includes(req.params.path)) {
+    const categoryName = req.params.path.split("-").join(" ").toUpperCase();
+    res.render("pages/product", {
+      categoryName: categoryName,
+    });
+  } else {
+    next();
+  }
+});
+
+router.get("/:name/:id/buy", async (req, res, next) => {
+  try {
+    const product = await Product.findOne({
+      _id: req.params.id,
+    });
+    const { _id, name, price, description, image, images } = product;
+
+    res.render("pages/buy", {
+      _id,
+      name,
+      price,
+      description,
+      image,
+      images,
+    });
+  } catch (error) {
+    next();
+  }
+});
+
 router.get("/admin", (req, res) => {
   res.render("pages/admin/admin");
 });
@@ -36,39 +79,6 @@ router.get("/admin.js", (req, res) => {
   res.sendFile(
     path.join(__dirname, "../../frontend/views/pages/admin/", "admin.js")
   );
-});
-
-router.get("/:path", (req, res, next) => {
-  const categoryName = categoryNames[req.params.path];
-
-  if (categories.includes(req.path.split("/")[1])) {
-    res.render("pages/product", {
-      categoryName: categoryName,
-    });
-  } else {
-    next();
-  }
-});
-
-router.get("/:name/:id/buy", async (req, res) => {
-  try {
-    const product = await Product.findOne({
-      _id: req.params.id,
-    });
-
-    const { _id, name, price, description, image, images } = product;
-
-    res.render("pages/buy", {
-      _id,
-      name,
-      price,
-      description,
-      image,
-      images,
-    });
-  } catch (error) {
-    console.log(error.message);
-  }
 });
 
 module.exports = router;

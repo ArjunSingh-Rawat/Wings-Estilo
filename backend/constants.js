@@ -1,22 +1,31 @@
-const categories = [
+const sellCategories = [
   "gowns",
-  "kids",
   "maternity-gowns",
-  "sarees",
+  "pre-wedding-gowns",
+  "engagement-gowns",
+  "party-wear-gowns",
   "dresses",
-  "lehengas",
+  "short-dresses",
+  "party-wear-dresses",
   "accessories",
+  "tiara",
+  "cancan-skirt",
 ];
 
-let categoryNames = {
-  gowns: "GOWNS",
-  kids: "KIDS DRESSES",
-  sarees: "SAREES",
-  dresses: "DRESSES",
-  lehengas: "LEHENGAS",
-  "maternity-gowns": "MATERNITY GOWNS",
-  accessories: "ACCESSORIES",
-};
+const rentCategories = [
+  "gowns",
+  "maternity-gowns",
+  "pre-wedding-gowns",
+  "engagement-gowns",
+  "party-wear-gowns",
+  "dresses",
+  "short-dresses",
+  "party-wear-dresses",
+  "lehenga",
+  "accessories",
+  "sarees",
+  "tiara",
+];
 
 const publicPages = {
   "/": "homepage",
@@ -68,8 +77,8 @@ const stateNames = [
 ];
 
 module.exports = {
-  categories,
-  categoryNames,
+  sellCategories,
+  rentCategories,
   publicPages,
   stateNames,
 };
