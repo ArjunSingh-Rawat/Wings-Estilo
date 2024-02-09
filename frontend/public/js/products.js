@@ -1,41 +1,48 @@
 const contentBox = document.querySelector(".dress-grid");
 
-let path = window.location.href.split("/");
-path = path[path.length - 1];
+const path = window.location.href.split("/");
+const categoryName = path.pop();
+const rentOrSell = path.pop();
 
-renderProducts(path);
+renderProducts(categoryName);
 
 async function renderProducts(categoryName) {
   const products = await getProducts(categoryName);
   const wishList = await getWishlistItems();
+  document.querySelector(".total-products").innerText = products
+    ? `${products.length} Products`
+    : "0 Products";
 
-  products.forEach((product) => {
-    let productInWishlist = false;
-    if (wishList) {
-      for (const item of wishList) {
-        if (product._id === item._id) {
-          productInWishlist = true;
-          break;
+  if (products) {
+    products.forEach((product) => {
+      let productInWishlist = false;
+      if (wishList) {
+        for (const item of wishList) {
+          if (product._id === item._id) {
+            productInWishlist = true;
+            break;
+          }
         }
       }
-    }
-    createProductHtml(product, productInWishlist);
-  });
+      createProductHtml(product, productInWishlist);
+    });
+  }
 }
 
 function createProductHtml(product, productInWishlist) {
   const classOfHeart = productInWishlist ? "bxs-heart" : "bx-heart";
   const productName = product.name.replace(/ /g, "-");
 
+  const price = rentOrSell === "sell" ? product.sellPrice : product.rentPrice;
   const productHtml = `
       <div class="item">
-        <a class="item-img" href="/${productName}/${product._id}/buy" target = "_blank">
+        <a class="item-img" href="/${rentOrSell}/${productName}/${product._id}/buy" target = "_blank">
           <img src="${product.image}" alt="" />
         </a>
         <div class="item-info">
             <div class="name-price">
               <a class="name" href="/${productName}/${product._id}/buy" target = "_blank">${product.name}</a>
-              <p class="price">&#8377;<span>${product.price}</p>
+              <p class="price">&#8377;<span>${price}</p>
             </div>
 
             <div class="add">

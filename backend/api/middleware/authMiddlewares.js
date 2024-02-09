@@ -62,9 +62,10 @@ async function setUserInLocalsIfLoggedIn(req, res, next) {
       else userId = userData.userid;
     });
 
-    let user = await User.findOne({ _id: userId }).select("firstName");
+    let user = await User.findOne({ _id: userId }).select("-refreshToken");
     if (user) {
       res.locals.user = user.firstName;
+      req.userData = user;
     } else {
       res.locals.user = null;
     }

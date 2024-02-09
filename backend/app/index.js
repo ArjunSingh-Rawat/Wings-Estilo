@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const { sellCategories, rentCategories, publicPages } = require("../constants");
 const Product = require("../api/models/productModel");
+const User = require("../api/models/userModel");
 const {
   verifyTokenForStaticRoute,
 } = require("../api/middleware/authMiddlewares");
@@ -45,20 +46,34 @@ router.get("/rent/:path", (req, res, next) => {
   }
 });
 
-router.get("/:name/:id/buy", async (req, res, next) => {
+router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
   try {
+    let isProductInWishlist = false;
+    if (req.userData) {
+      for (const item of req.userData.wishList) {
+        if (item.toString() === req.params.id) {
+          isProductInWishlist = true;
+        }
+      }
+    }
     const product = await Product.findOne({
       _id: req.params.id,
     });
-    const { _id, name, price, description, image, images } = product;
 
+    if (!["sell", "rent"].includes(req.params.rentOrSell)) {
+      throw new Error("type sell or rent not provided");
+    }
     res.render("pages/buy", {
-      _id,
-      name,
-      price,
-      description,
-      image,
-      images,
+      _id: product._id,
+      name: product.name,
+      sellPrice: product.sellPrice,
+      rentPrice: product.rentPrice,
+      shortDescription: product.shortDescription,
+      description: product.description,
+      image: product.image,
+      images: product.images,
+      isProductInWishlist,
+      rentOrSell: req.params.rentOrSell,
     });
   } catch (error) {
     next();

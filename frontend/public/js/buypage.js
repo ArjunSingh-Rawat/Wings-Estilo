@@ -1,32 +1,105 @@
-const mainProdctImage = document.querySelector("#productImg");
-const moreImagesDiv = document.querySelector(".more-img");
+const descriptionDiv = document.querySelector("#description");
+renderDescription(descriptionDiv.children[0].innerText, descriptionDiv);
 
-moreImagesDiv.addEventListener("click", (event) => {
-  if (event.target.classList.contains("smallImg")) {
-    const imageSrc = event.target.src;
-    mainProdctImage.src = imageSrc;
-  }
-});
-
-document.querySelector(".btns").addEventListener("click", async (event) => {
-  const element = event.target;
-  const productId = element.parentNode.dataset.productId;
-
-  if (element.id === "add-to-wishlist") {
-    const res = await addToWishlist(productId);
-    if (!res) {
-      window.location.href = "/login";
+function renderDescription(des, parentDiv) {
+  parentDiv.innerHTML = "";
+  const arr = des.split("**");
+  arr.forEach((s) => {
+    if (s[0] === "*") {
+      const b = document.createElement("strong");
+      b.innerText = s.split("*").join("");
+      parentDiv.appendChild(b);
     } else {
-      window.open("/my-wishlist", "_blank");
+      const p = document.createElement("p");
+      p.innerText = s;
+      parentDiv.appendChild(p);
     }
-  } else if (element.id === "add-to-bag") {
-    const res = await addToBag(productId);
+  });
+}
+
+/*--------- sizes selection -----------*/
+let sizeSelected = "";
+const sizesDiv = document.querySelector(".sizes");
+let previousSizeSelected = "";
+sizesDiv.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    if (previousSizeSelected) {
+      previousSizeSelected.classList.remove("selected");
+    }
+
+    if (
+      previousSizeSelected &&
+      previousSizeSelected.innerText === event.target.innerText
+    ) {
+      sizeSelected = "";
+      previousSizeSelected = "";
+      event.target.classList.remove("selected");
+    } else {
+      event.target.classList.add("selected");
+      sizeSelected = event.target.innerText;
+      previousSizeSelected = event.target;
+    }
   }
 });
 
+/*---------- add to cart or wishlist and buy ----------*/
+const bagWishlistBuyDiv = document.querySelector(".add-button");
+const heart = document.querySelector(".heart");
+const productId = bagWishlistBuyDiv.dataset.productId;
+
+bagWishlistBuyDiv.addEventListener("click", async (event) => {
+  if (
+    event.target.classList.contains("wishlist-btn") ||
+    event.target.parentElement.classList.contains("wishlist-btn")
+  ) {
+    if (heart.classList.contains("bx-heart")) {
+      if (await addToWishlist(productId)) {
+        changeHeartClass("bxs-heart", "bx-heart", heart);
+        heartTransform(heart);
+      }
+    } else {
+      if (await removeFromWishlist(productId)) {
+        changeHeartClass("bx-heart", "bxs-heart", heart);
+        heartTransform(heart);
+      }
+    }
+  } else if (event.target.classList.contains("add-to-bag-btn")) {
+    if (await addToBag(productId)) {
+      window.location.href = "/my-bag";
+    }
+  }
+});
+
+function heartTransform(heart) {
+  heart.style.transform = "scale(2,2)";
+
+  setTimeout(() => {
+    heart.style.transform = "";
+  }, 300);
+}
+
+function changeHeartClass(addCls, removeCls, heart) {
+  heart.classList.add(addCls);
+  heart.classList.remove(removeCls);
+}
+
+/*----------- fetch data ---------------*/
 async function addToWishlist(productId) {
   const res = await fetch("/api/wishlist", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      productId,
+    }),
+  });
+  return res.ok ? true : false;
+}
+
+async function removeFromWishlist(productId) {
+  const res = await fetch("/api/wishlist", {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },

@@ -33,8 +33,13 @@
       <div class="product-info">
         <p class="brand-name">Wings Estilo</p>
         <h1 class="product-name"><%= name %></h1>
-        <p class="product-short-description">Dress short description</p>
-        <p class="product-price">Rs. <%= price %></p>
+        <p class="product-short-description"><%= shortDescription %></p>
+        <p class="product-price">Rs. <% if (rentOrSell === 'sell') { %>
+            <%= sellPrice %>
+          <% } else { %>
+            <%= rentPrice %>
+          <% } %>
+      </p>
 
         <div class="product-size-div">
           <div class="size-chart">
@@ -44,7 +49,8 @@
 
           <div class="sizes">
             <ul>
-              <li class="selected">S</li>
+              <li>XS</li>
+              <li>S</li>
               <li>M</li>
               <li>L</li>
               <li>XL</li>
@@ -52,22 +58,29 @@
             </ul>
           </div>
         </div>
-
-        <div class="add-button">
+        <div class="add-button" data-product-id="<%= _id %>">
           <button class="wishlist-btn">
-            <i class="bx bx-heart"></i>
+            <% if(isProductInWishlist){ %>
+              <i class="heart bx bxs-heart"></i>
+              <% } else { %>
+                <i class="heart bx bx-heart"></i>
+            <% } %>
           </button>
-          <button class="add-to-cart-btn">ADD TO CART</button>
-          <button class="buy-now-btn">BUY NOW</button>
+          <% if (rentOrSell === 'sell') { %>
+            <button class="add-to-bag-btn">ADD TO BAG</button>
+          <% } %>
+          <% if (rentOrSell === 'sell') { %>
+            <button class="buy-now-btn">BUY NOW</button>
+            <% } else { %>
+              <button class="rent-now-btn">RENT NOW</button>
+          <% } %>
         </div>
 
         <div class="product-detail">
           
           <button class="accordion">DESCRIPTION</button>
-            <div class="panel">
-                <p>
-                  <%= description %>
-                </p>
+            <div class="panel" id="description">
+                <p><%= description %></p>
             </div>
 
           <button class="accordion">WASH CARE</button>
@@ -178,7 +191,7 @@
               }
           });
       }
-  </script>
+    </script>
   
     <script src="/js/buypage.js"></script>
   </body>

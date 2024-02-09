@@ -48,7 +48,7 @@ function renderBagPage(items) {
   let i = 0;
   for (const item of items) {
     const { product, quantity } = item;
-    const { name, image, price, isOnRent, _id } = product;
+    const { name, image, sellPrice, _id } = product;
 
     let html = `
     <div id="item${i}" class="item" data-product-Id = "${_id}">
@@ -57,7 +57,7 @@ function renderBagPage(items) {
             </div>
             <div class="item-details">
               <p class="item-name">${name}</p>
-              <p class="item-price">Rs.${price * quantity}</p>
+              <p class="item-price">Rs.${sellPrice * quantity}</p>
               <div class="item-buttons" data-item-Id = "item${i}">
                 <div class="quantity-button">
                   <button class="q-minus">-</button>
@@ -110,7 +110,7 @@ async function updateItemsQuantity(items) {
 async function updateProductDetails(item, productId) {
   const productData = await getItemDetails(productId);
 
-  const price = productData.product.price;
+  const price = productData.product.sellPrice;
   const quantity = productData.quantity;
 
   item.querySelector(".q-number").innerText = quantity;

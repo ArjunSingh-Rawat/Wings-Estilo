@@ -35,17 +35,17 @@ async function addProduct(req, res) {
       });
     }
 
-    bag.totalAmount += product.price;
+    bag.totalAmount += product.sellPrice;
     bag = await bag.save();
 
     res.status(202).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       newItem: bag,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -83,10 +83,10 @@ async function incrementOrDecrementProduct(req, res) {
           throw new Error("cannot add more than stock");
         }
         bag.items[itemIndex].quantity += 1;
-        bag.totalAmount += product.price;
+        bag.totalAmount += product.sellPrice;
       } else {
         bag.items[itemIndex].quantity -= 1;
-        bag.totalAmount -= product.price;
+        bag.totalAmount -= product.sellPrice;
       }
     } else {
       throw new Error("Product not added in Bag yet!!");
@@ -95,13 +95,13 @@ async function incrementOrDecrementProduct(req, res) {
     bag = await bag.save();
 
     res.status(202).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       newItem: bag,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -127,20 +127,20 @@ async function removeFromBag(req, res) {
       item.product.equals(productId)
     ).quantity;
 
-    bag.totalAmount -= product.price * itemQuantity;
+    bag.totalAmount -= product.sellPrice * itemQuantity;
 
     bag.items.pull({ product: productId });
 
     bag = await bag.save({ new: true });
 
     res.status(202).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       newItem: bag,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -156,7 +156,7 @@ async function getProduct(req, res) {
       "items.product": productId,
     }).populate({
       path: "items.product",
-      select: "name price image isOnRent countInStock",
+      select: "name sellPrice image countInStock",
     });
 
     if (!bag) {
@@ -166,13 +166,13 @@ async function getProduct(req, res) {
     const item = bag.items.find((item) => item.product.equals(productId));
 
     res.status(202).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       item,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -186,7 +186,7 @@ async function getProducts(req, res) {
       user: userId,
     }).populate({
       path: "items.product",
-      select: "name price image isOnRent countInStock",
+      select: "name sellPrice image countInStock",
     });
 
     if (!data || !data.items.length) {
@@ -194,13 +194,13 @@ async function getProducts(req, res) {
     }
 
     res.status(202).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       data,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -219,13 +219,13 @@ async function getTotalAmount(req, res) {
     }
 
     res.status(202).json({
-      succsess: true,
+      success: true,
       message: "Success!",
       totalAmount: bag.totalAmount,
     });
   } catch (error) {
     res.status(500).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }

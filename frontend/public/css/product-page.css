@@ -145,16 +145,18 @@
 .wishlist-btn .bx {
   font-size: 20px;
   color: #ff8080;
+  transition: 0.4s;
 }
 
-.add-to-cart-btn {
+.add-to-bag-btn {
   border: 1px solid #ff8080;
   padding: 10px 50px;
   background-color: #ff8080;
   color: white;
 }
 
-.buy-now-btn {
+.buy-now-btn,
+.rent-now-btn {
   border: 1px solid #ff8080;
   padding: 10px 50px;
   background-color: white;
@@ -199,9 +201,14 @@
   transition: max-height 0.2s ease-out;
 }
 
+#description * {
+  display: inline;
+}
+
 .panel p {
   font-size: 14px;
   padding: 20px 0;
+  white-space: pre;
 }
 
 .accordion:after {
