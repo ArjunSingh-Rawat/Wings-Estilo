@@ -1,12 +1,17 @@
-// toggle profile sections
+const profileNav = document.querySelector(".profile-nav");
 
 const userData = {
   addressInfo: {},
   orderInfo: [],
 };
 
-let previousNav = "profile-section";
-let previousSection = "my-profile-section";
+const sectionToShow = urlParams.get("section");
+console.log(sectionToShow, "section to show");
+if (sectionToShow) {
+  toggleClass(sectionToShow + "-section");
+} else {
+  toggleClass("profile-section");
+}
 
 async function asyncHandler() {
   const userInfo = await getUserInfo();
@@ -14,6 +19,26 @@ async function asyncHandler() {
   for (const address of userInfo.addresses) {
     userData.addressInfo[address._id] = address;
   }
+
+  /*-------------- Toggle sections ----------------*/
+  profileNav.addEventListener("click", (event) => {
+    if (
+      event.target.id === "profile-section" ||
+      event.target.parentElement.id === "profile-section"
+    ) {
+      toggleClass("profile-section");
+    } else if (
+      event.target.id === "orders-section" ||
+      event.target.parentElement.id === "orders-section"
+    ) {
+      toggleClass("orders-section");
+    } else if (
+      event.target.id === "addresses-section" ||
+      event.target.parentElement.id === "addresses-section"
+    ) {
+      toggleClass("addresses-section");
+    }
+  });
 
   /* --------- profile handler ----------- */
   renderUserInfo(userInfo);
@@ -62,31 +87,7 @@ async function asyncHandler() {
       }
     });
 
-  /* -------------------------------- */
-
-  document.querySelector(".profile-nav").addEventListener("click", (event) => {
-    if (
-      event.target.id === "profile-section" ||
-      event.target.parentElement.id === "profile-section"
-    ) {
-      toggleClass("profile-section", previousNav);
-      previousNav = "profile-section";
-    } else if (
-      event.target.id === "orders-section" ||
-      event.target.parentElement.id === "orders-section"
-    ) {
-      toggleClass("orders-section", previousNav);
-      previousNav = "orders-section";
-    } else if (
-      event.target.id === "addresses-section" ||
-      event.target.parentElement.id === "addresses-section"
-    ) {
-      toggleClass("addresses-section", previousNav);
-      previousNav = "addresses-section";
-    }
-  });
-
-  // address Handler
+  /* ---------------- address Handler ---------------- */
   let edit = false;
   let addressId = "";
   const myAddressesSection = document.querySelector(".my-addresses-section");
@@ -233,24 +234,15 @@ async function asyncHandler() {
 
 asyncHandler();
 
-function toggleClass(currentDiv, previousDiv) {
-  if (currentDiv !== previousDiv) {
-    document
-      .querySelector(`#${currentDiv}`)
-      .classList.toggle("nav-active", true);
-    if (previousDiv !== "") {
-      document
-        .querySelector(`#${previousDiv}`)
-        .classList.toggle("nav-active", false);
-    } else {
-      document
-        .querySelector(`#profile-section  `)
-        .classList.toggle("nav-active", false);
-    }
-
-    document.querySelector(`.my-${currentDiv}`).style.display = "flex";
-    document.querySelector(`.my-${previousDiv}`).style.display = "none";
+function toggleClass(currentDiv) {
+  const sections = profileNav.children;
+  for (const section of sections) {
+    console.log(section);
+    section.classList.remove("nav-active");
+    document.querySelector(`.my-${section.id}`).style.display = "none";
   }
+  profileNav.querySelector(`#${currentDiv}`).classList.add("nav-active");
+  document.querySelector(`.my-${currentDiv}`).style.display = "flex";
 }
 
 function renderUserInfo(userData) {

@@ -1,5 +1,5 @@
 const emptyBagPage = document.querySelector(".wishlist-section");
-const bagPage = document.querySelector(".whishlist-item-section");
+const bagPage = document.querySelector(".wishlist-item-section");
 const itemsDiv = document.querySelector(".wishlist-items");
 
 async function loadBagPage() {
@@ -41,7 +41,7 @@ wishlistItemsDiv.addEventListener("click", async (event) => {
 function renderBagPage(items) {
   let i = 0;
   for (const item of items) {
-    const { name, image, price, _id } = item;
+    const { name, image, sellPrice, _id } = item;
 
     let html = `
     <div id="item${i}" class="item-box" data-product-id="${_id}">
@@ -51,7 +51,9 @@ function renderBagPage(items) {
       </div>
       <div class="img-info">
         <p class="item-name">${name}</p>
-        <p class="item-price">Rs.${price} <del>Rs.${price + 500}</del></p>
+        <p class="item-price">Rs.${sellPrice} <del>Rs.${
+          sellPrice + 500
+        }</del></p>
         <button class="move-btn" data-item-id="item${i}">Move to bag</button>
       </div>
     </div>`;
