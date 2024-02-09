@@ -79,12 +79,6 @@ const submitForm = document.querySelector("#product-info-form");
 submitForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const descriptionElement = document.querySelector("#main-description");
-  let description = descriptionElement.value;
-
-  description = description.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
-  descriptionElement.value = description;
-
   const productData = new FormData(submitForm);
 
   if (!productData.get("forSell")) {

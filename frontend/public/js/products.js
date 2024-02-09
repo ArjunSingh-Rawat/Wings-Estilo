@@ -34,6 +34,8 @@ function createProductHtml(product, productInWishlist) {
   const productName = product.name.replace(/ /g, "-");
 
   const price = rentOrSell === "sell" ? product.sellPrice : product.rentPrice;
+  const priceSuffix = rentOrSell === "rent" ? "/day" : "";
+
   const productHtml = `
       <div class="item">
         <a class="item-img" href="/${rentOrSell}/${productName}/${product._id}/buy" target = "_blank">
@@ -42,7 +44,7 @@ function createProductHtml(product, productInWishlist) {
         <div class="item-info">
             <div class="name-price">
               <a class="name" href="/${productName}/${product._id}/buy" target = "_blank">${product.name}</a>
-              <p class="price">&#8377;<span>${price}</p>
+              <p class="price">&#8377;<span>${price}<span>${priceSuffix}</span></p>
             </div>
 
             <div class="add">
@@ -66,6 +68,8 @@ document
         if (await addToWishlist(productId)) {
           changeHeartClass("bxs-heart", "bx-heart", heart);
           heartTransform(heart);
+        } else {
+          getAlertPopup("Please login to perform this task!");
         }
       } else {
         if (await removeFromWishlist(productId)) {

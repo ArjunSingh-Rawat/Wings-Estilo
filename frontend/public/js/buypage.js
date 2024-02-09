@@ -56,6 +56,8 @@ bagWishlistBuyDiv.addEventListener("click", async (event) => {
       if (await addToWishlist(productId)) {
         changeHeartClass("bxs-heart", "bx-heart", heart);
         heartTransform(heart);
+      } else {
+        getAlertPopup("Please login to perform this task!");
       }
     } else {
       if (await removeFromWishlist(productId)) {
@@ -64,8 +66,11 @@ bagWishlistBuyDiv.addEventListener("click", async (event) => {
       }
     }
   } else if (event.target.classList.contains("add-to-bag-btn")) {
-    if (await addToBag(productId)) {
+    const message = await addToBag(productId);
+    if (message === true) {
       window.location.href = "/my-bag";
+    } else {
+      getAlertPopup(message);
     }
   }
 });
@@ -120,5 +125,10 @@ async function addToBag(productId) {
       productId,
     }),
   });
-  return res.ok ? true : false;
+  if (res.ok) {
+    return true;
+  } else {
+    const error = await res.json();
+    return error.message;
+  }
 }
