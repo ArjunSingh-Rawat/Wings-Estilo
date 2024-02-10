@@ -10,7 +10,7 @@
 }
 
 .popup .content {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
@@ -100,19 +100,17 @@
 .alert-popup {
   position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 20px;
-  border-radius: 8px;
-  background-color: aqua;
-  color: black;
-  transition: opacity 0.3s ease-in-out;
+  right: 20px;
+  padding: 15px 30px;
+  background-color: #ff8080;
+  transition: opacity 0.2s ease-in-out;
+  color: white;
 }
 
 .alert-popup.hidden {
-  opacity: 0;
+  display: none;
 }
 
 .alert-message {
-  color: black;
+  font-size: 18px;
 }
