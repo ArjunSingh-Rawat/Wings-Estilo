@@ -65,6 +65,59 @@ label {
 .file {
   border: 1px solid rgba(36, 24, 24, 0.333);
 }
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.select-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+.select-wrapper::after {
+  content: "\25BC";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+label {
+  font-size: 18px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+input[type="date"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #007bff; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+}
+
 .btn {
   margin: 10px 0;
   padding: 10px 25px;
