@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const { v4: uuid } = require("uuid");
 const jwt = require("jsonwebtoken");
 
+let pageRedirectUrl = "";
+
 async function generateAccessAndRefreshTokens(userId) {
   try {
     const user = await User.findById(userId);
@@ -39,6 +41,7 @@ async function redirectToGoogleOauth(req, res) {
       state: oauthState,
     };
 
+    pageRedirectUrl = req.query.pathName;
     const urlParams = new URLSearchParams(oauthQueryParams).toString();
 
     res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${urlParams}`);
@@ -115,18 +118,32 @@ async function signInSignUpHandler(req, res) {
       secure: true,
       maxAge: 1000 * 60 * 60,
     };
+    pageRedirectUrl = redirectUrlSanitizer(pageRedirectUrl);
 
     res
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", refreshToken, options)
-      .redirect("/");
+      .redirect(`http://localhost:5000${pageRedirectUrl}`);
   } catch (error) {
     res.status(500).json({
       success: false,
       message: error.message,
     });
   }
+}
+
+function redirectUrlSanitizer(url) {
+  if (!url) {
+    return "";
+  }
+  if (url[0] !== "/") {
+    url = "/" + url;
+  }
+  if (url.split("/")[1] === "api") {
+    url = "/404";
+  }
+  return url;
 }
 
 async function registerUser(firstName, lastName, email) {

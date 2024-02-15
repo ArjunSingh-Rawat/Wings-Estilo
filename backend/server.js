@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const {
   setUserInLocalsIfLoggedIn,
   verifyToken,
+  authorizeAdminUser,
 } = require("./api/middleware/authMiddlewares");
 
 require("dotenv").config("./.env");
@@ -33,20 +34,18 @@ app.set("views", path.join(__dirname, "../frontend/views"));
 app.use("/", setUserInLocalsIfLoggedIn, appRouter);
 app.use("/api/user", userRouter);
 app.use("/api/user/addresses", verifyToken, addressRouter);
-app.use("/api/categories", categoryRouter);
+app.use("/api/categories", authorizeAdminUser, categoryRouter);
 app.use("/api/products", productRouter);
 app.use("/api/bag/", bagRouter);
 app.use("/api/wishlist", wishListRouter);
 
 app.use((req, res) => {
-  if (req.originalUrl.startsWith("/api")) {
-    res.status(404).json({
-      success: false,
-      message: "Cannot get what you want to search",
-    });
-  } else {
-    res.status(404).render("pages/404");
-  }
+  res.status(404).render("pages/404");
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(404).render("pages/404");
 });
 
 app.listen(PORT, () =>

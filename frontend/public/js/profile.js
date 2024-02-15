@@ -6,9 +6,12 @@ const userData = {
 };
 
 const sectionToShow = urlParams.get("section");
-console.log(sectionToShow, "section to show");
 if (sectionToShow) {
-  toggleClass(sectionToShow + "-section");
+  if (["profile", "orders", "addresses"].includes(sectionToShow)) {
+    toggleClass(sectionToShow + "-section");
+  } else {
+    toggleClass("profile-section");
+  }
 } else {
   toggleClass("profile-section");
 }
@@ -237,7 +240,6 @@ asyncHandler();
 function toggleClass(currentDiv) {
   const sections = profileNav.children;
   for (const section of sections) {
-    console.log(section);
     section.classList.remove("nav-active");
     document.querySelector(`.my-${section.id}`).style.display = "none";
   }

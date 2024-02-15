@@ -5,6 +5,7 @@ const Product = require("../api/models/productModel");
 const User = require("../api/models/userModel");
 const {
   verifyTokenForStaticRoute,
+  authorizeAdminUser,
 } = require("../api/middleware/authMiddlewares");
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.get("/profile", verifyTokenForStaticRoute, (req, res) => {
   if (req.error) {
     res.redirect("/?logged=n");
   } else {
+    res.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
     res.render("pages/profile");
   }
 });
@@ -80,17 +82,17 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
   }
 });
 
-router.get("/admin", (req, res) => {
+router.get("/admin", authorizeAdminUser, (req, res) => {
   res.render("pages/admin/admin");
 });
 
-router.get("/admin.css", (req, res) => {
+router.get("/admin.css", authorizeAdminUser, (req, res) => {
   res.sendFile(
     path.join(__dirname, "../../frontend/views/pages/admin/", "admin.css")
   );
 });
 
-router.get("/admin.js", (req, res) => {
+router.get("/admin.js", authorizeAdminUser, (req, res) => {
   res.sendFile(
     path.join(__dirname, "../../frontend/views/pages/admin/", "admin.js")
   );
