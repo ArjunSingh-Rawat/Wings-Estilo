@@ -1,6 +1,9 @@
 const User = require("../models/userModel");
 const { v4: uuid } = require("uuid");
 const jwt = require("jsonwebtoken");
+const { verifyPhoneOtp } = require("../../utils/sendAndVerifyOtp");
+const validatePhoneNumber = require("../../utils/validatePhoneNumber");
+const Otp = require("../models/otpModel");
 
 let pageRedirectUrl = "";
 
@@ -332,6 +335,36 @@ async function updateUserPersonalInfo(req, res) {
   }
 }
 
+async function updatePhoneNumber(req, res) {
+  try {
+    const { primaryOtp, otp, phoneNumber } = req.body;
+    validatePhoneNumber(phoneNumber);
+
+    const user = await User.findOne({ _id: req.user.userid });
+    if (user.phoneNumber) {
+      await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
+      await verifyPhoneOtp(otp, req.user.userid, phoneNumber, false);
+    } else {
+      await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
+    }
+
+    user.phoneNumber = phoneNumber;
+    user.isNumberVerified = true;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully added number",
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   redirectToGoogleOauth,
   signInSignUpHandler,
@@ -341,4 +374,5 @@ module.exports = {
   addToWishlist,
   getOneUser,
   updateUserPersonalInfo,
+  updatePhoneNumber,
 };
