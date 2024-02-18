@@ -1,10 +1,17 @@
 const otpGenerator = require("./otpGenerator");
 const Otp = require("../api/models/otpModel");
+const twilio = require("twilio");
 
-const client = require("twilio")(
-  process.env.TWILIO_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+let client = "";
+try {
+  client = new twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+} catch (error) {
+  console.log(
+    "****** Twilio Error ******\n",
+    "\tOTP verification will not work: twilio account id or twilio auth token is not present!!\n" +
+      "*************"
+  );
+}
 
 async function sendOtpOnNumber(
   phoneNumber,
@@ -26,6 +33,11 @@ async function sendOtpOnNumber(
         },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
+
+      if (!client) {
+        throw new Error("Cannot send OTP due to invalid credentials!");
+      }
+
       const message = `You are one step away from adding you first number\nYour verification OTP:${primaryOtp}`;
       await sendTwilioMessage(message, phoneNumber);
     } else {
@@ -41,9 +53,12 @@ async function sendOtpOnNumber(
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
 
+      if (!client) {
+        throw new Error("Cannot send OTP due to invalid credentials!");
+      }
+
       const messageForPrimaryNumber = `If you are attempting to update your mobile number\nUse code ${primaryOtp} to verify on wingsestilo.in\nValid for 2 minutes`;
       const messageForUpdateNumber = `Your are one step away from updating number\nUse code ${otp} to update mobile number\nValid for 3 minutes`;
-
       await sendTwilioMessage(messageForPrimaryNumber, primaryPhoneNumber);
       await sendTwilioMessage(messageForUpdateNumber, phoneNumber);
     }
