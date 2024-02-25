@@ -13,6 +13,9 @@ footer {
   display: flex;
   justify-content: center;
 }
+.fa-plus {
+  display: none;
+}
 
 .footer-divs div {
   margin: 0 30px;
@@ -53,4 +56,29 @@ footer li a {
 .social-links ul a .bx {
   font-size: 25px;
   color: #ff8080;
+}
+
+/* media queries */
+@media screen and (max-width: 768px) {
+  .footer-divs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .fa-plus {
+    display: block;
+    float: right;
+    color: #ff8080;
+  }
+
+  .footer-divs li a {
+    display: none;
+  }
+  .social-links ul li a {
+    display: block;
+  }
+  .social-links {
+    display: flex;
+    justify-content: space-between;
+  }
 }
