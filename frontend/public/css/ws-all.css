@@ -164,3 +164,98 @@
 }
 
 /* Media Queries */
+
+@media (max-width: 768px) {
+  /* dress-section */
+  .dress-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* filter-sidebar */
+
+  .filter-sidebar {
+    padding: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+  }
+
+  .filters {
+    background-color: white;
+    padding: 10px;
+  }
+
+  /* accordion */
+
+  .accordion {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .panel {
+    padding: 0 10px;
+  }
+
+  /* dress-title */
+
+  .dress-title {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* dress-div */
+
+  .dress-div {
+    margin-left: 0;
+  }
+
+  /* dress-grid */
+
+  .dress-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 190px);
+    justify-content: center;
+    gap: 5px;
+  }
+
+  /* dres-div */
+
+  .item {
+    width: 190px;
+  }
+
+  .item-img {
+    height: 340px;
+  }
+
+  .item-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  .name-price {
+    flex: 1;
+    padding-left: 5px;
+  }
+
+  .name {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .price {
+    font-size: 12px;
+  }
+
+  .add .bx {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+}

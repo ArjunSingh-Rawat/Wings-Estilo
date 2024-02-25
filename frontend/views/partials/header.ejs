@@ -7,8 +7,16 @@
 
   <div class="nav1">
     <div class="left-nav">
-      <a href="/contact"> <i class="bx bxs-phone"></i> Contact us</a>
-      <a href="/about-us"><i class="bx bxs-user-rectangle"></i>About us</a>
+      <div class="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
+      <div class="contact-about">
+        <a href="/contact"> <i class="bx bxs-phone"></i> Contact us</a>
+        <a href="/about-us"><i class="bx bxs-user-rectangle"></i>About us</a>
+      </div>
     </div>
 
     <div class="logo">
@@ -42,7 +50,8 @@
     <ul class="nav-links">
       <li><a id="photoshoot" href="/photoshoot">PHOTOSHOOT</a></li>
       <li class="dropdown">
-        <a id="rental-dresses" class="dropdown-link" href="/rental">
+        <!-- <a id="rental-dresses" class="dropdown-link" href="/rental"> -->
+        <a id="rental-dresses" class="dropdown-link" href="#">
           RENTAL DRESSES
           <i class="bx bx-chevron-down"></i>
         </a>
@@ -56,7 +65,8 @@
       </li>
 
       <li class="dropdown">
-        <a class="dropdown-link" href="/sell/gowns">
+        <!-- <a class="dropdown-link" href="/sell/gowns"> -->
+        <a class="dropdown-link" href="#">
           GOWNS
           <i class="bx bx-chevron-down"></i>
         </a>
@@ -69,7 +79,8 @@
       </li>
 
       <li class="dropdown">
-        <a class="dropdown-link" href="/sell/dresses">
+        <!-- <a class="dropdown-link" href="/sell/dresses"> -->
+        <a class="dropdown-link" href="#">
           DRESSES
           <i class="bx bx-chevron-down"></i>
         </a>
@@ -80,7 +91,8 @@
       </li>
       <!-- <li><a id="kids" href="#">KIDS</a></li> -->
       <li class="dropdown">
-        <a class="dropdown-link" id="accessories" href="/sell/accessories">
+        <!-- <a class="dropdown-link" id="accessories" href="/sell/accessories"> -->
+        <a class="dropdown-link" id="accessories" href="#">
           ACCESSORIES
           <i class="bx bx-chevron-down"></i>
         </a>
@@ -108,6 +120,22 @@
 
     lastScrollY = window.scrollY;
   });
+
+  // hamburger
+  const hamburger = document.querySelector(".hamburger");
+  const nav2 = document.querySelector(".nav2");
+
+  hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    nav2.classList.toggle("active");
+  });
+
+  // document.querySelectorAll(".nav-link").forEach((n) =>
+  //   n.addEventListener("click", () => {
+  //     hamburger.classList.remove("active");
+  //     nav2.classList.remove("active");
+  //   })
+  // );
 </script>
 
 <!-- signup-popup -->
