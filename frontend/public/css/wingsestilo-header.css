@@ -49,6 +49,11 @@
 .left-nav {
   justify-content: left;
 }
+
+.left-nav .contact-about {
+  display: flex;
+}
+
 .left-nav a {
   margin-right: 20px;
   font-size: 14px;
@@ -56,6 +61,7 @@
   display: flex;
   align-items: center;
   color: rgb(100, 100, 100);
+  white-space: nowrap;
 }
 .left-nav a:hover {
   border-bottom: 2px solid black;
@@ -65,6 +71,22 @@
   font-size: 18px;
   margin-right: 5px;
   color: #ff8080;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  border-radius: 3px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  background-color: #ff8080;
 }
 
 .logo {
@@ -81,6 +103,9 @@
 
 .right-nav a {
   margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .right-nav img {
@@ -198,4 +223,107 @@
   font-weight: 400;
   padding: 15px 30px;
   white-space: nowrap;
+}
+
+/* media query */
+
+@media (max-width: 768px) {
+  .top-bar {
+    padding: 5px 20px;
+  }
+
+  .nav1 {
+    padding: 0 10px;
+  }
+
+  .left-nav .contact-about {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  #logo {
+    height: 40px;
+  }
+
+  .right-nav a {
+    margin-left: 10px;
+  }
+
+  .right-nav img {
+    height: 28px;
+  }
+
+  .right-nav #profile-btn {
+    margin-left: 10px;
+  }
+
+  .login-name {
+    display: none;
+  }
+
+  /* nav2 */
+
+  .nav2 {
+    background-color: #fff6f2;
+    height: 100vh;
+    position: fixed;
+    left: -100%;
+    top: 90px;
+    bottom: 0;
+    width: 100%;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    transition: 0.3s;
+  }
+
+  .nav2.active {
+    left: 0;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .nav-links li {
+    margin: 10px;
+  }
+
+  .nav-links li a {
+    padding: 5px 10px;
+  }
+
+  .dropdown:hover .dropdown-link {
+    border-bottom: 3px solid #ff8080;
+    background-color: white;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #ff8080;
+    color: white;
+  }
+
+  .dropdown-content {
+    width: 100vw;
+    height: 100vh;
+
+    left: 100%;
+    top: 0;
+
+    box-shadow: none;
+  }
 }
