@@ -72,6 +72,14 @@ bagWishlistBuyDiv.addEventListener("click", async (event) => {
     } else {
       getAlertPopup(message);
     }
+  } else if (event.target.classList.contains("buy-now-btn")) {
+    if (!sizeSelected) {
+      getAlertPopup("Please select product size!!");
+    } else {
+      if (await initiateOrder(productId, sizeSelected)) {
+        window.location.href = "/sell/checkout";
+      }
+    }
   }
 });
 
@@ -130,5 +138,24 @@ async function addToBag(productId) {
   } else {
     const error = await res.json();
     return error.message;
+  }
+}
+
+async function initiateOrder(productId, productSize) {
+  try {
+    const res = await fetch("/api/order/initiate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId,
+        productSize,
+      }),
+    });
+
+    return res.ok ? true : false;
+  } catch (error) {
+    return false;
   }
 }
