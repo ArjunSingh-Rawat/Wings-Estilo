@@ -2,11 +2,13 @@ const express = require("express");
 const path = require("path");
 const { sellCategories, rentCategories, publicPages } = require("../constants");
 const Product = require("../api/models/productModel");
-const User = require("../api/models/userModel");
 const {
   verifyTokenForStaticRoute,
   authorizeAdminUser,
 } = require("../api/middleware/authMiddlewares");
+const {
+  getSelectedProduct,
+} = require("../api/middleware/validateProductOrder");
 
 const router = express.Router();
 
@@ -80,6 +82,13 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
   } catch (error) {
     next();
   }
+});
+
+router.get("/sell/checkout", getSelectedProduct, (req, res) => {
+  res.render("pages/checkout", {
+    product: req.product,
+    productSize: req.productSize,
+  });
 });
 
 router.get("/admin", authorizeAdminUser, (req, res) => {
