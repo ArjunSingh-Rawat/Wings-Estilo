@@ -1,6 +1,7 @@
 const otpGenerator = require("./otpGenerator");
 const Otp = require("../api/models/otpModel");
 const twilio = require("twilio");
+const ApiError = require("./apiError");
 
 let client = "";
 try {
@@ -35,7 +36,7 @@ async function sendOtpOnNumber(
       );
 
       if (!client) {
-        throw new Error("Cannot send OTP due to invalid credentials!");
+        throw new ApiError(406, "Cannot send OTP due to invalid credentials!");
       }
 
       const message = `You are one step away from adding you first number\nYour verification OTP:${primaryOtp}`;
@@ -56,7 +57,7 @@ async function sendOtpOnNumber(
       );
 
       if (!client) {
-        throw new Error("Cannot send OTP due to invalid credentials!");
+        throw new ApiError(406, "Cannot send OTP due to invalid credentials!");
       }
 
       const messageForPrimaryNumber = `If you are attempting to update your mobile number\nUse code ${primaryOtp} to verify on wingsestilo.in\nValid for 2 minutes`;
@@ -72,7 +73,7 @@ async function sendOtpOnNumber(
 }
 
 async function sendTwilioMessage(message, phoneNumber) {
-  const messageObj = await client.messages.create({
+  await client.messages.create({
     body: message,
     from: process.env.TWILIO_PHONE_NUMBER,
     to: "+91" + phoneNumber,
@@ -82,24 +83,24 @@ async function sendTwilioMessage(message, phoneNumber) {
 async function verifyPhoneOtp(otp, userId, phoneNumber, primary) {
   try {
     if (!otp) {
-      throw new Error("Otp not found!");
+      throw new ApiError(406, "Otp not found!");
     }
 
     const otpData = await Otp.findOne({ user: userId });
 
     if (!otpData) {
-      throw new Error("no otp data found!");
+      throw new ApiError(406, "no otp data found!");
     }
 
     if (phoneNumber && +phoneNumber !== otpData.phoneNumber) {
-      throw new Error("Phone number provided is not correct!");
+      throw new ApiError(406, "Phone number provided is not correct!");
     }
 
     if (primary) {
       const dbOtp = otpData.primaryPhoneNumberOtp;
 
       if (otp !== dbOtp) {
-        throw new Error("Wrong primary otp provided!");
+        throw new ApiError(406, "Wrong primary otp provided!");
       }
       const currentTime = new Date().getTime();
       const timeDifference =
@@ -107,13 +108,13 @@ async function verifyPhoneOtp(otp, userId, phoneNumber, primary) {
       const timeDifferenceInMinute = timeDifference / 1000 / 60;
 
       if (timeDifferenceInMinute > 2) {
-        throw new Error("Primary otp Expired!!!");
+        throw new ApiError(403, "Primary otp Expired!!!");
       }
     } else {
       const dbOtp = otpData.phoneNumberOtp;
 
       if (otp !== dbOtp) {
-        throw new Error("Wrong otp provided!");
+        throw new ApiError(406, "Wrong otp provided!");
       }
       const currentTime = new Date().getTime();
       const timeDifference =
@@ -121,7 +122,7 @@ async function verifyPhoneOtp(otp, userId, phoneNumber, primary) {
       const timeDifferenceInMinute = timeDifference / 1000 / 60;
 
       if (timeDifferenceInMinute > 3) {
-        throw new Error("OTP Expired!!!");
+        throw new ApiError(403, "OTP Expired!!!");
       }
     }
   } catch (error) {

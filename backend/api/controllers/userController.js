@@ -1,9 +1,9 @@
 const User = require("../models/userModel");
 const { v4: uuid } = require("uuid");
-const jwt = require("jsonwebtoken");
 const { verifyPhoneOtp } = require("../../utils/sendAndVerifyOtp");
 const validatePhoneNumber = require("../../utils/validatePhoneNumber");
-const Otp = require("../models/otpModel");
+const asyncHandler = require("../../utils/asyncHandler");
+const ApiError = require("../../utils/apiError");
 
 let pageRedirectUrl = "";
 
@@ -11,130 +11,110 @@ async function generateAccessAndRefreshTokens(userId) {
   try {
     const user = await User.findById(userId);
     const accessToken = user.generateAccessToken();
-    const refreshToken = user.generateRefreshToken();
 
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
-
-    return { accessToken, refreshToken };
+    return { accessToken };
   } catch (error) {
-    throw new Error(
-      "Something went wrong while generating refresh and access token"
+    throw new ApiError(
+      500,
+      "Something went wrong while generating and access token"
     );
   }
 }
 
-async function redirectToGoogleOauth(req, res) {
-  try {
-    const oauthState = uuid();
-    const cookieOptions = {
-      maxAge: 1000 * 60 * 5,
-      signed: true,
-      httpOnly: true,
-      secure: true,
-    };
+const redirectToGoogleOauth = asyncHandler((req, res) => {
+  const oauthState = uuid();
+  const cookieOptions = {
+    maxAge: 1000 * 60 * 5,
+    signed: true,
+    httpOnly: true,
+    secure: true,
+  };
 
-    res.cookie("CSRF", oauthState, cookieOptions);
+  res.cookie("CSRF", oauthState, cookieOptions);
 
-    const oauthQueryParams = {
-      client_id: process.env.OAUTH_CLIENT_ID,
-      redirect_uri: process.env.OAUTH_REDIRECT_URI,
-      response_type: "code",
-      scope: "profile email",
-      state: oauthState,
-    };
+  const oauthQueryParams = {
+    client_id: process.env.OAUTH_CLIENT_ID,
+    redirect_uri: process.env.OAUTH_REDIRECT_URI,
+    response_type: "code",
+    scope: "profile email",
+    state: oauthState,
+  };
 
-    pageRedirectUrl = req.query.pathName;
-    const urlParams = new URLSearchParams(oauthQueryParams).toString();
+  pageRedirectUrl = req.query.pathName;
+  const urlParams = new URLSearchParams(oauthQueryParams).toString();
 
-    res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${urlParams}`);
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  res.redirect(`https://accounts.google.com/o/oauth2/v2/auth?${urlParams}`);
+});
+
+const signInSignUpHandler = asyncHandler(async (req, res) => {
+  const { code, state } = req.query;
+  const csrfToken = req.signedCookies.CSRF;
+
+  if (!code) {
+    throw new ApiError(404, "Code from google oauth not found!");
   }
-}
 
-async function signInSignUpHandler(req, res) {
-  try {
-    const { code, state } = req.query;
-    const csrfToken = req.signedCookies.CSRF;
-
-    if (!code) {
-      throw new Error("Code from google oauth not found!");
-    }
-
-    if (state !== csrfToken) {
-      throw new Error("Invalid Sate");
-    }
-
-    const params = new URLSearchParams({
-      code,
-      client_id: process.env.OAUTH_CLIENT_ID,
-      client_secret: process.env.OAUTH_CLIENT_SECRET,
-      redirect_uri: process.env.OAUTH_REDIRECT_URI,
-      grant_type: "authorization_code",
-    });
-
-    const response = await fetch(
-      `https://oauth2.googleapis.com/token?${params}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
-
-    const data = await response.json();
-    const googleOathAccessToken = data.access_token;
-
-    const userRequest = await fetch(
-      "https://www.googleapis.com/oauth2/v2/userinfo",
-      {
-        headers: {
-          Authorization: `Bearer ${googleOathAccessToken}`,
-        },
-      }
-    );
-
-    const googleUserData = await userRequest.json();
-    const email = googleUserData.email;
-
-    let user = await User.findOne({ email }).select("-password -refreshToken");
-
-    if (!user) {
-      user = await registerUser(
-        googleUserData.given_name,
-        googleUserData.family_name,
-        email
-      );
-    }
-
-    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-      user._id
-    );
-
-    const options = {
-      httpOnly: true,
-      secure: true,
-      maxAge: 1000 * 60 * 60,
-    };
-    pageRedirectUrl = redirectUrlSanitizer(pageRedirectUrl);
-
-    res
-      .status(200)
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", refreshToken, options)
-      .redirect(`http://localhost:5000${pageRedirectUrl}`);
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  if (state !== csrfToken) {
+    throw new ApiError(401, "Invalid Sate");
   }
-}
+
+  const params = new URLSearchParams({
+    code,
+    client_id: process.env.OAUTH_CLIENT_ID,
+    client_secret: process.env.OAUTH_CLIENT_SECRET,
+    redirect_uri: process.env.OAUTH_REDIRECT_URI,
+    grant_type: "authorization_code",
+  });
+
+  const response = await fetch(
+    `https://oauth2.googleapis.com/token?${params}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
+
+  const data = await response.json();
+  const googleOathAccessToken = data.access_token;
+
+  const userRequest = await fetch(
+    "https://www.googleapis.com/oauth2/v2/userinfo",
+    {
+      headers: {
+        Authorization: `Bearer ${googleOathAccessToken}`,
+      },
+    }
+  );
+
+  const googleUserData = await userRequest.json();
+  const email = googleUserData.email;
+
+  let user = await User.findOne({ email }).select("-password");
+
+  if (!user) {
+    user = await registerUser(
+      googleUserData.given_name,
+      googleUserData.family_name,
+      email
+    );
+  }
+
+  const { accessToken } = await generateAccessAndRefreshTokens(user._id);
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+    maxAge: 1000 * 60 * 60,
+  };
+  pageRedirectUrl = redirectUrlSanitizer(pageRedirectUrl);
+
+  res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .redirect(`http://localhost:5000${pageRedirectUrl}`);
+});
 
 function redirectUrlSanitizer(url) {
   if (!url) {
@@ -156,221 +136,120 @@ async function registerUser(firstName, lastName, email) {
       lastName,
       email,
     });
-    const createdUser = await User.findById(newUser._id).select(
-      "-password -refreshToken"
-    );
+    const createdUser = await User.findById(newUser._id).select("-password");
     if (!createdUser) {
-      throw new Error("Something went wrong while registering the user");
+      throw new ApiError(
+        500,
+        "Something went wrong while registering the user"
+      );
     }
 
     return createdUser;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
-async function refreshAccessToken(req, res) {
-  const incomingRefreshToken =
-    req.cookies.refreshToken || req.body.refreshToken;
+const logoutUser = asyncHandler((req, res) => {
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
-  try {
-    if (!incomingRefreshToken) {
-      throw new Error("unauthorized request");
-    }
+  return res.status(200).clearCookie("accessToken", options).redirect("/");
+});
 
-    const decodedToken = jwt.verify(
-      incomingRefreshToken,
-      process.env.REFRESH_TOKEN_SECRET
-    );
-
-    const user = await User.findById(decodedToken?.userid);
-
-    if (!user) {
-      throw new Error("Invalid refresh token");
-    }
-
-    if (incomingRefreshToken !== user?.refreshToken) {
-      throw new Error("Refresh token is expired or used");
-    }
-
-    const { accessToken, refreshToken: newRefreshToken } =
-      await generateAccessAndRefreshTokens(user._id);
-
-    const options = {
-      httpOnly: true,
-      secure: true,
-    };
-
-    return res
-      .status(200)
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", newRefreshToken, options)
-      .json({
-        success: true,
-        message: "success!",
-      });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-}
-
-async function logoutUser(req, res) {
-  try {
-    await User.findByIdAndUpdate(
-      req.user._id,
-      {
-        $set: {
-          refreshToken: undefined,
-        },
+const addToWishlist = asyncHandler(async (req, res) => {
+  const user = await User.findOneAndUpdate(
+    { _id: req.user.userid },
+    {
+      $addToSet: {
+        wishList: req.body.productId,
       },
-      {
-        new: true,
-      }
-    );
+    },
+    { new: true }
+  );
 
-    const options = {
-      httpOnly: true,
-      secure: true,
-    };
-
-    return res
-      .status(200)
-      .clearCookie("accessToken", options)
-      .clearCookie("refreshToken", options)
-      .redirect("/");
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  if (!user) {
+    throw new ApiError(500, "unable to add to wishlist");
   }
-}
 
-async function addToWishlist(req, res) {
-  try {
-    const user = await User.findOneAndUpdate(
-      { _id: req.user.userid },
-      {
-        $addToSet: {
-          wishList: req.body.productId,
-        },
-      },
-      { new: true }
-    );
+  res.status(200).json({
+    success: true,
+    message: "Success!",
+    data: user,
+  });
+});
 
-    if (!user) {
-      throw new Error("unable to add to wishlist");
-    }
+const getOneUser = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ _id: req.user.userid })
+    .populate("addresses")
+    .select("-password");
 
-    res.status(202).json({
-      success: true,
-      message: "Success!",
-      data: user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  if (!user) {
+    return res.status(404).json("user not found!");
   }
-}
 
-async function getOneUser(req, res) {
-  try {
-    const user = await User.findOne({ _id: req.user.userid })
-      .populate("addresses")
-      .select("-password -refreshToken");
+  res.status(200).json({
+    success: true,
+    message: "success!",
+    user,
+  });
+});
 
-    if (!user) {
-      return res.status(404).json("user not found!");
-    }
+const updateUserPersonalInfo = asyncHandler(async (req, res) => {
+  const userInfoToUpdate = {
+    firstName: "",
+    lastName: "",
+    gender: "",
+  };
 
-    res.status(200).json({
-      success: true,
-      message: "success!",
-      user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-}
-
-async function updateUserPersonalInfo(req, res) {
-  try {
-    const userInfoToUpdate = {
-      firstName: "",
-      lastName: "",
-      gender: "",
-    };
-
-    for (const field in userInfoToUpdate) {
-      if (req.body[field]) {
-        userInfoToUpdate[field] = req.body[field];
-      } else {
-        delete userInfoToUpdate[field];
-      }
-    }
-
-    const user = await User.findOneAndUpdate(
-      { _id: req.user.userid },
-      userInfoToUpdate,
-      { new: true }
-    ).select("-refreshToken");
-
-    res.status(200).json({
-      success: true,
-      message: "success!",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-}
-
-async function updatePhoneNumber(req, res) {
-  try {
-    const { primaryOtp, updateOtp, phoneNumber } = req.body;
-    console.log(updateOtp);
-    validatePhoneNumber(phoneNumber);
-
-    const user = await User.findOne({ _id: req.user.userid });
-    if (user.phoneNumber) {
-      await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
-      await verifyPhoneOtp(updateOtp, req.user.userid, phoneNumber, false);
+  for (const field in userInfoToUpdate) {
+    if (req.body[field]) {
+      userInfoToUpdate[field] = req.body[field];
     } else {
-      await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
+      delete userInfoToUpdate[field];
     }
-
-    user.phoneNumber = phoneNumber;
-    user.isNumberVerified = true;
-    await user.save();
-
-    res.status(200).json({
-      success: true,
-      message: "successfully added number",
-      user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
   }
-}
+
+  await User.findOneAndUpdate({ _id: req.user.userid }, userInfoToUpdate, {
+    new: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "success!",
+  });
+});
+
+const updatePhoneNumber = asyncHandler(async (req, res) => {
+  const { primaryOtp, updateOtp, phoneNumber } = req.body;
+  console.log(updateOtp);
+  validatePhoneNumber(phoneNumber);
+
+  const user = await User.findOne({ _id: req.user.userid });
+  if (user.phoneNumber) {
+    await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
+    await verifyPhoneOtp(updateOtp, req.user.userid, phoneNumber, false);
+  } else {
+    await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
+  }
+
+  user.phoneNumber = phoneNumber;
+  user.isNumberVerified = true;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "successfully added number",
+    user,
+  });
+});
 
 module.exports = {
   redirectToGoogleOauth,
   signInSignUpHandler,
   registerUser,
-  refreshAccessToken,
   logoutUser,
   addToWishlist,
   getOneUser,

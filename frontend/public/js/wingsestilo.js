@@ -9,29 +9,8 @@ if (urlParams.get("logged") === "n") {
 const profileBtn = document.querySelector("#profile-btn");
 
 profileBtn.addEventListener("click", async () => {
-  const res = await fetch("/api/user/ping-me");
-  if (!res.ok) {
-    if (await refreshAccessToken()) {
-      window.location.href = "/profile";
-    } else {
-      togglePopup();
-    }
-  } else {
-    if (window.location.href.split("/").pop() !== "profile") {
-      window.location.href = "/profile";
-    }
-  }
+  window.location.href = "/profile";
 });
-
-async function refreshAccessToken() {
-  const res = await fetch("/api/user/refresh-access-token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return res.ok;
-}
 
 // login popup
 

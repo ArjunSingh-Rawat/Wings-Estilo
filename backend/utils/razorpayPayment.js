@@ -1,5 +1,6 @@
 const Razor = require("razorpay");
 const crypto = require("crypto");
+const ApiError = require("./apiError");
 
 const razorInstance = new Razor({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -15,7 +16,7 @@ async function createRazorpayOrder(amount) {
 
     const order = await razorInstance.orders.create(orderOptions);
     if (!order) {
-      throw new Error("unable to create order!");
+      throw new ApiError(500, "unable to create order!");
     }
 
     return {
@@ -40,7 +41,7 @@ function verifyRazorpayPayment(
       .digest("hex");
 
     if (generatedSignature !== razorpay_signature) {
-      throw new Error("Invalid Signature!!");
+      throw new ApiError(401, "Invalid Signature!!");
     }
   } catch (error) {
     throw error;

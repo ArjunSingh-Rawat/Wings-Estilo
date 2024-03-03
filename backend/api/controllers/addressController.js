@@ -1,161 +1,135 @@
 const Address = require("../models/addressModel");
 const User = require("../models/userModel");
+const asyncHandler = require("../../utils/asyncHandler");
+const ApiError = require("../../utils/apiError");
 
-async function addNewAddress(req, res) {
-  try {
-    let {
-      name,
-      phoneNumber,
-      pinCode,
-      addressLine1,
-      addressLine2,
-      district,
-      state,
-    } = req.body;
+const addNewAddress = asyncHandler(async (req, res) => {
+  let {
+    name,
+    phoneNumber,
+    pinCode,
+    addressLine1,
+    addressLine2,
+    district,
+    state,
+  } = req.body;
 
-    const userId = req.user.userid;
+  const userId = req.user.userid;
 
-    const data = await checkPinCode(pinCode, district, state);
+  const data = await checkPinCode(pinCode, district, state);
 
-    district = data.district;
-    state = data.state;
+  district = data.district;
+  state = data.state;
 
-    const user = await User.findOne({ _id: userId });
+  const user = await User.findOne({ _id: userId });
 
-    if (!user) {
-      throw new Error("User not found!");
-    }
-
-    if (user.addresses.length + 1 > 6) {
-      throw new Error("Cannot add addresses more than 6");
-    }
-
-    const address = await Address.create({
-      name,
-      phoneNumber,
-      pinCode,
-      addressLine1,
-      addressLine2,
-      district,
-      state,
-    });
-
-    if (!address) {
-      throw new Error("Error in adding new address");
-    }
-
-    user.addresses.push(address);
-    await user.save();
-
-    res.status(200).json({
-      success: true,
-      message: "successfully added new address",
-      address,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  if (!user) {
+    throw new ApiError(404, "User not found!");
   }
-}
 
-async function updateAddress(req, res) {
-  try {
-    const addressFields = Object.keys(Address.schema.obj);
-
-    const fieldsToUpdate = {};
-    for (const field in req.body) {
-      if (addressFields.includes(field)) {
-        fieldsToUpdate[field] = req.body[field];
-      }
-    }
-
-    const data = await checkPinCode(
-      fieldsToUpdate.pinCode,
-      fieldsToUpdate.district,
-      fieldsToUpdate.state
-    );
-
-    fieldsToUpdate.district = data.district;
-    fieldsToUpdate.state = data.state;
-
-    const updatedAddress = await Address.findOneAndUpdate(
-      { _id: req.params.addressId },
-      fieldsToUpdate,
-      { new: true }
-    );
-
-    if (!updatedAddress) {
-      throw new Error("Address Id not found!");
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "successfully updated!",
-      address: updatedAddress,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  if (user.addresses.length + 1 > 6) {
+    throw new ApiError(400, "Cannot add addresses more than 6");
   }
-}
 
-async function deleteOneAddress(req, res) {
-  try {
-    const userId = req.user.userid;
+  const address = await Address.create({
+    name,
+    phoneNumber,
+    pinCode,
+    addressLine1,
+    addressLine2,
+    district,
+    state,
+  });
 
-    const deletedAddress = await Address.findOneAndDelete({
-      _id: req.params.addressId,
-    });
-
-    const user = await User.findOneAndUpdate(
-      { _id: userId },
-      {
-        $pull: {
-          addresses: deletedAddress._id,
-        },
-      }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "successfully deleted address!",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  if (!address) {
+    throw new ApiError(500, "Error in adding new address");
   }
-}
 
-async function getAllAddresses(req, res) {
-  try {
-    const userId = req.user.userid;
+  user.addresses.push(address);
+  await user.save();
 
-    const user = await User.findOne({ _id: userId })
-      .populate("addresses")
-      .select("addresses");
+  res.status(200).json({
+    success: true,
+    message: "successfully added new address",
+    address,
+  });
+});
 
-    if (!user) {
-      throw new Error("user not found!");
+const updateAddress = asyncHandler(async (req, res) => {
+  const addressFields = Object.keys(Address.schema.obj);
+
+  const fieldsToUpdate = {};
+  for (const field in req.body) {
+    if (addressFields.includes(field)) {
+      fieldsToUpdate[field] = req.body[field];
     }
-
-    res.status(200).json({
-      success: true,
-      message: "success!",
-      addresses: user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
   }
-}
+
+  const data = await checkPinCode(
+    fieldsToUpdate.pinCode,
+    fieldsToUpdate.district,
+    fieldsToUpdate.state
+  );
+
+  fieldsToUpdate.district = data.district;
+  fieldsToUpdate.state = data.state;
+
+  const updatedAddress = await Address.findOneAndUpdate(
+    { _id: req.params.addressId },
+    fieldsToUpdate,
+    { new: true }
+  );
+
+  if (!updatedAddress) {
+    throw new ApiError(500, "Address Id not found!");
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "successfully updated!",
+    address: updatedAddress,
+  });
+});
+
+const deleteOneAddress = asyncHandler(async (req, res) => {
+  const userId = req.user.userid;
+
+  const deletedAddress = await Address.findOneAndDelete({
+    _id: req.params.addressId,
+  });
+
+  const user = await User.findOneAndUpdate(
+    { _id: userId },
+    {
+      $pull: {
+        addresses: deletedAddress._id,
+      },
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "successfully deleted address!",
+  });
+});
+
+const getAllAddresses = asyncHandler(async (req, res) => {
+  const userId = req.user.userid;
+
+  const user = await User.findOne({ _id: userId })
+    .populate("addresses")
+    .select("addresses");
+
+  if (!user) {
+    throw new ApiError(404, "user not found!");
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "success!",
+    addresses: user,
+  });
+});
 
 async function checkPinCode(pinCode, district, state) {
   try {
@@ -169,7 +143,7 @@ async function checkPinCode(pinCode, district, state) {
         cityTownData[0].Status === "Error" ||
         cityTownData[0].Status === "404"
       ) {
-        throw new Error("Pincode is wrong");
+        throw new ApiError(400, "Pincode is wrong");
       }
 
       const cityTowns = cityTownData[0].PostOffice;
@@ -180,7 +154,7 @@ async function checkPinCode(pinCode, district, state) {
             (obj) => obj.District.toLowerCase() === district.toLowerCase()
           )
         ) {
-          throw new Error("District provided is wrong!");
+          throw new ApiError(400, "District provided is wrong!");
         }
       }
       if (state) {
@@ -189,7 +163,7 @@ async function checkPinCode(pinCode, district, state) {
             (obj) => obj.State.toLowerCase() === state.toLowerCase()
           )
         ) {
-          throw new Error("State provided is wrong!");
+          throw new ApiError(400, "State provided is wrong!");
         }
       }
     }
