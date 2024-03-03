@@ -1,8 +1,12 @@
 const profileNav = document.querySelector(".profile-nav");
 
 const userData = {
+  personalInfo: {},
   addressInfo: {},
   orderInfo: [],
+  primaryOtp: "",
+  updateOtp: "",
+  phoneNumberToUpdate: "",
 };
 
 const sectionToShow = urlParams.get("section");
@@ -18,6 +22,7 @@ if (sectionToShow) {
 
 async function asyncHandler() {
   const userInfo = await getUserInfo();
+  userData.personalInfo = userInfo;
 
   for (const address of userInfo.addresses) {
     userData.addressInfo[address._id] = address;
@@ -51,10 +56,7 @@ async function asyncHandler() {
     .querySelector(".my-profile-section")
     .addEventListener("click", async (event) => {
       if (event.target.id === "personal-info-edit") {
-        event.target.parentElement.querySelector(
-          "#personal-info-save"
-        ).style.display = "block";
-        event.target.style.display = "none";
+        toggleEditOrSaveBtn("edit", "personal-info");
 
         const inputElements = personalInfoDiv.querySelectorAll("input");
         for (const element of inputElements) {
@@ -76,10 +78,7 @@ async function asyncHandler() {
           }
         }
         if (await updatePersonalInfo(personalInfoToChange)) {
-          event.target.parentElement.querySelector(
-            "#personal-info-edit"
-          ).style.display = "block";
-          event.target.style.display = "none";
+          toggleEditOrSaveBtn("save", "personal-info");
 
           for (const element of inputElements) {
             element.toggleAttribute("disabled");
@@ -87,8 +86,73 @@ async function asyncHandler() {
         }
 
         window.location.href = "/profile";
+      } else if (event.target.id === "phone-number-edit") {
+        toggleEditOrSaveBtn("edit", "phone-number");
+
+        document.querySelector("#phone-number").toggleAttribute("disabled");
+        document.querySelector("#phone-number").focus();
+      } else if (event.target.id === "phone-number-save") {
+        const phoneNumberInput = document.querySelector("#phone-number");
+
+        try {
+          const phoneNumber = validatePhoneNumber(phoneNumberInput.value);
+
+          if (userData.personalInfo.phoneNumber !== +phoneNumber) {
+            console.log("coming inside not same number");
+            userData.phoneNumberToUpdate = phoneNumber;
+
+            const response = await sendPhoneOtp(phoneNumber);
+            if (response) {
+              showOtpPopup(
+                userData.personalInfo.phoneNumber ? true : false,
+                phoneNumber,
+                userData.personalInfo
+              );
+            }
+          } else {
+            toggleEditOrSaveBtn("save", "phone-number");
+            document.querySelector("#phone-number").toggleAttribute("disabled");
+          }
+        } catch (error) {
+          showValidationError(error.message, "#number-field-alert");
+        }
       }
     });
+
+  function validatePhoneNumber(phoneNumber) {
+    phoneNumber = phoneNumber.split("+91");
+    phoneNumber = phoneNumber[phoneNumber.length - 1].split(" ");
+    phoneNumber = phoneNumber[phoneNumber.length - 1];
+    try {
+      const phoneNumberRegex = /^\d+$/;
+
+      if (!phoneNumber) {
+        throw new Error("Phone number not provided!");
+      }
+
+      if (!phoneNumberRegex.test(phoneNumber)) {
+        throw new Error("Phone number is not valid");
+      }
+
+      if (phoneNumber.length !== 10) {
+        throw new Error("Phone number length should be 10");
+      }
+
+      return phoneNumber;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  function showValidationError(message, messageElementSelector) {
+    const messageElement = document.querySelector(messageElementSelector);
+    messageElement.style.display = "block";
+    messageElement.innerText = message;
+
+    setTimeout(() => {
+      messageElement.style.display = "none";
+    }, 2000);
+  }
 
   /* ---------------- address Handler ---------------- */
   let edit = false;
@@ -237,6 +301,18 @@ async function asyncHandler() {
 
 asyncHandler();
 
+function toggleEditOrSaveBtn(editOrSave, editSection) {
+  if (editOrSave === "edit") {
+    document.querySelector(`#${editSection}-${editOrSave}`).style.display =
+      "none";
+    document.querySelector(`#${editSection}-save`).style.display = "block";
+  } else if (editOrSave === "save") {
+    document.querySelector(`#${editSection}-${editOrSave}`).style.display =
+      "none";
+    document.querySelector(`#${editSection}-edit`).style.display = "block";
+  }
+}
+
 function toggleClass(currentDiv) {
   const sections = profileNav.children;
   for (const section of sections) {
@@ -257,8 +333,8 @@ function renderUserInfo(userData) {
   document.querySelector("#lname").value = lastName;
   document.querySelector("#email").value = email;
   document.querySelector("#phone-number").value = phoneNumber
-    ? phoneNumber
-    : "+91";
+    ? "+91 " + phoneNumber
+    : "+91 ";
 
   if (gender) {
     document.querySelector(`#${gender}`).checked = true;
@@ -266,6 +342,142 @@ function renderUserInfo(userData) {
   } else {
     document.querySelector("#gender-field-alert").style.display = "block";
   }
+
+  const numberFieldAlert = document.querySelector("#number-field-alert");
+  if (phoneNumber) {
+    numberFieldAlert.style.display = "none";
+  } else {
+    numberFieldAlert.innerText = "! Please fill out this field";
+    numberFieldAlert.style.display = "block";
+  }
+}
+
+/*-------------- OTP POPUP HANDLER ----------------*/
+const otpPopup = document.querySelector("#otp-container");
+const primaryOtpInputs = document.querySelectorAll(".primary-otp input");
+const updateOtpInputs = document.querySelectorAll(".update-otp input");
+
+function showOtpPopup(updateNumber, phoneNumber, userInfo) {
+  const primaryOtpDiv = document.querySelector(".primary-otp");
+  const updateOtpDiv = document.querySelector(".update-otp");
+
+  primaryOtpDiv.style.display = "none";
+  updateOtpDiv.style.display = "none";
+
+  if (!updateNumber) {
+    otpPopup.style.display = "flex";
+    primaryOtpDiv.style.display = "block";
+    primaryOtpDiv.children[0].children[0].innerText = phoneNumber;
+  } else {
+    otpPopup.style.display = "flex";
+    primaryOtpDiv.style.display = "block";
+    updateOtpDiv.style.display = "block";
+    primaryOtpDiv.children[0].children[0].innerText = userInfo.phoneNumber;
+    updateOtpDiv.children[0].children[0].innerText = phoneNumber;
+  }
+}
+
+document
+  .querySelector(".otp-value-container")
+  .addEventListener("keyup", (event) => {
+    if (event.target.tagName === "INPUT") {
+      const id = event.target.id.split("-");
+      const index = +id[1];
+      const otpType = id[0];
+      if (otpType === "p") {
+        handOtpControl(primaryOtpInputs, event, index);
+      } else if (otpType === "u") {
+        handOtpControl(updateOtpInputs, event, index);
+      }
+    }
+  });
+
+async function submitOtp() {
+  const { primaryOtp, updateOtp } = getOtps();
+  const response = await updatePhoneNumber(
+    userData.phoneNumberToUpdate,
+    primaryOtp,
+    updateOtp
+  );
+
+  if (response.success) {
+    closeOtpDiv();
+    renderUserInfo(response.user);
+    userData.personalInfo = response.user;
+    clearOtpInputValues();
+  } else {
+    showOtpError(response.message);
+  }
+}
+
+function getOtps() {
+  let primaryOtp = "";
+  let updateOtp = "";
+  primaryOtpInputs.forEach((input) => {
+    primaryOtp += input.value;
+  });
+  updateOtpInputs.forEach((input) => {
+    updateOtp += input.value;
+  });
+  return { primaryOtp, updateOtp };
+}
+
+function showOtpError(message) {
+  const otpErrorDiv = document.querySelector(".otp-errors");
+
+  otpErrorDiv.style.display = "block";
+  otpErrorDiv.innerText = message;
+  setTimeout(() => {
+    otpErrorDiv.style.display = "none";
+  }, 2000);
+}
+
+function clearOtpInputValues() {
+  primaryOtpInputs.forEach((input) => {
+    input.value = "";
+  });
+  updateOtpInputs.forEach((input) => {
+    input.value = "";
+  });
+}
+
+let backspaceCount = 0;
+function handOtpControl(inputsArray, event, index) {
+  if (event.key >= "0" && event.key <= "9") {
+    if (event.target.value.length === 1 && index + 1 < 6) {
+      inputsArray[index + 1].focus();
+    }
+    index + 1 < 5 ? (backspaceCount = 1) : (backspaceCount = 0);
+  } else if (event.key === "Backspace") {
+    backspaceCount++;
+    if (index - 1 >= 0) {
+      if (backspaceCount === 2) {
+        inputsArray[index - 1].focus();
+        backspaceCount = 0;
+      }
+    }
+  } else if (event.key === "Tab") {
+    if (index !== 0 && inputsArray[index - 1].value === "") {
+      inputsArray[index - 1].focus();
+    }
+    index + 1 < 5 ? (backspaceCount = 1) : (backspaceCount = 0);
+  }
+}
+
+function showOtpCloseConfirm() {
+  document.querySelector(".confirm-close-otp").style.display = "flex";
+}
+
+function closeOtpDiv() {
+  otpPopup.style.display = "none";
+  document.querySelector(".confirm-close-otp").style.display = "none";
+  toggleEditOrSaveBtn("save", "phone-number");
+  document.querySelector("#phone-number").toggleAttribute("disabled");
+  renderUserInfo(userData.personalInfo);
+}
+
+function closeConfirmDiv() {
+  document.querySelector(".confirm-close-otp").style.display = "none";
 }
 
 async function logout() {
@@ -273,8 +485,7 @@ async function logout() {
   window.location.href = response.url;
 }
 
-// fetch data
-
+/*-------------------- Fetch Data ------------------*/
 async function getUserInfo() {
   const res = await fetch("/api/user/info");
 
@@ -338,6 +549,38 @@ async function deleteAddress(addressId) {
   const res = await fetch(`/api/user/addresses/${addressId}`, {
     method: "DELETE",
   });
-
   return res.ok;
+}
+
+async function sendPhoneOtp(phoneNumber) {
+  const res = await fetch("/api/user/otp/phone/send-otp", {
+    method: "Post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      phoneNumber,
+    }),
+  });
+  if (res.ok) {
+    return true;
+  } else {
+    const data = await res.json();
+    return data.message;
+  }
+}
+
+async function updatePhoneNumber(phoneNumber, primaryOtp, updateOtp) {
+  const res = await fetch("/api/user/phone-number", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      phoneNumber,
+      primaryOtp,
+      updateOtp,
+    }),
+  });
+  return await res.json();
 }

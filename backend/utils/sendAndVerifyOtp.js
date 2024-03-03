@@ -39,7 +39,9 @@ async function sendOtpOnNumber(
       }
 
       const message = `You are one step away from adding you first number\nYour verification OTP:${primaryOtp}`;
-      await sendTwilioMessage(message, phoneNumber);
+      if (client) {
+        await sendTwilioMessage(message, phoneNumber);
+      }
     } else {
       await Otp.findOneAndUpdate(
         { user: userId },
@@ -59,8 +61,10 @@ async function sendOtpOnNumber(
 
       const messageForPrimaryNumber = `If you are attempting to update your mobile number\nUse code ${primaryOtp} to verify on wingsestilo.in\nValid for 2 minutes`;
       const messageForUpdateNumber = `Your are one step away from updating number\nUse code ${otp} to update mobile number\nValid for 3 minutes`;
-      await sendTwilioMessage(messageForPrimaryNumber, primaryPhoneNumber);
-      await sendTwilioMessage(messageForUpdateNumber, phoneNumber);
+      if (client) {
+        await sendTwilioMessage(messageForPrimaryNumber, primaryPhoneNumber);
+        await sendTwilioMessage(messageForUpdateNumber, phoneNumber);
+      }
     }
   } catch (error) {
     throw error;

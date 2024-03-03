@@ -104,7 +104,6 @@
           <div class="email-info info">
             <div class="ei-title">
               <p class="p">EMAIL ADDRESS</p>
-              <p class="edit-btn">Edit</p>
             </div>
 
             <div class="email-div info-div">
@@ -122,7 +121,10 @@
           <div class="contact-info info">
             <div class="ci-title">
               <p class="p">MOBILE NUMBER</p>
-              <p class="edit-btn">Edit</p>
+              <p id="phone-number-edit" class="edit-btn">Edit</p>
+              <p id="phone-number-save" class="edit-btn" style="display: none">
+                Save
+              </p>
             </div>
 
             <div class="number info-div">
@@ -134,7 +136,9 @@
                 value="+91"
                 disabled
               />
-              <p class="alert">! Please fill out this field</p>
+              <p id="number-field-alert" class="alert" style="display: none">
+                ! Please fill out this field
+              </p>
             </div>
           </div>
         </div>
@@ -373,6 +377,48 @@
       </section>
     </section>
 
+    <div id="otp-container">
+      <div id="otp-popup">
+        <div onclick="showOtpCloseConfirm()" class="close-btn">&times;</div>
+        <div>Verify OTP</div>
+        <div class="otp-value-container">
+          <div class="primary-otp">
+            <div>
+              Enter OTP sent on +91 <span class="primary-number"></span>
+            </div>
+            <div class="otp-values">
+              <input id="p-0" type="text" maxlength="1" />
+              <input id="p-1" type="text" maxlength="1" />
+              <input id="p-2" type="text" maxlength="1" />
+              <input id="p-3" type="text" maxlength="1" />
+              <input id="p-4" type="text" maxlength="1" />
+              <input id="p-5" type="text" maxlength="1" />
+            </div>
+          </div>
+          <div class="update-otp">
+            <div>Enter OTP sent on +91 <span class="update-number"></span></div>
+            <div class="otp-values">
+              <input id="u-0" type="text" maxlength="1" />
+              <input id="u-1" type="text" maxlength="1" />
+              <input id="u-2" type="text" maxlength="1" />
+              <input id="u-3" type="text" maxlength="1" />
+              <input id="u-4" type="text" maxlength="1" />
+              <input id="u-5" type="text" maxlength="1" />
+            </div>
+          </div>
+          <div class="otp-errors"></div>
+        </div>
+        <div>
+          OTP not received?<span class="resend-otp">resend</span> in 60sec
+        </div>
+        <button onclick="submitOtp()">Submit</button>
+      </div>
+      <div class="confirm-close-otp" style="display: none">
+        <div onclick="closeConfirmDiv()" class="close-confirm-btn">&times;</div>
+        <p>Next you will be able to edit after 10 minutes</p>
+        <button onclick="closeOtpDiv()">Confirm</button>
+      </div>
+    </div>
     <!-- footer -->
     <%- include('../partials/footer') %>
 

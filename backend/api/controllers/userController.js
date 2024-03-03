@@ -337,13 +337,14 @@ async function updateUserPersonalInfo(req, res) {
 
 async function updatePhoneNumber(req, res) {
   try {
-    const { primaryOtp, otp, phoneNumber } = req.body;
+    const { primaryOtp, updateOtp, phoneNumber } = req.body;
+    console.log(updateOtp);
     validatePhoneNumber(phoneNumber);
 
     const user = await User.findOne({ _id: req.user.userid });
     if (user.phoneNumber) {
       await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
-      await verifyPhoneOtp(otp, req.user.userid, phoneNumber, false);
+      await verifyPhoneOtp(updateOtp, req.user.userid, phoneNumber, false);
     } else {
       await verifyPhoneOtp(primaryOtp, req.user.userid, phoneNumber, true);
     }
@@ -355,7 +356,7 @@ async function updatePhoneNumber(req, res) {
     res.status(200).json({
       success: true,
       message: "successfully added number",
-      data: user,
+      user,
     });
   } catch (error) {
     res.status(500).json({

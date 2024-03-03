@@ -35,7 +35,7 @@ router.get("/info", verifyToken, getOneUser);
 
 router.put("/info", verifyToken, updateUserPersonalInfo);
 
-router.put("/add-phone-number", verifyToken, updatePhoneNumber);
+router.put("/phone-number", verifyToken, updatePhoneNumber);
 
 router.use("/otp", verifyToken, otpRouter);
 

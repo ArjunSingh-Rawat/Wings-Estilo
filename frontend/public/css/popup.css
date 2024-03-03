@@ -21,6 +21,7 @@
   text-align: center;
   /* padding: 20px; */
   box-sizing: border-box;
+  display: none;
 }
 
 .popup .close-btn {
@@ -39,7 +40,8 @@
   cursor: pointer;
 }
 
-.popup.active .overlay {
+.popup.active .overlay,
+.popup.active .content {
   display: block;
 }
 

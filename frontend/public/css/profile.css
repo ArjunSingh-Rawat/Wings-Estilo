@@ -485,3 +485,63 @@
   background-color: #fff6f2;
   color: #ff8080;
 }
+
+/* ------ otp popup ------- */
+
+#otp-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: hsla(1, 0%, 0%, 0.45);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+#otp-popup {
+  width: 218px;
+  height: 335px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.otp-values input {
+  width: 20px;
+  height: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#otp-popup .close-btn {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#otp-popup .close-btn {
+  font-size: 30px;
+  text-align: end;
+  margin-right: 4px;
+}
+
+#otp-popup .resend-otp {
+  cursor: pointer;
+}
+
+.confirm-close-otp {
+  position: fixed;
+  background: #fac2c2;
+  width: 188px;
+  height: 95px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 28px;
+  margin-bottom: 156px;
+}
