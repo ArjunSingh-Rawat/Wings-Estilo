@@ -30,4 +30,11 @@ router.put("/phone-number", verifyToken, updatePhoneNumber);
 
 router.use("/otp", verifyToken, otpRouter);
 
+router.get("/ping-me", verifyToken, (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "ok!",
+  });
+});
+
 module.exports = router;

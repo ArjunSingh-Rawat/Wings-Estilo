@@ -4,12 +4,16 @@ const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
 
 const addProduct = asyncHandler(async (req, res) => {
-  const productId = req.body.productId;
+  const { productId, productSize } = req.body;
   const userId = req.user.userid;
 
   const product = await Product.findById(productId);
   if (!product) {
-    throw new ApiError("Product not found");
+    throw new ApiError(404, "Product not found");
+  }
+
+  if (product.sizeAvailable[productSize.toLowerCase()] < 1) {
+    throw new ApiError(406, "Product is out of stock!");
   }
 
   let bag = await Bag.findOne({ user: userId });
@@ -19,12 +23,15 @@ const addProduct = asyncHandler(async (req, res) => {
       items: [
         {
           product: productId,
+          productSize: productSize.toLowerCase(),
         },
       ],
     });
   } else {
-    const alreadyInBag = bag.items.find((item) =>
-      item.product.equals(productId)
+    const alreadyInBag = bag.items.find(
+      (item) =>
+        item.product.equals(productId) &&
+        item.productSize === productSize.toLowerCase()
     );
 
     if (alreadyInBag) {
@@ -33,6 +40,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
     bag.items.push({
       product: productId,
+      productSize: productSize.toLowerCase(),
     });
   }
 
@@ -41,13 +49,13 @@ const addProduct = asyncHandler(async (req, res) => {
 
   res.status(202).json({
     success: true,
-    message: "Success!",
+    message: "Successfully added product in bag!",
     newItem: bag,
   });
 });
 
 const incrementOrDecrementProduct = asyncHandler(async (req, res) => {
-  const { productId, incOrDecFlag } = req.body;
+  const { productId, productSize, incOrDecFlag } = req.body;
   const userId = req.user.userid;
 
   if (!["inc", "dec"].includes(incOrDecFlag)) {
@@ -70,18 +78,26 @@ const incrementOrDecrementProduct = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Product is not added to bag yet!!");
   }
 
-  const itemIndex = bag.items.findIndex((item) =>
-    item.product.equals(productId)
+  const itemIndex = bag.items.findIndex(
+    (item) =>
+      item.product.equals(productId) &&
+      item.productSize === productSize.toLowerCase()
   );
 
   if (itemIndex !== -1) {
     if (incOrDecFlag === "inc") {
-      if (bag.items[itemIndex].quantity + 1 > product.countInStock) {
-        throw new ApiError(403, "cannot add more than stock");
+      if (
+        bag.items[itemIndex].quantity + 1 >
+        product.sizeAvailable[bag.items[itemIndex].productSize]
+      ) {
+        throw new ApiError(403, "You reached maximum quantity available!");
       }
       bag.items[itemIndex].quantity += 1;
       bag.totalAmount += product.sellPrice;
     } else {
+      if (bag.items[itemIndex].quantity - 1 < 1) {
+        throw new ApiError(403, "Quantity should be at least 1!");
+      }
       bag.items[itemIndex].quantity -= 1;
       bag.totalAmount -= product.sellPrice;
     }
@@ -99,7 +115,7 @@ const incrementOrDecrementProduct = asyncHandler(async (req, res) => {
 });
 
 const removeFromBag = asyncHandler(async (req, res) => {
-  const productId = req.body.productId;
+  const { productId, productSize } = req.body;
   const userId = req.user.userid;
 
   const product = await Product.findById(productId);
@@ -107,25 +123,33 @@ const removeFromBag = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Product not found");
   }
 
-  let bag = await Bag.findOne({ user: userId, "items.product": productId });
+  let bag = await Bag.findOne({
+    user: userId,
+    "items.product": productId,
+    "items.productSize": productSize.toLowerCase(),
+  });
 
   if (!bag) {
     throw new ApiError(404, "Product not found in bag");
   }
 
-  const itemQuantity = bag.items.find((item) =>
-    item.product.equals(productId)
+  const itemQuantity = bag.items.find(
+    (item) =>
+      item.product.equals(productId) &&
+      item.productSize === productSize.toLowerCase()
   ).quantity;
+
+  console.log(itemQuantity);
 
   bag.totalAmount -= product.sellPrice * itemQuantity;
 
-  bag.items.pull({ product: productId });
+  bag.items.pull({ product: productId, productSize });
 
   bag = await bag.save({ new: true });
 
   res.status(202).json({
     success: true,
-    message: "Success!",
+    message: "Successfully removed product in bag!",
     newItem: bag,
   });
 });

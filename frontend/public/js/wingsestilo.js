@@ -9,7 +9,14 @@ if (urlParams.get("logged") === "n") {
 const profileBtn = document.querySelector("#profile-btn");
 
 profileBtn.addEventListener("click", async () => {
-  window.location.href = "/profile";
+  const res = await fetch("/api/user/ping-me");
+  if (!res.ok) {
+    togglePopup();
+  } else {
+    if (window.location.href.split("/").pop() !== "profile") {
+      window.location.href = "/profile";
+    }
+  }
 });
 
 // login popup

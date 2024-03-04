@@ -66,11 +66,15 @@ bagWishlistBuyDiv.addEventListener("click", async (event) => {
       }
     }
   } else if (event.target.classList.contains("add-to-bag-btn")) {
-    const message = await addToBag(productId);
-    if (message === true) {
-      window.location.href = "/my-bag";
+    if (sizeSelected) {
+      const response = await addToBag(productId, sizeSelected);
+      if (response.success) {
+        getAlertPopup(response.message);
+      } else {
+        getAlertPopup(response.message);
+      }
     } else {
-      getAlertPopup(message);
+      getAlertPopup("Please select product size!!");
     }
   } else if (event.target.classList.contains("buy-now-btn")) {
     if (!sizeSelected) {
@@ -123,7 +127,7 @@ async function removeFromWishlist(productId) {
   return res.ok ? true : false;
 }
 
-async function addToBag(productId) {
+async function addToBag(productId, productSize) {
   const res = await fetch("/api/bag/add-to-bag", {
     method: "POST",
     headers: {
@@ -131,14 +135,11 @@ async function addToBag(productId) {
     },
     body: JSON.stringify({
       productId,
+      productSize,
     }),
   });
-  if (res.ok) {
-    return true;
-  } else {
-    const error = await res.json();
-    return error.message;
-  }
+  const data = await res.json();
+  return data;
 }
 
 async function initiateOrder(productId, productSize) {

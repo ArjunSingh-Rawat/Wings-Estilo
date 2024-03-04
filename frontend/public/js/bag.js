@@ -19,19 +19,26 @@ itemsDiv.addEventListener("click", async (event) => {
 
   const itemIndex = getItemIdex(element);
   const productId = itemsDiv.children[itemIndex].dataset.productId;
+  const productSize = itemsDiv.children[itemIndex].dataset.productSize;
 
   if (element.classList.contains("q-plus")) {
-    if (await addOrRemoveQuantity(productId, "inc")) {
+    const response = await addOrRemoveQuantity(productId, productSize, "inc");
+    if (response.success) {
       await updateProductDetails(itemsDiv.children[itemIndex], productId);
       await updateTotalPrice();
+    } else {
+      getAlertPopup(response.message);
     }
   } else if (element.classList.contains("q-minus")) {
-    if (await addOrRemoveQuantity(productId, "dec")) {
+    const response = await addOrRemoveQuantity(productId, productSize, "dec");
+    if (response.success) {
       await updateProductDetails(itemsDiv.children[itemIndex], productId);
       await updateTotalPrice();
+    } else {
+      getAlertPopup(response.message);
     }
   } else if (element.classList.contains("remove-button")) {
-    if (await removeItemFromBag(productId)) {
+    if (await removeItemFromBag(productId, productSize)) {
       const itemToRemove = itemsDiv.children[itemIndex];
       itemsDiv.removeChild(itemToRemove);
 
@@ -47,17 +54,18 @@ itemsDiv.addEventListener("click", async (event) => {
 function renderBagPage(items) {
   let i = 0;
   for (const item of items) {
-    const { product, quantity } = item;
+    const { product, quantity, productSize } = item;
     const { name, image, sellPrice, _id } = product;
 
     let html = `
-    <div id="item${i}" class="item" data-product-Id = "${_id}">
+    <div id="item${i}" class="item" data-product-Id = "${_id}" data-product-size="${productSize}">
             <div class="item-img" >
               <img src="${image}" alt="" />
             </div>
             <div class="item-details">
               <p class="item-name">${name}</p>
               <p class="item-price">Rs.${sellPrice * quantity}</p>
+              <p class="item-size">${productSize}</p>
               <div class="item-buttons" data-item-Id = "item${i}">
                 <div class="quantity-button">
                   <button class="q-minus">-</button>
@@ -136,7 +144,7 @@ async function getBagItems() {
   return false;
 }
 
-async function addOrRemoveQuantity(productId, incOrDecFlag) {
+async function addOrRemoveQuantity(productId, productSize, incOrDecFlag) {
   const res = await fetch("/api/bag/add-quantity", {
     method: "PUT",
     headers: {
@@ -144,10 +152,12 @@ async function addOrRemoveQuantity(productId, incOrDecFlag) {
     },
     body: JSON.stringify({
       productId,
+      productSize,
       incOrDecFlag,
     }),
   });
-  return res.ok ? true : false;
+  const data = await res.json();
+  return data;
 }
 
 async function getItemDetails(productId) {
@@ -170,7 +180,7 @@ async function getTotalAmount() {
   return false;
 }
 
-async function removeItemFromBag(productId) {
+async function removeItemFromBag(productId, productSize) {
   const res = await fetch("/api/bag", {
     method: "DELETE",
     headers: {
@@ -178,6 +188,7 @@ async function removeItemFromBag(productId) {
     },
     body: JSON.stringify({
       productId,
+      productSize,
     }),
   });
   return res.ok ? true : false;
