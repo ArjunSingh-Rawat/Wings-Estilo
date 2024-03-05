@@ -11,8 +11,36 @@ const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
 
 const initiateOrder = asyncHandler(async (req, res) => {
-  const { productId, productSize } = req.body;
+  const { products } = req.body;
+  for (const product of products) {
+    await validateProduct(
+      product.productId,
+      product.productSize,
+      product.quantity
+    );
+  }
 
+  const checkoutToken = jwt.sign(
+    {
+      products,
+    },
+    process.env.CHECKOUT_TOKEN_SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+  };
+
+  res.status(200).cookie("checkout_token", checkoutToken, options).json({
+    success: true,
+    message: "initiated order process!",
+  });
+});
+
+async function validateProduct(productId, productSize, quantity) {
   if (!productId) {
     throw new ApiError(400, "Product ID not found!!");
   }
@@ -32,31 +60,15 @@ const initiateOrder = asyncHandler(async (req, res) => {
     throw new ApiError(404, "product not found!");
   }
 
-  const quantityOfGivenSize = product.sizeAvailable[productSize];
+  const quantityOfGivenSize = product.sizeAvailable[productSize.toLowerCase()];
   if (quantityOfGivenSize < 1) {
     throw new ApiError(400, "Size selected is out of stock");
   }
 
-  const checkoutToken = jwt.sign(
-    {
-      productId,
-      productSize,
-    },
-    process.env.CHECKOUT_TOKEN_SECRET,
-    {
-      expiresIn: "1h",
-    }
-  );
-
-  const options = {
-    httpOnly: true,
-  };
-
-  res.status(200).cookie("checkout_token", checkoutToken, options).json({
-    success: true,
-    message: "initiated order process!",
-  });
-});
+  if (quantity > quantityOfGivenSize) {
+    throw new ApiError(400, "Give quantity not in stock!");
+  }
+}
 
 const checkQuantity = asyncHandler((req, res) => {
   res.status(200).json({
@@ -66,20 +78,23 @@ const checkQuantity = asyncHandler((req, res) => {
 });
 
 const startRazorpayPaymentProcess = asyncHandler(async (req, res) => {
-  const { product, productSize, quantity } = req.orderDetail;
+  let amount = 0;
+  const products = [];
+  for (const productData of req.products) {
+    amount += productData.product.sellPrice * +productData.quantity;
+    products.push({
+      productId: productData.product._id,
+      productSize: productData.productSize,
+      quantity: +productData.quantity,
+      productPrice: productData.product.sellPrice,
+    });
+  }
 
-  const amount = product.sellPrice * quantity;
   const { order, key } = await createRazorpayOrder(amount);
-
   const shippingAddress = req.body.shippingAddress;
 
   const orderDetailToken = jwt.sign(
-    {
-      productId: product._id,
-      productSize,
-      quantity,
-      shippingAddress,
-    },
+    { products, shippingAddress },
     process.env.CHECKOUT_TOKEN_SECRET,
     {
       expiresIn: 30 * 60,
@@ -127,7 +142,7 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
     process.env.CHECKOUT_TOKEN_SECRET
   );
 
-  const { productId, productSize, quantity, shippingAddress } = orderDetails;
+  const { products, shippingAddress } = orderDetails;
 
   // TODO: logic when db fail to create RazorpayPayment or Order
   // for now just throwing error
@@ -135,10 +150,21 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
     throw new ApiError(500, "failed to save RazorpayPayment in DB!");
   }
 
+  const items = [];
+  let totalAmount = 0;
+  for (const product of products) {
+    items.push({
+      product: product.productId,
+      productSize: product.productSize,
+      quantity: product.quantity,
+    });
+    totalAmount += product.productPrice * +product.quantity;
+  }
+
   const order = await Order.create({
     user: userId,
-    items: [{ product: productId, productSize, quantity }],
-    totalAmount: req.product.sellPrice * quantity,
+    items: items,
+    totalAmount,
     payment: {
       provider: "razorpay",
       details: razorpayPayment._id,

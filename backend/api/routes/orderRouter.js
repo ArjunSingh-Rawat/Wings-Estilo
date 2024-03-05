@@ -30,11 +30,11 @@ router.post(
   createOrderOnSuccessfulPayment
 );
 
-router.get("/product", getSelectedProduct, (req, res) => {
+router.get("/products", getSelectedProduct, (req, res) => {
   res.status(200).json({
     success: true,
     message: "product details",
-    product: req.product,
+    products: req.products,
   });
 });
 

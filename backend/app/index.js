@@ -86,8 +86,7 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
 
 router.get("/sell/checkout", getSelectedProduct, (req, res) => {
   res.render("pages/checkout", {
-    product: req.product,
-    productSize: req.productSize,
+    products: req.products,
   });
 });
 

@@ -132,6 +132,28 @@ async function updateTotalPrice() {
 }
 updateTotalPrice();
 
+/*------------- place order ------------*/
+document
+  .querySelector(".place-order button")
+  .addEventListener("click", async () => {
+    const bagItems = await getBagItems();
+    console.log(bagItems);
+
+    const products = [];
+
+    for (const item of bagItems) {
+      products.push({
+        productId: item.product._id,
+        productSize: item.productSize,
+        quantity: item.quantity,
+      });
+    }
+
+    if (await initiateOrder(products)) {
+      window.location.href = "/sell/checkout";
+    }
+  });
+
 // Api data fetching
 
 async function getBagItems() {
@@ -139,7 +161,7 @@ async function getBagItems() {
 
   if (res.ok) {
     const resData = await res.json();
-    return resData.data.items;
+    return resData.data;
   }
   return false;
 }
@@ -192,4 +214,22 @@ async function removeItemFromBag(productId, productSize) {
     }),
   });
   return res.ok ? true : false;
+}
+
+async function initiateOrder(products) {
+  try {
+    const res = await fetch("/api/order/initiate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        products,
+      }),
+    });
+
+    return res.ok ? true : false;
+  } catch (error) {
+    return false;
+  }
 }

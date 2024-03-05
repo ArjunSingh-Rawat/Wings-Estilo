@@ -32,6 +32,11 @@ const sizeSchema = new mongoose.Schema(
       min: [0, "should not be less than 0 got {VALUE}"],
       required: true,
     },
+    threeXl: {
+      type: Number,
+      min: [0, "should not be less than 0 got {VALUE}"],
+      required: true,
+    },
   },
   { _id: false }
 );

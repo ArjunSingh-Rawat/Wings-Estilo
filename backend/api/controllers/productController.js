@@ -16,8 +16,8 @@ const addNewProduct = asyncHandler(async (req, res) => {
   let categories = [req.body.category];
   if (req.body.subCategory) categories.push(req.body.subCategory);
 
-  const { xs, s, m, l, xl, xxl } = req.body;
-  const countInStock = +xs + +s + +m + +l + +xl + +xxl;
+  const { xs, s, m, l, xl, xxl, threeXl } = req.body;
+  const countInStock = +xs + +s + +m + +l + +xl + +xxl + +threeXl;
 
   if (
     !["true", "false"].includes(req.body.forSell) ||
@@ -45,6 +45,7 @@ const addNewProduct = asyncHandler(async (req, res) => {
       l: req.body.l,
       xl: req.body.xl,
       xxl: req.body.xxl,
+      threeXl: req.body.threeXl,
     },
   });
 

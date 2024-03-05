@@ -139,8 +139,6 @@ const removeFromBag = asyncHandler(async (req, res) => {
       item.productSize === productSize.toLowerCase()
   ).quantity;
 
-  console.log(itemQuantity);
-
   bag.totalAmount -= product.sellPrice * itemQuantity;
 
   bag.items.pull({ product: productId, productSize });
@@ -182,21 +180,37 @@ const getProduct = asyncHandler(async (req, res) => {
 const getProducts = asyncHandler(async (req, res) => {
   const userId = req.user.userid;
 
-  const data = await Bag.findOne({
+  let data = await Bag.findOne({
     user: userId,
   }).populate({
     path: "items.product",
-    select: "name sellPrice image countInStock",
+    select: "name sellPrice image countInStock sizeAvailable",
   });
 
   if (!data || !data.items.length) {
     throw new ApiError(404, "No products in bag");
   }
 
+  let items = data.items;
+  let i = 0;
+  for (const item of data.items) {
+    if (item.product.sizeAvailable[item.productSize] < 1) {
+      data.items.pull({
+        product: item.product.productId,
+        productSize: item.productSize,
+      });
+      items.splice(i, 1);
+    } else if (item.quantity > item.product.sizeAvailable[item.productSize]) {
+      item.quantity = item.product.sizeAvailable[item.productSize];
+      items[i].quantity = item.product.sizeAvailable[item.productSize];
+    }
+    i++;
+  }
+  await data.save();
   res.status(202).json({
     success: true,
     message: "Success!",
-    data,
+    data: items,
   });
 });
 

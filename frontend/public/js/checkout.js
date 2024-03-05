@@ -1,11 +1,11 @@
-function payWithRazorpay(key, razorpayOrder, user, productInfo) {
+function payWithRazorpay(key, razorpayOrder, user) {
   const options = {
     key,
     amount: razorpayOrder.amount,
     currency: razorpayOrder.currency,
-    name: productInfo.name,
-    description: productInfo.shortDescription,
-    image: productInfo.image,
+    name: "Wings Estilo",
+    description: "Best service from our boutique",
+    image: "/Images/general-img/favicon.png",
     order_id: razorpayOrder.id,
     callback_url: "/api/order/create-order",
     prefill: {
@@ -46,7 +46,7 @@ async function getUserInfo() {
 
 async function getProductInfo() {
   try {
-    const res = await fetch("/api/order/product");
+    const res = await fetch("/api/order/products");
     const data = await res.json();
 
     return res.ok ? data.product : false;
@@ -76,38 +76,7 @@ async function checkQuantity(productId, productSize, quantity) {
   }
 }
 
-async function verifyOrderCredentials(
-  productId,
-  productSize,
-  quantity,
-  shippingAddress
-) {
-  try {
-    const res = await fetch("/api/order/verify-order-details", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        productId,
-        productSize,
-        quantity,
-        shippingAddress,
-      }),
-    });
-
-    return res.ok ? true : false;
-  } catch (error) {
-    return false;
-  }
-}
-
-async function startPaymentProcess(
-  productId,
-  productSize,
-  quantity,
-  shippingAddress
-) {
+async function startPaymentProcess(products, shippingAddress) {
   try {
     const res = await fetch("/api/order/start-payment", {
       method: "POST",
@@ -115,9 +84,7 @@ async function startPaymentProcess(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        productId,
-        productSize,
-        quantity,
+        products,
         shippingAddress,
       }),
     });

@@ -12,11 +12,34 @@ const validateOrderDetails = asyncHandler(async (req, res, next) => {
     process.env.CHECKOUT_TOKEN_SECRET
   );
 
-  const selectedProductId = tokenData.productId;
-  const selectedSize = tokenData.productSize;
+  const selectedProducts = tokenData.products;
+  const { products } = req.body;
 
-  const { productId, productSize, quantity } = req.body;
+  const orderDetails = [];
 
+  for (let i = 0; i < selectedProducts.length; i++) {
+    await validateOrderProducts(
+      selectedProducts[i].productId,
+      selectedProducts[i].productSize,
+      products[i].productId,
+      products[i].productSize,
+      products[i].quantity,
+      orderDetails
+    );
+  }
+
+  req.products = orderDetails;
+  next();
+});
+
+async function validateOrderProducts(
+  selectedProductId,
+  selectedSize,
+  productId,
+  productSize,
+  quantity,
+  orderDetails
+) {
   if (selectedProductId !== productId) {
     throw new ApiError(
       406,
@@ -37,35 +60,52 @@ const validateOrderDetails = asyncHandler(async (req, res, next) => {
 
   const availableQuantity = product.sizeAvailable[selectedSize.toLowerCase()];
 
-  if (quantity > availableQuantity) {
+  if (+quantity > availableQuantity) {
     throw new ApiError(404, "Given quantity is not in stock!");
   }
-  req.orderDetail = {
-    product,
-    quantity,
-    productSize,
-  };
-  next();
-});
+
+  orderDetails.push({ product, productSize, quantity });
+}
 
 const getSelectedProduct = asyncHandler(async (req, res, next) => {
   const checkoutToken = req.cookies.checkout_token;
-
   const tokenData = jwt.verify(
     checkoutToken,
     process.env.CHECKOUT_TOKEN_SECRET
   );
-  const productId = tokenData.productId;
+  const selectedProducts = tokenData.products;
 
-  const product = await Product.findOne({ _id: productId }).select(
-    "name sellPrice shortDescription image"
-  );
-
-  if (!product) {
-    throw new ApiError(404, "Product not found!");
+  const productToQuery = {};
+  for (const product of selectedProducts) {
+    if (!productToQuery[product.productId]) {
+      productToQuery[product.productId] = [
+        { productSize: product.productSize, quantity: product.quantity },
+      ];
+    } else {
+      productToQuery[product.productId].push({
+        productSize: product.productSize,
+        quantity: product.quantity,
+      });
+    }
   }
-  req.product = product;
-  req.productSize = tokenData.productSize;
+
+  const products = [];
+  for (const productId in productToQuery) {
+    const product = await Product.findOne({ _id: productId }).select(
+      "name sellPrice shortDescription image"
+    );
+
+    if (!product) {
+      throw new ApiError(404, "Product not found!");
+    }
+
+    products.push({
+      product,
+      productSizesAndQuantity: productToQuery[productId],
+    });
+  }
+  req.products = products;
+
   next();
 });
 

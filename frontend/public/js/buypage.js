@@ -80,8 +80,12 @@ bagWishlistBuyDiv.addEventListener("click", async (event) => {
     if (!sizeSelected) {
       getAlertPopup("Please select product size!!");
     } else {
-      if (await initiateOrder(productId, sizeSelected)) {
+      const response = await initiateOrder(productId, sizeSelected);
+
+      if (response.success) {
         window.location.href = "/sell/checkout";
+      } else {
+        getAlertPopup(response.message);
       }
     }
   }
@@ -150,13 +154,22 @@ async function initiateOrder(productId, productSize) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        productId,
-        productSize,
+        products: [
+          {
+            productId,
+            productSize,
+            quantity: 1,
+          },
+        ],
       }),
     });
-
-    return res.ok ? true : false;
+    const data = await res.json();
+    return data;
   } catch (error) {
-    return false;
+    const data = {
+      success: false,
+      message: error.message,
+    };
+    return data;
   }
 }
