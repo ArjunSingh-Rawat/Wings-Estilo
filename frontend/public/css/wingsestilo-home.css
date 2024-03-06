@@ -1,10 +1,14 @@
 /* carousel */
-.slick-slide div {
+.img-slider a img {
   width: 100%;
 }
 
-.slick-slide div img {
+.img-slider1 a img {
   width: 100%;
+}
+
+.img-slider1 {
+  display: none;
 }
 
 /* category-section */
@@ -33,7 +37,7 @@
 }
 
 .category img {
-  width: 200px;
+  width: 250px;
   margin-bottom: 5px;
 }
 
@@ -116,78 +120,26 @@
   color: white;
 }
 
-/* video-section */
-
-.video-section {
-  padding: 50px 0;
-}
-
-.videos {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.video-section .videos video {
-  width: 230px;
-  border-radius: 10px;
-}
-
-.video-section h1 {
-  font-family: "Charmonman", cursive;
-  font-size: 30px;
-  text-align: center;
-}
-
-.video-section h2 {
-  font-size: 20px;
-  font-weight: 500;
-  color: #ff8080;
-  text-align: center;
-}
-
 /* m-gown-section */
 
 .m-gown-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 50px 0;
 }
 
 .m-gown-slider {
-  width: 50%;
+  display: flex;
+  justify-content: center;
 }
 
-.m-gown-title {
-  margin-left: 100px;
+.m-gown-slider1 {
+  display: none;
+}
+.m-gown-slider1 img {
+  width: 100%;
 }
 
-.m-gown-title h1 {
-  font-family: "Charmonman", cursive;
-  font-size: 50px;
-  text-align: center;
-}
-
-.m-gown-btn {
-  margin-top: 50px;
-}
-
-.m-gown-title h2 {
-  font-size: 40px;
-  color: #ff8080;
-  text-align: center;
-  margin-top: -10px;
-}
-
-.m-gown-btn a {
-  display: inline-block;
-  padding: 10px 30px;
-  background-color: #ff8080;
-  color: white;
-  font-size: 18px;
-  margin: 0 20px;
+.m-gown-slider img {
+  width: 85%;
 }
 
 /* more-gown-section */
@@ -339,6 +291,15 @@
 /* MEDIA QUERY */
 
 @media (max-width: 768px) {
+  /* carousel */
+
+  .img-slider1 {
+    display: block;
+  }
+  .img-slider {
+    display: none;
+  }
+
   /* category-section */
 
   .category-section h1 {
@@ -346,10 +307,7 @@
   }
 
   .categories {
-    display: grid;
-    grid-template-columns: repeat(2, 180px);
-    gap: 10px;
-    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .category {
@@ -368,8 +326,8 @@
 
   .home-gowns {
     display: grid;
-    grid-template-columns: repeat(2, 180px);
-    gap: 10px;
+    grid-template-columns: repeat(2, 50%);
+    /* gap: 10px; */
     justify-content: center;
   }
 
@@ -384,11 +342,11 @@
   /* home-gown-item */
 
   .home-gowns-item {
-    margin: 0;
+    margin: 0 5px;
   }
 
   .home-gown-img img {
-    width: 180px;
+    width: 100%;
   }
 
   .item-info {
@@ -414,72 +372,17 @@
     font-size: 12px;
   }
 
-  /* video-section */
-
-  .video-section {
-    padding: 50px 0;
-  }
-
-  .videos {
-    margin-top: 30px;
-    /* display: flex;
-  justify-content: center; */
-    display: grid;
-    grid-template-columns: repeat(2, 130px);
-    gap: 10px;
-  }
-
-  .video-section .videos video {
-    width: 130px;
-    border-radius: 10px;
-  }
-
-  .video-section h1 {
-    font-family: "Charmonman", cursive;
-    font-size: 30px;
-    text-align: center;
-  }
-
-  .video-section h2 {
-    font-size: 20px;
-    font-weight: 500;
-    color: #ff8080;
-    text-align: center;
-  }
-
   /* m-gown-section */
-
   .m-gown-section {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 30px 0;
+    padding: 20px 0;
   }
 
   .m-gown-slider {
-    width: 100%;
-    overflow: hidden;
+    display: none;
   }
 
-  .m-gown-title {
-    margin-left: 0;
-  }
-
-  .m-gown-title h1 {
-    font-size: 40px;
-  }
-
-  .m-gown-btn {
-    margin-top: 20px;
-  }
-
-  .m-gown-title h2 {
-    font-size: 30px;
-  }
-
-  .m-gown-btn a {
-    font-size: 18px;
-    margin: 0 10px;
+  .m-gown-slider1 {
+    display: block;
   }
 
   /* more-gown-section */
@@ -490,19 +393,18 @@
 
   .mg-items {
     display: grid;
-    grid-template-columns: repeat(2, 180px);
+    grid-template-columns: repeat(2, 50%);
     justify-content: center;
-    gap: 10px;
   }
 
   .mg-item {
-    margin: 0;
+    margin: 0 5px;
   }
 
   .mg-img {
+    width: 100%;
+    height: 320px;
     display: block;
-    width: 180px;
-    height: 330px;
   }
 
   .mg-img img {
@@ -550,10 +452,7 @@
   }
 
   .insta-img {
-    display: grid;
-    grid-template-columns: repeat(2, 180px);
-    justify-content: center;
-    gap: 10px;
+    flex-wrap: wrap;
     margin: 30px 0;
   }
 

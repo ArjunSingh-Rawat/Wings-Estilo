@@ -10,14 +10,12 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $(".m-gown-slider").slick({
+  $(".img-slider1").slick({
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: false,
     dots: true,
+    arrows: false,
     slidesToShow: 1,
-    speed: 500,
-    fade: true,
-    cssEase: "linear",
   });
 });

@@ -225,6 +225,73 @@
   white-space: nowrap;
 }
 
+/* mobile-nav2 */
+.mobile-nav2 {
+  display: none;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+}
+
+.links {
+  width: 100%;
+}
+.header-accordion {
+  background-color: white;
+  cursor: pointer;
+  padding: 15px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 18px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-accordion:after {
+  content: "\002B";
+  font-size: 20px;
+}
+
+.activate:after {
+  content: "\2212";
+}
+
+.header-panel {
+  padding: 0 30px;
+  background-color: #fff9f9;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.panel-content {
+  list-style-type: none;
+}
+
+.panel-content li a {
+  display: block;
+  padding: 10px 0;
+  font-size: 18px;
+}
+
+/* more-links */
+.more-links {
+  margin-top: 10px;
+  border-top: 1px solid lightgrey;
+}
+
+.more-links a {
+  display: block;
+  padding: 15px;
+  color: #ff8080;
+  font-weight: 500;
+  font-size: 18px;
+}
+
 /* media query */
 
 @media (max-width: 768px) {
@@ -253,8 +320,27 @@
     transform: translateY(-8px) rotate(-45deg);
   }
 
+  .mobile-nav2 {
+    display: block;
+    position: fixed;
+    left: -100%;
+    transition: 0.3s;
+  }
+
+  .mobile-nav2.active {
+    left: 0;
+  }
+
+  .mobile-nav2 .more-links a {
+    display: flex;
+    align-items: center;
+  }
+  .mobile-nav2 .more-links a .bx {
+    margin-right: 5px;
+  }
+
   #logo {
-    height: 40px;
+    height: 35px;
   }
 
   .right-nav a {
@@ -273,57 +359,7 @@
     display: none;
   }
 
-  /* nav2 */
-
   .nav2 {
-    background-color: #fff6f2;
-    height: 100vh;
-    position: fixed;
-    left: -100%;
-    top: 90px;
-    bottom: 0;
-    width: 100%;
-
-    align-items: flex-start;
-    justify-content: flex-start;
-
-    transition: 0.3s;
-  }
-
-  .nav2.active {
-    left: 0;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
-  .nav-links li {
-    margin: 10px;
-  }
-
-  .nav-links li a {
-    padding: 5px 10px;
-  }
-
-  .dropdown:hover .dropdown-link {
-    border-bottom: 3px solid #ff8080;
-    background-color: white;
-  }
-
-  .dropdown-content a:hover {
-    background-color: #ff8080;
-    color: white;
-  }
-
-  .dropdown-content {
-    width: 100vw;
-    height: 100vh;
-
-    left: 100%;
-    top: 0;
-
-    box-shadow: none;
+    display: none;
   }
 }
