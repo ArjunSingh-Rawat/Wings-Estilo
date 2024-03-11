@@ -1,0 +1,168 @@
+/* dress-section */
+.dress-section {
+  width: 100%;
+}
+
+/* title and filter */
+.title-and-filter {
+  width: 80%;
+  display: flex;
+  margin: 0 auto;
+}
+
+/* dress-title */
+
+.dress-title {
+  padding: 40px 0px;
+}
+
+.dress-title h1 {
+  font-family: "Cinzel", serif;
+  font-weight: 600;
+}
+
+.dress-title p {
+  font-size: 14px;
+  color: grey;
+}
+
+/* dress-grid */
+
+.dress-grid {
+  width: 80%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 10px;
+  row-gap: 30px;
+}
+
+/* dres-div */
+
+.item {
+  width: 100%;
+  height: fit-content;
+}
+
+.item-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1/1.5;
+  /* height: 400px; */
+}
+
+.item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.item-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.name-price {
+  flex: 1;
+}
+
+.name {
+  font-size: 15px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.price {
+  font-size: 15px;
+  font-weight: 500;
+  color: #ff8080;
+}
+
+.add .bx {
+  color: #ff8080;
+  font-size: 25px;
+  margin-right: 10px;
+  transition: 0.4s;
+}
+
+/* media query */
+
+@media (max-width: 650px) {
+  /* title and filter */
+  .title-and-filter {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  /* dress-title */
+
+  .dress-title {
+    padding: 20px 0px;
+  }
+
+  /* dress-grid */
+
+  .dress-grid {
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 5px;
+    row-gap: 10px;
+    padding: 0 10px;
+  }
+
+  /* dres-div */
+
+  .item-img {
+    aspect-ratio: 1/1.5;
+    /* height: 350px; */
+  }
+
+  .name {
+    font-size: 13px;
+  }
+
+  .price {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 651px) and (max-width: 1000px) {
+  /* title and filter */
+  .title-and-filter {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  /* dress-title */
+
+  .dress-title {
+    padding: 20px 0px;
+  }
+
+  /* dress-grid */
+
+  .dress-grid {
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 5px;
+    row-gap: 10px;
+    padding: 0 10px;
+  }
+
+  /* dres-div */
+
+  .item-img {
+    aspect-ratio: 1/1.5;
+    /* height: 350px; */
+  }
+
+  .name {
+    font-size: 13px;
+  }
+
+  .price {
+    font-size: 14px;
+  }
+}
