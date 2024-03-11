@@ -31,7 +31,7 @@ router.get("/sell/:path", (req, res, next) => {
   if (sellCategories.includes(req.params.path)) {
     const categoryName = req.params.path.split("-").join(" ").toUpperCase();
 
-    res.render("pages/product", {
+    res.render("pages/products", {
       categoryName: categoryName,
     });
   } else {
@@ -42,7 +42,7 @@ router.get("/sell/:path", (req, res, next) => {
 router.get("/rent/:path", (req, res, next) => {
   if (rentCategories.includes(req.params.path)) {
     const categoryName = req.params.path.split("-").join(" ").toUpperCase();
-    res.render("pages/product", {
+    res.render("pages/products", {
       categoryName: categoryName,
     });
   } else {
@@ -67,7 +67,7 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
     if (!["sell", "rent"].includes(req.params.rentOrSell)) {
       throw new Error("type sell or rent not provided");
     }
-    res.render("pages/buy", {
+    res.render("pages/product", {
       _id: product._id,
       name: product.name,
       sellPrice: product.sellPrice,

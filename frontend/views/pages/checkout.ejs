@@ -3,9 +3,91 @@
   <head>
     <%- include("../partials/head") %>
     <title>Order Summary</title>
+    <link rel="stylesheet" href="/css/checkout.css" />
   </head>
   <body>
-    <%-include("../partials/header") %> <%- include("../partials/footer") %>
+    <%-include("../partials/header") %>
+
+    <section class="checkout-section">
+      <div class="checkout-detail">
+        <div class="delivery-address-div">
+          <div class="da-title-change">
+            <p id="delivery-address-titie">DELIVERY ADDRESS</p>
+            <button id="change-button">CHANGE</button>
+          </div>
+          <p id="delivery-address">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+            Praesentium accusamus ut quidem reiciendis sequi unde harum
+            cupiditate obcaecati, perferendis dignissimos omnis mollitia non
+            quaerat? Nemo recusandae minima nobis laudantium itaque.
+          </p>
+        </div>
+
+        <div class="ordered-product-div">
+          <div class="ordered-product">
+            <div class="ordered-product-img"></div>
+            <div class="ordered-product-detail">
+              <p id="ordered-product-name">Beautiful Red Gown</p>
+              <p id="ordered-product-price">Rs. 2000</p>
+              <p id="ordered-product-size">Size: <span>S</span></p>
+
+              <div class="quantity-remove-btn">
+                <div class="quantity-btn">
+                  <button>-</button>
+                  <p>1</p>
+                  <button>+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ordered-product">
+            <div class="ordered-product-img"></div>
+            <div class="ordered-product-detail">
+              <p id="ordered-product-name">Beautiful Red Gown</p>
+              <p id="ordered-product-price">Rs. 2000</p>
+              <p id="ordered-product-size">Size: <span>S</span></p>
+
+              <div class="quantity-remove-btn">
+                <div class="quantity-btn">
+                  <button>-</button>
+                  <p>1</p>
+                  <button>+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-continue-div">
+          <p id="checkout-confirmation-email">
+            Order confirmation email will be sent to
+            <span>example@gmail.com</span>
+          </p>
+          <button id="checkout-continue-btn">CONTINUE</button>
+        </div>
+      </div>
+
+      <div class="checkout-price-detail">
+        <P class="price-details">PRICE DETAILS</P>
+        <div class="item-price-total">
+          <div class="total">
+            <p>Price(<span class="total-items"></span> items)</p>
+            <p class="total-amount">Rs.00</p>
+          </div>
+          <div class="dc">
+            <p>Delivery Charges</p>
+            <p>Rs.80</p>
+          </div>
+        </div>
+        <div class="total-amt">
+          <p>Total Amount</p>
+          <p class="net-amount">Rs.3000</p>
+        </div>
+      </div>
+    </section>
+
+    <%- include("../partials/footer") %>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="/js/checkout.js"></script>
   </body>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include("../partials/head") %>
+    <link rel="stylesheet" href="/css/products.css" />
+  </head>
+  <body>
+    <%- include("../partials/header") %>
+
+    <section class="dress-section">
+      <div class="title-and-filter">
+        <div class="dress-title">
+          <h1><%= categoryName %></h1>
+          <p class="total-products">0 Products</p>
+        </div>
+        <div class="filter"></div>
+      </div>
+      <div class="dress-grid"></div>
+    </section>
+
+    <!-- footer -->
+    <%- include('../partials/footer') %>
+
+    <!-- accordion js -->
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+          this.classList.toggle("filter-active");
+          var panel = this.nextElementSibling;
+          if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      }
+    </script>
+
+    <script src="/js/products.js"></script>
+  </body>
+</html>
