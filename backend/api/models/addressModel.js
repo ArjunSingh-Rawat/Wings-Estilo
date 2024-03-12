@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const { stateNames } = require("../../constants");
 
 const addressSchema = new mongoose.Schema({
+  defaultAddress: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   name: {
     type: String,
     required: true,

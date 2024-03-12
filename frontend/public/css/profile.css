@@ -370,14 +370,16 @@
 
 /* address-container */
 
-.address-div {
+.addresses {
   width: 100%;
   border: 1px solid lightgrey;
   padding: 10px;
+  margin-bottom: 5px;
 }
 
 .edit-delete-btn {
   display: flex;
+  justify-content: space-between;
 }
 
 .edit-delete-btn button {

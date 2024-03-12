@@ -30,8 +30,12 @@ const addNewAddress = asyncHandler(async (req, res) => {
   if (user.addresses.length + 1 > 6) {
     throw new ApiError(400, "Cannot add addresses more than 6");
   }
-
+  let defaultAddress = false;
+  if (user.addresses.length === 0) {
+    defaultAddress = true;
+  }
   const address = await Address.create({
+    defaultAddress,
     name,
     phoneNumber,
     pinCode,
@@ -172,9 +176,24 @@ async function checkPinCode(pinCode, district, state) {
     throw error;
   }
 }
+
+const setDefaultAddress = asyncHandler(async (req, res) => {
+  const addressId = req.params.addressId;
+  const prevDefaultAddressId = req.body.prevDefaultAddressId;
+
+  await Address.findOneAndUpdate({ _id: addressId }, { defaultAddress: true });
+  await Address.findOneAndUpdate(
+    { _id: prevDefaultAddressId },
+    { defaultAddress: false }
+  );
+
+  res.status(204).end();
+});
+
 module.exports = {
   addNewAddress,
   deleteOneAddress,
   updateAddress,
   getAllAddresses,
+  setDefaultAddress,
 };

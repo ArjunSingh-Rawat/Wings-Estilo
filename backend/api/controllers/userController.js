@@ -27,7 +27,7 @@ const redirectToGoogleOauth = asyncHandler((req, res) => {
     maxAge: 1000 * 60 * 5,
     signed: true,
     httpOnly: true,
-    secure: true,
+    // secure: true,
   };
 
   res.cookie("CSRF", oauthState, cookieOptions);
@@ -105,7 +105,7 @@ const signInSignUpHandler = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    // secure: true,
     maxAge: 1000 * 60 * 60,
   };
   pageRedirectUrl = redirectUrlSanitizer(pageRedirectUrl);
@@ -153,7 +153,7 @@ async function registerUser(firstName, lastName, email) {
 const logoutUser = asyncHandler((req, res) => {
   const options = {
     httpOnly: true,
-    secure: true,
+    // secure: true,
   };
 
   return res.status(200).clearCookie("accessToken", options).redirect("/");
@@ -185,6 +185,16 @@ const getOneUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: req.user.userid })
     .populate("addresses")
     .select("-password");
+
+  user.addresses.sort((a, b) => {
+    if (a.defaultAddress && !b.defaultAddress) {
+      return -1;
+    } else if (!a.defaultAddress && b.defaultAddress) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
 
   if (!user) {
     return res.status(404).json("user not found!");
@@ -224,7 +234,6 @@ const updateUserPersonalInfo = asyncHandler(async (req, res) => {
 
 const updatePhoneNumber = asyncHandler(async (req, res) => {
   const { primaryOtp, updateOtp, phoneNumber } = req.body;
-  console.log(updateOtp);
   validatePhoneNumber(phoneNumber);
 
   const user = await User.findOne({ _id: req.user.userid });

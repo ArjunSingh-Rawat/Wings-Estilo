@@ -98,7 +98,6 @@ async function asyncHandler() {
           const phoneNumber = validatePhoneNumber(phoneNumberInput.value);
 
           if (userData.personalInfo.phoneNumber !== +phoneNumber) {
-            console.log("coming inside not same number");
             userData.phoneNumberToUpdate = phoneNumber;
 
             const response = await sendPhoneOtp(phoneNumber);
@@ -171,15 +170,38 @@ async function asyncHandler() {
   function renderAddressInfo(addressData) {
     const addressDiv = document.querySelector(".address-div");
     addressDiv.innerHTML = "";
-
+    let prevDefaultAddressId = null;
     for (const address in addressData) {
-      const { name, phoneNumber, addressLine1, addressLine2, district, state } =
-        addressData[address];
+      const {
+        _id,
+        name,
+        phoneNumber,
+        addressLine1,
+        addressLine2,
+        district,
+        state,
+        pinCode,
+        defaultAddress,
+      } = addressData[address];
+      if (defaultAddress) {
+        prevDefaultAddressId = _id;
+      }
+      const addressHtml = `<div class="edit-delete-btn">
+      <div class="edit-delete-div"></div>
+      </div>
+      <p id="my-name-phone">
+        <span id="address-div-name">${name}</span>
+        <span id="address-div-phone">${phoneNumber}</span>
+      </p>
+      <p id="my-address">${
+        addressLine1 + addressLine2 + district + state
+      } - <span style="font-weight:bold;">${pinCode}</span></p>`;
 
-      const p = document.createElement("p");
-      p.innerText = addressLine1 + addressLine2 + district + state;
-      addressDiv.appendChild(p);
+      const div = document.createElement("div");
+      div.classList.add("addresses");
+      div.innerHTML = addressHtml;
 
+      const editDeleteDiv = div.querySelector(".edit-delete-div");
       const deleteBtn = document.createElement("button");
       deleteBtn.innerText = "Delete";
       deleteBtn.onclick = async () => {
@@ -188,18 +210,31 @@ async function asyncHandler() {
           displayCorrectAddressDiv();
         }
       };
-
       const editBtn = document.createElement("button");
       editBtn.innerText = "edit";
       editBtn.onclick = () => {
         displayAddressForm(userData.addressInfo[address]);
         edit = true;
-
         addressId = address;
       };
+      editDeleteDiv.appendChild(deleteBtn);
+      editDeleteDiv.appendChild(editBtn);
 
-      addressDiv.appendChild(deleteBtn);
-      addressDiv.appendChild(editBtn);
+      if (!defaultAddress) {
+        const setDefaultButton = document.createElement("button");
+        setDefaultButton.innerText = "Set to default";
+
+        setDefaultButton.onclick = async () => {
+          await setDefaultAddress(_id, prevDefaultAddressId);
+          userData.addressInfo[prevDefaultAddressId].defaultAddress = false;
+          userData.addressInfo[_id].defaultAddress = true;
+          renderAddressInfo(userData.addressInfo);
+        };
+
+        div.querySelector(".edit-delete-btn").appendChild(setDefaultButton);
+      }
+
+      addressDiv.appendChild(div);
     }
   }
 
@@ -209,7 +244,7 @@ async function asyncHandler() {
     }
     if (Object.keys(userData.addressInfo).length) {
       myAddressesSection.querySelector(".address-container").style.display =
-        "flex";
+        "block";
       renderAddressInfo(userData.addressInfo);
     } else {
       myAddressesSection.querySelector(".no-address-div").style.display =
@@ -583,4 +618,20 @@ async function updatePhoneNumber(phoneNumber, primaryOtp, updateOtp) {
     }),
   });
   return await res.json();
+}
+
+async function setDefaultAddress(addressId, prevDefaultAddressId) {
+  try {
+    const res = await fetch(`/api/user/addresses/set-default/${addressId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prevDefaultAddressId,
+      }),
+    });
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
 }
