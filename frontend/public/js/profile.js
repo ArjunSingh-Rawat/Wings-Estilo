@@ -28,6 +28,8 @@ async function asyncHandler() {
     userData.addressInfo[address._id] = address;
   }
 
+  userData.orderInfo = await getOrderDetails();
+
   /*-------------- Toggle sections ----------------*/
   profileNav.addEventListener("click", (event) => {
     if (
@@ -322,6 +324,10 @@ async function asyncHandler() {
         if (address) userData.addressInfo[address._id] = address;
       }
       displayCorrectAddressDiv();
+      const goToCheckoutPage = urlParams.get("from");
+      if (goToCheckoutPage === "checkout") {
+        window.location.href = "/sell/checkout";
+      }
       addressForm.reset();
     }
   });
@@ -332,9 +338,24 @@ async function asyncHandler() {
       displayCorrectAddressDiv();
       addressForm.reset();
     });
+
+  displayCorrectOrderDiv();
 }
 
 asyncHandler();
+
+function displayCorrectOrderDiv() {
+  const ordersDiv = document.querySelector(".my-orders-section");
+
+  for (child of ordersDiv.children) {
+    child.style.display = "none";
+  }
+  if (userData.orderInfo.length > 0) {
+    ordersDiv.querySelector(".orders-div").style.display = "flex";
+  } else {
+    ordersDiv.querySelector(".no-orders-div").style.display = "flex";
+  }
+}
 
 function toggleEditOrSaveBtn(editOrSave, editSection) {
   if (editOrSave === "edit") {
@@ -633,5 +654,15 @@ async function setDefaultAddress(addressId, prevDefaultAddressId) {
     });
   } catch (error) {
     return { success: false, message: error.message };
+  }
+}
+
+async function getOrderDetails() {
+  try {
+    const res = await fetch("/api/order");
+    const data = await res.json();
+    return res.ok ? data.orders : false;
+  } catch (error) {
+    return false;
   }
 }

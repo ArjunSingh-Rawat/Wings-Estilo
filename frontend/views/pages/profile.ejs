@@ -150,11 +150,16 @@
         <div class="no-orders-div" style="display: none">
           <p id="no-p1">No orders has been placed yet</p>
           <p id="no-p2">Add items into your cart to place an order</p>
-          <button class="continue-shopping-btn">CONTINUE SHOPPING</button>
+          <button
+            class="continue-shopping-btn"
+            onclick="window.location.href='/'"
+          >
+            CONTINUE SHOPPING
+          </button>
         </div>
 
         <!-- orders-div -->
-        <div class="orders-div">
+        <div class="orders-div" style="display: none">
           <h2>MY ORDERS</h2>
           <div class="orders-list">
             <div class="order">
@@ -223,40 +228,7 @@
 
         <div class="address-container">
           <p id="address-title">MANAGE ADDRESSES</p>
-          <div class="address-div">
-            <div class="addresses">
-              <div class="edit-delete-btn">
-                <div><button>Edit</button> <button>Delete</button></div>
-                <button>Set as default</button>
-              </div>
-
-              <p id="my-name-phone">
-                <span id="address-div-name">Vijay Singh Rawat</span>
-                <span id="address-div-phone">8839526901</span>
-              </p>
-              <p id="my-address">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-                voluptatum accusamus explicabo ab provident natus animi, vel,
-                consequuntur, eos inventore praesentium laborum
-              </p>
-            </div>
-            <div class="addresses">
-              <div class="edit-delete-btn">
-                <div><button>Edit</button> <button>Delete</button></div>
-                <button>Set as default</button>
-              </div>
-
-              <p id="my-name-phone">
-                <span id="address-div-name">Vijay Singh Rawat</span>
-                <span id="address-div-phone">8839526901</span>
-              </p>
-              <p id="my-address">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-                voluptatum accusamus explicabo ab provident natus animi, vel,
-                consequuntur, eos inventore praesentium laborum
-              </p>
-            </div>
-          </div>
+          <div class="address-div"></div>
           <button class="add-new-address-btn">ADD NEW ADDRESS</button>
         </div>
 

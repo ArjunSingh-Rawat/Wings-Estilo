@@ -9,6 +9,7 @@ const RazorpayPayment = require("../models/razorpayPaymentModel");
 const User = require("../models/userModel");
 const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
+const Api = require("twilio/lib/rest/Api");
 
 const initiateOrder = asyncHandler(async (req, res) => {
   const { products } = req.body;
@@ -70,8 +71,72 @@ async function validateProduct(productId, productSize, quantity) {
   }
 }
 
-const checkQuantity = asyncHandler((req, res) => {
-  res.status(200).json({
+const checkQuantity = asyncHandler(async (req, res) => {
+  const checkoutToken = req.cookies.checkout_token;
+
+  const tokenData = jwt.verify(
+    checkoutToken,
+    process.env.CHECKOUT_TOKEN_SECRET
+  );
+  const selectedProducts = tokenData.products;
+
+  const { productId, productSize, quantity } = req.body;
+
+  if (
+    !selectedProducts.find(
+      ({ productId: selectedProductId }) => selectedProductId === productId
+    )
+  ) {
+    throw new ApiError(
+      406,
+      "Product Id provided not matching with product ID selected!"
+    );
+  }
+  if (
+    !selectedProducts.find(
+      ({ productSize: selectedProductSize }) =>
+        selectedProductSize === productSize
+    )
+  ) {
+    throw new ApiError(406, "Selected size not matching with given size!");
+  }
+
+  const product = await Product.findOne({ _id: productId })
+    .populate("sizeAvailable")
+    .select("name sellPrice image sizeAvailable shortDescription");
+
+  if (!product) {
+    throw new ApiError(404, "Product not found!");
+  }
+
+  const availableQuantity = product.sizeAvailable[productSize.toLowerCase()];
+  if (+quantity > availableQuantity) {
+    throw new ApiError(403, "You reached maximum quantity available!");
+  }
+  if (+quantity < 1) {
+    throw new ApiError(403, "Quantity should be at least 1!");
+  }
+
+  const index = selectedProducts.findIndex(
+    ({ productId: selectedProductId }) => selectedProductId === productId
+  );
+  selectedProducts[index].quantity = quantity;
+
+  const newCheckoutToken = jwt.sign(
+    {
+      products: selectedProducts,
+    },
+    process.env.CHECKOUT_TOKEN_SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
+
+  const options = {
+    httpOnly: true,
+  };
+
+  res.cookie("checkout_token", newCheckoutToken, options).status(200).json({
     success: true,
     message: "quantity is available",
   });
@@ -175,11 +240,26 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
   if (!order) {
     throw new ApiError(500, "failed to save order in DB!!");
   }
+  const options = {
+    httpOnly: true,
+  };
+  res
+    .status(200)
+    .clearCookie("checkout_token", options)
+    .clearCookie("orderDetails", options)
+    .redirect("/profile?section=orders");
+});
 
+const getOrderDetails = asyncHandler(async (req, res) => {
+  const userId = req.user.userid;
+  const orders = await Order.find({ user: userId });
+  if (!orders) {
+    throw new ApiError(404, "orders not found!");
+  }
   res.status(200).json({
     success: true,
-    message: "successfully created Order",
-    order,
+    message: "orders found!",
+    orders,
   });
 });
 
@@ -188,4 +268,5 @@ module.exports = {
   checkQuantity,
   startRazorpayPaymentProcess,
   createOrderOnSuccessfulPayment,
+  getOrderDetails,
 };

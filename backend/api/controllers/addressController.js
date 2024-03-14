@@ -181,6 +181,9 @@ const setDefaultAddress = asyncHandler(async (req, res) => {
   const addressId = req.params.addressId;
   const prevDefaultAddressId = req.body.prevDefaultAddressId;
 
+  if (!prevDefaultAddressId) {
+    throw new ApiError(406, "Previous default address id not provide!");
+  }
   await Address.findOneAndUpdate({ _id: addressId }, { defaultAddress: true });
   await Address.findOneAndUpdate(
     { _id: prevDefaultAddressId },

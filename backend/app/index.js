@@ -85,9 +85,11 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
 });
 
 router.get("/sell/checkout", getSelectedProduct, (req, res) => {
-  res.render("pages/checkout", {
-    products: req.products,
-  });
+  res
+    .setHeader("Cache-Control", "no-cache,no-store,must-revalidate")
+    .render("pages/checkout", {
+      products: req.products,
+    });
 });
 
 router.get("/admin", authorizeAdminUser, (req, res) => {

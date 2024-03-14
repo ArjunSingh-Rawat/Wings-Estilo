@@ -34,7 +34,15 @@ body {
   color: grey;
 }
 
-#change-button {
+#my-name-phone span {
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 20px;
+  padding: 10px 0;
+  display: inline-block;
+}
+
+#add-change-address-button {
   padding: 5px 15px;
   border: 1px solid #ff8080;
   color: #ff8080;

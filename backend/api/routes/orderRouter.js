@@ -4,6 +4,7 @@ const {
   checkQuantity,
   startRazorpayPaymentProcess,
   createOrderOnSuccessfulPayment,
+  getOrderDetails,
 } = require("../controllers/orderController");
 const {
   validateOrderDetails,
@@ -15,7 +16,7 @@ const router = express.Router();
 
 router.post("/initiate", initiateOrder);
 
-router.post("/quantity", validateOrderDetails, checkQuantity);
+router.post("/quantity", checkQuantity);
 
 router.post(
   "/start-payment",
@@ -37,5 +38,7 @@ router.get("/products", getSelectedProduct, (req, res) => {
     products: req.products,
   });
 });
+
+router.get("/", getOrderDetails);
 
 module.exports = router;

@@ -111,7 +111,9 @@ const getSelectedProduct = asyncHandler(async (req, res, next) => {
 
 const validateShippingAddress = asyncHandler(async (req, res, next) => {
   const { shippingAddress } = req.body;
-
+  if (!shippingAddress) {
+    throw new ApiError(400, "Shipping address not provided!");
+  }
   const userId = req.user.userid;
   const user = await User.findOne({ _id: userId });
 
