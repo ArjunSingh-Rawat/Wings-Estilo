@@ -37,7 +37,7 @@ const addNewProduct = asyncHandler(async (req, res) => {
     image: imageObj.images[0],
     images: imageObj.images.splice(1),
     category: categories,
-    countInStock: countInStock,
+    countInStock,
     sizeAvailable: {
       xs: req.body.xs,
       s: req.body.s,
