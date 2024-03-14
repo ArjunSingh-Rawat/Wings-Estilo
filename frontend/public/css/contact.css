@@ -33,7 +33,7 @@ h1 {
 }
 
 .contact {
-  margin: 2% 0 0 0;
+  margin: 12% 0 0 0;
 }
 body,
 html {
@@ -91,4 +91,61 @@ textarea {
 }
 .google-map iframe {
   margin: 50px 150px;
+}
+
+@media (max-width: 768px) {
+  .contact {
+    font-size: 25px;
+    margin: 35% 0 0 0;
+  }
+  .para {
+    margin: 2em 0;
+    width: 99%;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .para p {
+    margin-right: 20px;
+  }
+  .box1 {
+    width: 90%;
+    font-size: 13px;
+    border: 1px solid black;
+    margin-left: 18px;
+    letter-spacing: 1px;
+    padding: 5px 5px;
+    line-height: 18px;
+  }
+  .box2 {
+    margin: 0px;
+    width: 90%;
+    font-size: 13px;
+    border: 1px solid black;
+    margin-left: 18px;
+    letter-spacing: 1px;
+    padding: 5px 5px;
+    line-height: 18px;
+  }
+  .contact1 {
+    margin: 10% 0 0 0;
+    font-size: 25px;
+  }
+  form {
+    margin: 20px 0;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  label {
+    font-size: 12px;
+  }
+  .map {
+    font-size: 25px;
+    padding-bottom: 25px;
+  }
+  .google-map iframe {
+    width: 100%;
+  }
 }

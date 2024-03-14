@@ -349,3 +349,226 @@ pre-wedding-section {
   width: 100%;
   object-fit: contain;
 }
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 20px;
+    padding-top: 20px;
+  }
+  .mater-poster img {
+    margin: 2px 10px;
+  }
+  .container {
+    display: grid;
+    grid-template-columns: repeat(2, 150px);
+    justify-content: center;
+    align-items: center;
+    grid-row-gap: 8px;
+    margin-top: 10px;
+  }
+  .container img {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+  }
+  .outer-section {
+    display: flex;
+    flex-direction: column;
+    margin-right: 18em;
+  }
+  .contact-form input,
+  label,
+  textarea {
+    padding: 5px;
+  }
+  .container2 {
+    width: 50%;
+  }
+  .container2 h1 {
+    width: 25em;
+    font-size: 15px;
+  }
+  .contact-form input,
+  label,
+  textarea {
+    width: 300px;
+  }
+  .side-img {
+    margin-left: 250px;
+  }
+  .btn {
+    padding: 5px 10px;
+    font-size: 15px;
+    margin-left: 15em;
+  }
+  .side-img img {
+    margin-top: 10px;
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+  }
+  .container3 {
+    flex-direction: column;
+  }
+  .side-img1 {
+    margin-left: 50px;
+  }
+  .side-img1 img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+  }
+  .terms {
+    margin-top: 30px;
+  }
+  .Conditions {
+    margin-left: 20px;
+  }
+  .list {
+    flex-direction: column;
+    margin-left: 50px;
+    font-size: 14px;
+  }
+  .pre-wedding-section h1 {
+    font-size: 20px;
+  }
+  .pre-wedding-img {
+    display: grid;
+    grid-template-columns: repeat(2, 150px);
+    justify-content: center;
+    align-items: center;
+    grid-row-gap: 8px;
+  }
+  .pre-wedding-img img {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+  }
+  .showcase {
+    flex-direction: column;
+  }
+  .showcase1 {
+    display: flex;
+    justify-content: center;
+  }
+  .showcase2 {
+    flex-direction: column;
+  }
+  .right-sec img {
+    width: 300px;
+    margin-left: 100px;
+  }
+  .left-para p {
+    width: 20em;
+    font-size: 15px;
+    margin-top: 20px;
+  }
+  .left-para1 {
+    margin-bottom: 20px;
+  }
+  .right img {
+    width: 300px;
+    object-fit: cover;
+    margin-left: 80px;
+  }
+  .right2 img2 {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    margin-left: 6em;
+  }
+  .help {
+    font-size: 30px;
+  }
+  .help-section {
+    flex-direction: column;
+  }
+  .baby-poster img {
+    width: 100%;
+    height: fit-content;
+    padding-right: 50px;
+  }
+  .right-img img {
+    padding-bottom: 50px;
+  }
+  .right-sec img {
+    width: 300px;
+    margin-right: 150px;
+    padding-bottom: 80px;
+  }
+  .left-para1 p,
+  .left-para2 p {
+    width: 20em;
+    text-shadow: 2px 2px 8px #19d1b0;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.8;
+    font-family: cursive;
+    margin-top: 30px;
+  }
+  .img1 {
+    width: 300px;
+  }
+  .showcase1 {
+    margin: 0;
+  }
+  .showcase1 {
+    flex-direction: column;
+  }
+
+  .prewed-poster img {
+    margin: 50px 0 50px 5px;
+    width: 100%;
+    object-fit: contain;
+  }
+  .book-btn1 {
+    margin: 10px 8em;
+    padding: 10px 25px;
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+    background-color: #d00a57;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  .book-btn {
+    width: 100%;
+    margin: 20px 48px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+    background-color: #d00a57;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+  }
+  .baby-poster {
+    width: 100%;
+  }
+  .baby-poster img {
+    margin: 10px 0 20px 7px;
+    width: 110%;
+    object-fit: contain;
+  }
+  .questions {
+    width: 80%;
+    margin-left: 3pc;
+  }
+  .faq {
+    font-size: 17px;
+  }
+  .faq-para {
+    font-size: 15px;
+  }
+}
+.right2 .img2 {
+  width: 300px;
+}
+.right1,
+.right2 {
+  width: 400px;
+  height: 375px;
+}
