@@ -7,7 +7,7 @@ const rentOrSell = path.pop();
 renderProducts(categoryName);
 
 async function renderProducts(categoryName) {
-  const products = await getProducts(categoryName);
+  const products = await getProducts(categoryName, rentOrSell);
   const wishList = await getWishlistItems();
   document.querySelector(".total-products").innerText = products
     ? `${products.length} Products`
@@ -94,8 +94,10 @@ function changeHeartClass(addCls, removeCls, heart) {
 }
 
 // fetching api data
-async function getProducts(categoryName) {
-  const res = await fetch(`/api/products/category/${categoryName}`);
+async function getProducts(categoryName, rentOrSell) {
+  const res = await fetch(
+    `/api/products/category/${categoryName}/${rentOrSell}`
+  );
   if (res.ok) {
     const data = await res.json();
     return data.products;

@@ -279,13 +279,24 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 const getProductsByCategory = asyncHandler(async (req, res) => {
   const categoryName = req.params.name;
-
+  const rentOrSell = req.params.rentOrSell;
+  if (!rentOrSell && ["sell", "rent"].includes(rentOrSell)) {
+    throw new ApiError(403, "ren of sell not provided in url path");
+  }
   const categoryId = await Category.findOne({ categoryName }).select("_id");
 
-  const products = await Product.find({
-    category: categoryId,
-  });
-
+  let products = null;
+  if (rentOrSell === "sell") {
+    products = await Product.find({
+      category: categoryId,
+      forSell: true,
+    });
+  } else if (rentOrSell === "rent") {
+    products = await Product.find({
+      category: categoryId,
+      forRent: true,
+    });
+  }
   if (!products || !products.length) {
     throw new ApiError(404, "No products found!!");
   }
