@@ -25,6 +25,6 @@ router.get("/:id", getOneProduct);
 
 router.get("/", getAllProducts);
 
-router.get("/category/:name", getProductsByCategory);
+router.get("/category/:name/:rentOrSell", getProductsByCategory);
 
 module.exports = router;
