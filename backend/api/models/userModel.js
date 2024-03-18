@@ -49,12 +49,11 @@ const userSchema = new mongoose.Schema(
         ref: "Product",
       },
     ],
-    refreshToken: {
-      type: String,
-    },
   },
   { timestamps: true }
 );
+
+userSchema.index({ phoneNumber: 1 }, { unique: true, sparse: true });
 
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(

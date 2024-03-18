@@ -16,8 +16,8 @@
             <img src="/Images/profile-images/profile-picture.png" alt="" />
           </div>
           <div class="user-info">
-            <p id="user-name">Panda Craft</p>
-            <p id="user-email">pandacraft1506@gmail.com</p>
+            <p id="user-name"></p>
+            <p id="user-email"></p>
           </div>
         </div>
 
@@ -59,20 +59,14 @@
                 type="text"
                 id="fname"
                 name="firstName"
-                value="Panda"
+                value=""
                 disabled
               />
             </div>
 
             <div class="last-name info-div">
               <label for="lname">Last name:</label>
-              <input
-                type="text"
-                id="lname"
-                name="lastName"
-                value="Craft"
-                disabled
-              />
+              <input type="text" id="lname" name="lastName" value="" disabled />
             </div>
 
             <div class="gender">
@@ -108,13 +102,7 @@
 
             <div class="email-div info-div">
               <label for="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value="pandacraft1506@gmail.com"
-                disabled
-              />
+              <input type="email" id="email" name="email" value="" disabled />
             </div>
           </div>
 
@@ -252,6 +240,7 @@
                   name="phoneNumber"
                   maxlength="10"
                   minlength="10"
+                  pattern="[0-9]+"
                   required
                 />
               </div>
@@ -266,6 +255,7 @@
                   name="pinCode"
                   maxlength="6"
                   minlength="6"
+                  pattern="[0-9]+"
                   required
                 />
               </div>
@@ -406,7 +396,7 @@
       <div class="confirm-close-otp" style="display: none">
         <div onclick="closeConfirmDiv()" class="close-confirm-btn">&times;</div>
         <p>Next you will be able to edit after 10 minutes</p>
-        <button onclick="closeOtpDiv()">Confirm</button>
+        <button onclick="closeOtpDiv();clearOtpInputValues()">Confirm</button>
       </div>
     </div>
     <!-- footer -->

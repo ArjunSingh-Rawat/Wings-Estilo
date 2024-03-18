@@ -103,12 +103,19 @@ async function asyncHandler() {
             userData.phoneNumberToUpdate = phoneNumber;
 
             const response = await sendPhoneOtp(phoneNumber);
-            if (response) {
+            if (response.success) {
               showOtpPopup(
                 userData.personalInfo.phoneNumber ? true : false,
                 phoneNumber,
                 userData.personalInfo
               );
+            } else {
+              getAlertPopup(response.message);
+              toggleEditOrSaveBtn("save", "phone-number");
+              document
+                .querySelector("#phone-number")
+                .toggleAttribute("disabled");
+              renderUserInfo(userData.personalInfo);
             }
           } else {
             toggleEditOrSaveBtn("save", "phone-number");
@@ -618,12 +625,8 @@ async function sendPhoneOtp(phoneNumber) {
       phoneNumber,
     }),
   });
-  if (res.ok) {
-    return true;
-  } else {
-    const data = await res.json();
-    return data.message;
-  }
+  const data = await res.json();
+  return data;
 }
 
 async function updatePhoneNumber(phoneNumber, primaryOtp, updateOtp) {

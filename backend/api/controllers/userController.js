@@ -246,8 +246,15 @@ const updatePhoneNumber = asyncHandler(async (req, res) => {
 
   user.phoneNumber = phoneNumber;
   user.isNumberVerified = true;
-  await user.save();
-
+  try {
+    await user.save();
+  } catch (error) {
+    if (error.code === 11000) {
+      throw new ApiError(403, "Phone number not available!!");
+    } else {
+      throw error;
+    }
+  }
   res.status(200).json({
     success: true,
     message: "successfully added number",

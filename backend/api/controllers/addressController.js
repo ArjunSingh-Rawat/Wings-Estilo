@@ -2,6 +2,7 @@ const Address = require("../models/addressModel");
 const User = require("../models/userModel");
 const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
+const validatePhoneNumber = require("../../utils/validatePhoneNumber");
 
 const addNewAddress = asyncHandler(async (req, res) => {
   let {
@@ -17,6 +18,7 @@ const addNewAddress = asyncHandler(async (req, res) => {
   const userId = req.user.userid;
 
   const data = await checkPinCode(pinCode, district, state);
+  validatePhoneNumber(phoneNumber);
 
   district = data.district;
   state = data.state;

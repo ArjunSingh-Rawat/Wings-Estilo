@@ -451,6 +451,11 @@
   padding: 0 10px;
 }
 
+.address-form input:focus,
+.address-form select:focus {
+  border-color: blue;
+}
+
 .box3 textarea {
   width: 620px;
   height: 100px;
