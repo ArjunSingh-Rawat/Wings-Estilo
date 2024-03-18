@@ -8,6 +8,7 @@
 h1 {
   text-align: center;
   color: #ff8080;
+  padding-bottom: 20px;
 }
 .para {
   margin: 10px 20px;
@@ -86,12 +87,6 @@ textarea {
 .submit-btn:hover {
   background-color: #0056b3;
 }
-.map {
-  margin: 5% 0 0 0;
-}
-.google-map iframe {
-  margin: 50px 150px;
-}
 
 @media (max-width: 768px) {
   .contact {
@@ -141,11 +136,7 @@ textarea {
   label {
     font-size: 12px;
   }
-  .map {
-    font-size: 25px;
-    padding-bottom: 25px;
-  }
-  .google-map iframe {
+  .google-map {
     width: 100%;
   }
 }

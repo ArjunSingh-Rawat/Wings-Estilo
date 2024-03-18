@@ -193,7 +193,6 @@
   .shop-section {
     flex-direction: column;
     margin: 0;
-    width: fit-content;
   }
   .shop-section img {
     margin-left: 13px;
