@@ -54,7 +54,6 @@ function renderBagPage(items) {
         <p class="item-price">Rs.${sellPrice} <del>Rs.${
           sellPrice + 500
         }</del></p>
-        <button class="move-btn" data-item-id="item${i}">Move to bag</button>
       </div>
     </div>`;
     i++;

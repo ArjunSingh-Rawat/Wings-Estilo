@@ -54,7 +54,9 @@
 }
 
 .home-gowns {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 20%);
+  gap: 20px;
   justify-content: center;
   margin-top: 30px;
 }
@@ -74,12 +76,8 @@
 
 /* home-gown-item */
 
-.home-gowns-item {
-  margin: 0 20px;
-}
-
 .home-gown-img img {
-  width: 320px;
+  width: 100%;
 }
 
 .item-info {
@@ -149,18 +147,16 @@
 }
 
 .mg-items {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 20%);
+  gap: 20px;
   justify-content: center;
-}
-
-.mg-item {
-  margin: 0 20px;
 }
 
 .mg-img {
   display: block;
-  width: 300px;
-  height: 450px;
+  width: 100%;
+  aspect-ratio: 1/1.5;
 }
 
 .mg-img img {
@@ -225,6 +221,7 @@
 .insta-img {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 30px 0;
 }
@@ -290,7 +287,7 @@
 
 /* MEDIA QUERY */
 
-@media (max-width: 768px) {
+@media (max-width: 699px) {
   /* carousel */
 
   .img-slider1 {
@@ -326,8 +323,9 @@
 
   .home-gowns {
     display: grid;
-    grid-template-columns: repeat(2, 50%);
-    /* gap: 10px; */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 10px;
     justify-content: center;
   }
 
@@ -342,7 +340,7 @@
   /* home-gown-item */
 
   .home-gowns-item {
-    margin: 0 5px;
+    margin: 0;
   }
 
   .home-gown-img img {
@@ -393,24 +391,16 @@
 
   .mg-items {
     display: grid;
-    grid-template-columns: repeat(2, 50%);
+    grid-template-columns: repeat(2, 1fr);
     justify-content: center;
-  }
-
-  .mg-item {
-    margin: 0 5px;
+    gap: 10px;
+    padding: 0 10px;
   }
 
   .mg-img {
     width: 100%;
-    height: 320px;
-    display: block;
-  }
-
-  .mg-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    aspect-ratio: 1/1.5;
+    display: inline-block;
   }
 
   /* lehenga-section */
@@ -468,7 +458,7 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1200px) {
+@media (min-width: 700px) and (max-width: 1200px) {
   /* carousel */
 
   /* category-section */
@@ -524,18 +514,14 @@
   .mg-items {
     display: grid;
     grid-template-columns: repeat(2, 40%);
-    justify-content: center;
     gap: 20px;
-  }
-
-  .mg-item {
-    margin: 0;
+    justify-content: center;
   }
 
   .mg-img {
     width: 100%;
-    height: 600px;
-    display: block;
+    aspect-ratio: 1/1.5;
+    display: inline-block;
   }
 
   /* lehenga-section */

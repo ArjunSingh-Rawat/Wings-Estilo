@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   gap: 100px;
-  margin-top: 20px;
 }
 
 /* sidebar */
@@ -234,6 +233,7 @@
 #no-p2 {
   font-size: 14px;
   padding: 5px 0;
+  text-align: center;
 }
 
 .continue-shopping-btn,
@@ -344,16 +344,9 @@
   margin: 10px 0;
 }
 
-.order-delivery-info #detail-info {
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: underline;
-}
-
 /* address-section */
 
 .my-addresses-section {
-  width: 50%;
   width: 50%;
   padding: 20px;
   display: flex;
@@ -438,12 +431,21 @@
   margin-bottom: 5px;
 }
 
+.name,
+.mobile-number,
+.pincode,
+.locality,
+.city,
+.state {
+  flex: 1;
+}
+
 .box1 div input,
 .box2 div input,
 .box4 div input,
 .box4 div select,
 .box5 div select {
-  width: 300px;
+  width: 100%;
   height: 40px;
   outline: none;
   border: 1px solid lightgrey;
@@ -457,7 +459,7 @@
 }
 
 .box3 textarea {
-  width: 620px;
+  width: 100%;
   height: 100px;
   resize: none;
   padding: 10px;
@@ -510,45 +512,576 @@
 }
 
 #otp-popup {
-  width: 218px;
-  height: 335px;
+  width: 300px;
+  padding: 15px;
+  border-radius: 5px;
   background-color: white;
+  position: relative;
+}
+
+#otp-popup .close-btn,
+.close-confirm-btn {
+  width: 20px;
+  height: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verify-otp {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.otp-value-container {
+  margin: 20px 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 10px;
+}
+
+.enter-otp {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.otp-values {
+  display: flex;
+  gap: 10px;
 }
 
 .otp-values input {
-  width: 20px;
+  width: 30px;
   height: 30px;
   font-size: 20px;
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
   font-weight: bold;
   text-align: center;
 }
 
-#otp-popup .close-btn {
-  font-size: 24px;
-  cursor: pointer;
+.otp-not-rec {
+  font-size: 14px;
+}
+.otp-not-rec span {
+  color: #ff8080;
+  font-weight: 500;
+  text-decoration: underline;
 }
 
-#otp-popup .close-btn {
-  font-size: 30px;
-  text-align: end;
-  margin-right: 4px;
+#otp-submit-btn {
+  padding: 5px 15px;
+  background-color: #ff8080;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  margin: 10px 0;
+  cursor: pointer;
 }
 
 #otp-popup .resend-otp {
   cursor: pointer;
 }
 
+/* otp-errors */
+.otp-errors {
+  font-size: 14px;
+  color: rgb(255, 65, 65);
+  font-style: italic;
+}
+
+/* confirm-close-otp */
 .confirm-close-otp {
-  position: fixed;
-  background: #fac2c2;
-  width: 188px;
-  height: 95px;
+  background-color: rgb(240, 240, 240);
+  width: 200px;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  padding: 28px;
-  margin-bottom: 156px;
+  align-items: center;
+  border: 1px solid grey;
+}
+
+.confirm-close-otp p {
+  font-size: 12px;
+  text-align: center;
+}
+
+.confirm-close-otp button {
+  border: none;
+  background-color: transparent;
+  color: #ba0000;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  display: block;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+/* Media query */
+@media (max-width: 799px) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 0;
+  }
+
+  /* sidebar */
+  .profile-sidebar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0;
+  }
+
+  /* profile-div */
+
+  .profile-div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .user-info {
+    margin: 0 20px;
+  }
+
+  .user-info #user-name {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .user-info #user-email {
+    font-size: 12px;
+  }
+
+  /* profile-nav */
+
+  .profile-nav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .profile-nav button {
+    padding: 5px 15px;
+  }
+
+  .profile-nav button img {
+    height: 20px;
+  }
+
+  .profile-nav button span {
+    font-size: 12px;
+    margin-left: 5px;
+  }
+
+  .logout-btn {
+    font-size: 12px;
+  }
+
+  /* my-profile-section */
+
+  .my-profile-section {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .my-profile-section h2 {
+    font-size: 18px;
+  }
+
+  .my-profile-info {
+    width: 100%;
+  }
+
+  .p {
+    font-size: 14px;
+  }
+
+  .info-div {
+    display: block;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .info-div label,
+  .gender #gender-title {
+    font-size: 14px;
+    width: 150px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* alert */
+  .alert {
+    margin: 5px 0;
+  }
+
+  .info-div input {
+    width: 80%;
+    margin: 0;
+  }
+
+  /* my- orders-section */
+
+  .my-orders-section {
+    width: 100%;
+  }
+
+  /* orders-div */
+
+  .orders-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .orders-div h2 {
+    font-size: 18px;
+  }
+
+  .order {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .order-info {
+    display: flex;
+  }
+
+  .order-img img {
+    width: 60px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ordered-product-info {
+    margin-left: 10px;
+  }
+
+  .ordered-product-info #ordered-product-name {
+    font-size: 12px;
+  }
+
+  .ordered-product-info #ordered-product-size {
+    font-size: 11px;
+    padding: 8px 0;
+  }
+
+  .ordered-product-info #ordered-product-prize {
+    font-size: 12px;
+  }
+
+  .order-delivery-info #order-date {
+    display: flex;
+    align-items: center;
+  }
+
+  #order-date .bx {
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    color: white;
+    background-color: rgb(0, 180, 0);
+    border-radius: 50%;
+    margin-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #order-date span {
+    font-size: 12px;
+  }
+
+  .order-delivery-info #order-alert {
+    font-size: 11px;
+  }
+
+  /* address-section */
+
+  .my-addresses-section {
+    width: 100%;
+  }
+
+  /* address-form */
+
+  .box1,
+  .box2,
+  .box4 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .name,
+  .pincode,
+  .city {
+    margin-right: 0;
+  }
+
+  .box1 div input,
+  .box2 div input,
+  .box4 div input,
+  .box4 div select,
+  .box5 div select {
+    width: 100%;
+    height: 40px;
+  }
+
+  .box3 textarea {
+    width: 100%;
+    height: 100px;
+  }
+
+  /* form-btn */
+
+  .form-btn {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1000px) {
+  .profile {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+  }
+
+  /* sidebar */
+  .profile-sidebar {
+    padding: 20px;
+  }
+
+  /* profile-div */
+
+  .user-img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .user-info {
+    margin: 0 10px;
+  }
+
+  .user-info #user-name {
+    font-size: 16px;
+  }
+
+  /* profile-nav */
+
+  .profile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .profile-nav button {
+    padding: 10px 20px;
+  }
+
+  .profile-nav .nav-active {
+    transform: translateX(40px);
+  }
+
+  .profile-nav button img {
+    height: 30px;
+  }
+
+  .profile-nav button span {
+    font-size: 16px;
+  }
+
+  /* my-profile-section */
+
+  .my-profile-section {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .my-profile-section h2 {
+    font-size: 18px;
+  }
+
+  .my-profile-info {
+    width: 100%;
+  }
+
+  .p {
+    font-size: 14px;
+  }
+
+  .info-div {
+    display: block;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .info-div label,
+  .gender #gender-title {
+    font-size: 14px;
+    width: 150px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* alert */
+  .alert {
+    margin: 5px 0;
+  }
+
+  .info-div input {
+    width: 80%;
+    margin: 0;
+  }
+
+  /* my- orders-section */
+
+  .my-orders-section {
+    width: 100%;
+  }
+
+  /* orders-div */
+
+  .orders-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .orders-div h2 {
+    font-size: 18px;
+  }
+
+  .order {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .order-info {
+    display: flex;
+  }
+
+  .order-img img {
+    width: 60px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ordered-product-info {
+    margin-left: 10px;
+  }
+
+  .ordered-product-info #ordered-product-name {
+    font-size: 12px;
+  }
+
+  .ordered-product-info #ordered-product-size {
+    font-size: 11px;
+    padding: 8px 0;
+  }
+
+  .ordered-product-info #ordered-product-prize {
+    font-size: 12px;
+  }
+
+  .order-delivery-info #order-date {
+    display: flex;
+    align-items: center;
+  }
+
+  #order-date .bx {
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
+    color: white;
+    background-color: rgb(0, 180, 0);
+    border-radius: 50%;
+    margin-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #order-date span {
+    font-size: 12px;
+  }
+
+  .order-delivery-info #order-alert {
+    font-size: 11px;
+  }
+
+  /* address-section */
+
+  .my-addresses-section {
+    width: 100%;
+  }
+
+  /* address-form */
+
+  .box1,
+  .box2,
+  .box4 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .name,
+  .pincode,
+  .city {
+    margin-right: 0;
+  }
+
+  .box1 div input,
+  .box2 div input,
+  .box4 div input,
+  .box4 div select,
+  .box5 div select {
+    width: 100%;
+    height: 40px;
+  }
+
+  .box3 textarea {
+    width: 100%;
+    height: 100px;
+  }
+
+  /* form-btn */
+
+  .form-btn {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
 }

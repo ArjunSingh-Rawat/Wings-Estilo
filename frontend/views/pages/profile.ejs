@@ -171,7 +171,6 @@
                   ><span>Delivered on Jan 1, 2024</span>
                 </p>
                 <p id="order-alert">Your item has been delivered.</p>
-                <a id="detail-info" href="#">Detail Information</a>
               </div>
             </div>
 
@@ -196,7 +195,6 @@
                   ><span>Delivered on Jan 1, 2024</span>
                 </p>
                 <p id="order-alert">Your item has been delivered.</p>
-                <a id="detail-info" href="#">Detail Information</a>
               </div>
             </div>
           </div>
@@ -360,10 +358,10 @@
     <div id="otp-container">
       <div id="otp-popup">
         <div onclick="showOtpCloseConfirm()" class="close-btn">&times;</div>
-        <div>Verify OTP</div>
+        <div class="verify-otp">VERIFY OTP</div>
         <div class="otp-value-container">
           <div class="primary-otp">
-            <div>
+            <div class="enter-otp">
               Enter OTP sent on +91 <span class="primary-number"></span>
             </div>
             <div class="otp-values">
@@ -376,7 +374,9 @@
             </div>
           </div>
           <div class="update-otp">
-            <div>Enter OTP sent on +91 <span class="update-number"></span></div>
+            <div class="enter-otp">
+              Enter OTP sent on +91 <span class="update-number"></span>
+            </div>
             <div class="otp-values">
               <input id="u-0" type="text" maxlength="1" />
               <input id="u-1" type="text" maxlength="1" />
@@ -388,15 +388,18 @@
           </div>
           <div class="otp-errors"></div>
         </div>
-        <div>
-          OTP not received?<span class="resend-otp">resend</span> in 60sec
+        <div class="otp-not-rec">
+          OTP not received? <span class="resend-otp">resend</span> in 60sec
         </div>
-        <button onclick="submitOtp()">Submit</button>
-      </div>
-      <div class="confirm-close-otp" style="display: none">
-        <div onclick="closeConfirmDiv()" class="close-confirm-btn">&times;</div>
-        <p>Next you will be able to edit after 10 minutes</p>
-        <button onclick="closeOtpDiv();clearOtpInputValues()">Confirm</button>
+        <button onclick="submitOtp()" id="otp-submit-btn">Submit</button>
+
+        <div class="confirm-close-otp" style="display: none">
+          <div onclick="closeConfirmDiv()" class="close-confirm-btn">
+            &times;
+          </div>
+          <p>Next you will be able to edit after 10 minutes</p>
+          <button onclick="closeOtpDiv();clearOtpInputValues()">Confirm</button>
+        </div>
       </div>
     </div>
     <!-- footer -->
