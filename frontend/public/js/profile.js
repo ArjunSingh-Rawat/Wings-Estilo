@@ -382,7 +382,10 @@ function toggleClass(currentDiv) {
     section.classList.remove("nav-active");
     document.querySelector(`.my-${section.id}`).style.display = "none";
   }
-  profileNav.querySelector(`#${currentDiv}`).classList.add("nav-active");
+
+  if (window.innerWidth > 799) {
+    profileNav.querySelector(`#${currentDiv}`).classList.add("nav-active");
+  }
   document.querySelector(`.my-${currentDiv}`).style.display = "flex";
 }
 

@@ -1,6 +1,6 @@
 .bag-section {
   width: 100%;
-  height: 90vh;
+  height: 80vh;
   /* background-color: antiquewhite; */
   display: flex;
   justify-content: center;
@@ -220,4 +220,34 @@
   font-size: 18px;
   font-weight: 600;
   color: black;
+}
+
+@media (max-width: 650px) {
+  .bag-section {
+    width: 100%;
+    height: 60vh;
+  }
+
+  .bag-div img {
+    width: 150px;
+  }
+
+  .bag-div p {
+    font-size: 30px;
+  }
+}
+
+@media (min-width: 651px) and (max-width: 1200px) {
+  .bag-section {
+    width: 100%;
+    height: 60vh;
+  }
+
+  .bag-div img {
+    width: 150px;
+  }
+
+  .bag-div p {
+    font-size: 30px;
+  }
 }

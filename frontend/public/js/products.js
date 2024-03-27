@@ -38,7 +38,7 @@ function createProductHtml(product, productInWishlist) {
 
   const productHtml = `
       <div class="item">
-        <a class="item-img" href="/${rentOrSell}/${productName}/${product._id}/buy" target = "_blank">
+        <a class="item-img" href="/${rentOrSell}/${productName}/${product._id}/buy" >
           <img src="${product.image}" alt="" />
         </a>
         <div class="item-info">
