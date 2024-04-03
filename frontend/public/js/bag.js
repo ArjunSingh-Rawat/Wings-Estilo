@@ -137,8 +137,6 @@ document
   .querySelector(".place-order button")
   .addEventListener("click", async () => {
     const bagItems = await getBagItems();
-    console.log(bagItems);
-
     const products = [];
 
     for (const item of bagItems) {

@@ -12,7 +12,7 @@ const { useFileFrom } = require("../../constants");
 
 const imageFolderPath = path.join(
   __dirname,
-  "../../../frontend/public/Images/"
+  "../../../frontend/public/Images/products/"
 );
 
 /*---------------- controller functions --------------*/
@@ -47,7 +47,7 @@ async function addImage(files, categoryId, productName, indexes) {
 
       imageNames.push(imageName);
 
-      imagePath = `/Images/${categoryName}/${imageName}`;
+      imagePath = `/Images/products/${categoryName}/${imageName}`;
       images.push(imagePath);
 
       i++;
