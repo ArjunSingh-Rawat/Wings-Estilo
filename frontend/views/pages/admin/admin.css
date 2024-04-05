@@ -231,11 +231,17 @@
   background-color: white;
   color: #ff8080;
 }
+.form-buttons #editBtn {
+  background-color: white;
+  color: #ff8080;
+  margin-left: 10px;
+}
 
 .form-buttons #submit:hover,
-.form-buttons #reset:hover {
+.form-buttons #reset:hover,
+.form-buttons #editBtn:hover {
   background-color: #fff6f2;
-  color: #ff8080;
+  ba: #ff8080;
 }
 
 .loader-container {
