@@ -46,7 +46,7 @@ function renderBagPage(items) {
     let html = `
     <div id="item${i}" class="item-box" data-product-id="${_id}">
       <div class="item-img">
-        <img src="${image}" alt="#" />
+        <img src="${"/" + image.split("/").splice(2).join("/")}" alt="#" />
         <i id="remove-item" class="bx bx-x" data-item-id="item${i}"></i>
       </div>
       <div class="img-info">

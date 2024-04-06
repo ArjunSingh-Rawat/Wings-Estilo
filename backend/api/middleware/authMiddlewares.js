@@ -9,7 +9,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
-    throw new ApiError(401, "Unauthorized request");
+    throw new ApiError(401, "Please login to continue!!");
   }
   const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
@@ -28,7 +28,7 @@ async function verifyTokenForStaticRoute(req, res, next) {
       req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      throw new Error("Unauthorized request");
+      throw new Error("Please login to continue!!");
     }
     const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
@@ -77,7 +77,7 @@ async function authorizeAdminUser(req, res, next) {
       req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      throw new Error("Unauthorized request");
+      throw new Error("Please login to continue!!");
     }
     const userToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
