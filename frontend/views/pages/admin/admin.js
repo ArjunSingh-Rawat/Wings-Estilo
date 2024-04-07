@@ -88,14 +88,17 @@ submitForm.addEventListener("submit", async (event) => {
   if (!productData.get("forRent")) {
     productData.append("forRent", "false");
   }
-
+  startOrStopLoader("start");
   const res = await fetch("/api/products", {
     method: "POST",
     body: productData,
   });
+  startOrStopLoader("stop");
 
   if (res.ok) {
     clearForm();
+  } else {
+    getAlertPopup(res.message);
   }
 });
 
@@ -106,6 +109,15 @@ function clearForm() {
     parentDiv.removeChild(image);
     parentDiv.children[0].style.display = "block";
   });
+}
+
+const loader = document.querySelector(".loader-container");
+function startOrStopLoader(startOrStop) {
+  if (startOrStop === "start") {
+    loader.style.display = "flex";
+  } else {
+    loader.style.display = "none";
+  }
 }
 
 /*---------- fetching data -----------*/

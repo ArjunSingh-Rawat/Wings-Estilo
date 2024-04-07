@@ -1,10 +1,5 @@
 .env
 .vscode
-
 /node_modules
 
-# /frontend/public/Images
-
-# backend/images
-
-/backend/db/temp.js
+/frontend/public/Images/products

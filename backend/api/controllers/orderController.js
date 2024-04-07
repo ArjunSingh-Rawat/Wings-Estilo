@@ -9,7 +9,9 @@ const RazorpayPayment = require("../models/razorpayPaymentModel");
 const User = require("../models/userModel");
 const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
-const Api = require("twilio/lib/rest/Api");
+const {
+  sendOrderDetailsToAdmin,
+} = require("../../utils/sendOrderDetailToAdmin");
 
 const initiateOrder = asyncHandler(async (req, res) => {
   const { products } = req.body;
@@ -226,12 +228,12 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
     totalAmount += product.productPrice * +product.quantity;
   }
 
-  const order = await Order.create({
+  let order = await Order.create({
     user: userId,
     items: items,
     totalAmount,
     payment: {
-      provider: "razorpay",
+      provider: "Razorpay",
       details: razorpayPayment._id,
     },
     shippingAddress,
@@ -240,6 +242,7 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
   if (!order) {
     throw new ApiError(500, "failed to save order in DB!!");
   }
+
   const options = {
     httpOnly: true,
   };
@@ -248,11 +251,36 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
     .clearCookie("checkout_token", options)
     .clearCookie("orderDetails", options)
     .redirect("/profile?section=orders");
+
+  order = await Order.findOne({ _id: order._id })
+    .populate({
+      path: "user",
+      select: "firstName lastName email gender phoneNumber",
+    })
+    .populate({
+      path: "items.product",
+      select: "name sellPrice rentPrice image",
+    })
+    .populate({ path: "payment.details", select: "-_id -__v -updateAt" })
+    .populate("shippingAddress");
+
+  await sendOrderDetailsToAdmin(order);
 });
 
 const getOrderDetails = asyncHandler(async (req, res) => {
   const userId = req.user.userid;
-  const orders = await Order.find({ user: userId });
+  const orders = await Order.find({ user: userId })
+    .populate({
+      path: "user",
+      select: "firstName lastName email gender phoneNumber",
+    })
+    .populate({
+      path: "items.product",
+      select: "name sellPrice rentPrice image",
+    })
+    .populate({ path: "payment.details", select: "-_id -__v -updateAt" })
+    .populate("shippingAddress");
+
   if (!orders) {
     throw new ApiError(404, "orders not found!");
   }

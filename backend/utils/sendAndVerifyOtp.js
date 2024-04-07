@@ -130,4 +130,4 @@ async function verifyPhoneOtp(otp, userId, phoneNumber, primary) {
   }
 }
 
-module.exports = { sendOtpOnNumber, verifyPhoneOtp };
+module.exports = { sendOtpOnNumber, verifyPhoneOtp, client };

@@ -83,10 +83,13 @@ const stateNames = [
   "West Bengal",
 ];
 
+useFileFrom = "localFiles";
+
 module.exports = {
   sellCategories,
   rentCategories,
   publicPages,
   stateNames,
   policyPages,
+  useFileFrom,
 };

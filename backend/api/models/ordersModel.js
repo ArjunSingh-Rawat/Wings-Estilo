@@ -36,12 +36,12 @@ const orderSchema = new mongoose.Schema(
     payment: {
       provider: {
         type: String,
-        enum: ["razorpay", "phonepe"],
+        enum: ["Razorpay", "Phonepe"],
         required: true,
       },
       details: {
         type: mongoose.Schema.Types.ObjectId,
-        refPath: "provider",
+        refPath: "payment.provider",
       },
     },
     shippingAddress: {

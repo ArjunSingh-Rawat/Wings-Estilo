@@ -4,14 +4,159 @@ const fs = require("fs");
 const path = require("path");
 const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
+const {
+  uploadOnCloudinary,
+  deleteFromCloudinary,
+} = require("../../utils/cloudinary");
+const { useFileFrom } = require("../../constants");
 
 const imageFolderPath = path.join(
   __dirname,
-  "../../../frontend/public/Images/"
+  "../../../frontend/public/Images/products/"
 );
 
+/*---------------- controller functions --------------*/
+
+async function addImage(files, categoryId, productName, indexes) {
+  try {
+    const category = await Category.findOne({ _id: categoryId }).select(
+      "categoryName -_id"
+    );
+    const categoryName = category.categoryName;
+    const folderPath = path.join(imageFolderPath + `${categoryName}`);
+
+    let i = 0;
+    let j = 0;
+    let images = [];
+    let imageNames = [];
+    if (indexes.length) {
+      indexes.sort();
+    }
+    for (const file of files) {
+      if (indexes.length) {
+        i = indexes[j];
+      }
+      const fileType =
+        file.originalname.split(".").pop() === "jpeg"
+          ? "jpg"
+          : file.originalname.split(".").pop();
+
+      const imageName = `${Date.now()}-${productName
+        .split(" ")
+        .join("-")}-${i}.${fileType}`;
+
+      imageNames.push(imageName);
+
+      imagePath = `/Images/products/${categoryName}/${imageName}`;
+      images.push(imagePath);
+
+      i++;
+      j++;
+    }
+    return {
+      images,
+      imageNames,
+      folderPath,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function saveImage(files, fileNames, folderPath) {
+  try {
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
+    let i = 0;
+    const imagePaths = [];
+    for (const file of files) {
+      const imagePath = path.join(folderPath, `${fileNames[i]}`);
+      fs.writeFileSync(imagePath, file.buffer);
+      imagePaths.push(imagePath);
+      i++;
+    }
+    return imagePaths;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function deleteImages(parentCategory, image, images, indexes) {
+  try {
+    const folderPath = imageFolderPath + parentCategory.categoryName;
+
+    const allImages = [image, ...images];
+    const deletedSmallImages = [];
+    const deletedMainImage = "";
+    if (indexes.length) {
+      for (const image of allImages) {
+        const imageName = image.split("/").pop();
+        const imageIndex = imageName.split("-").pop().split(".")[0];
+        if (indexes.includes(imageIndex)) {
+          const imagePath = folderPath + "\\" + imageName;
+          fs.unlinkSync(imagePath);
+
+          await deleteImageFromCloudinary(image);
+          if (imageIndex === 0) {
+            deletedMainImage = image;
+          } else {
+            deletedSmallImages.push(image);
+          }
+        }
+      }
+      return { deletedMainImage, deletedSmallImages };
+    }
+    if (fs.existsSync(folderPath)) {
+      if (image) {
+        const imagePath = folderPath + "\\" + image.split("/").pop();
+        fs.unlinkSync(imagePath);
+
+        await deleteImageFromCloudinary(image);
+      }
+      if (images.length) {
+        for (const image of images) {
+          const imagePath = folderPath + "\\" + image.split("/").pop();
+          fs.unlinkSync(imagePath);
+
+          await deleteImageFromCloudinary(image);
+        }
+      }
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function deleteImageFromCloudinary(image) {
+  const public_id = image.split(".")[0].split("/").splice(2).join("/");
+  await deleteFromCloudinary(public_id);
+}
+
+async function uploadImagesOnCloudinary(imagePaths, imageLinkPaths) {
+  imagePathsToStore = [];
+  let i = 0;
+  for (const file of imagePaths) {
+    const publicIdForCloudinary = imageLinkPaths[i]
+      .split(".")[0]
+      .split("/")
+      .splice(1)
+      .join("/");
+    const secure_url = await uploadOnCloudinary(file, publicIdForCloudinary);
+    imagePathsToStore.push(secure_url.split("upload")[1]);
+    i++;
+  }
+  return imagePathsToStore;
+}
+
+/*------------ controllers --------------*/
 const addNewProduct = asyncHandler(async (req, res) => {
-  const imageObj = await addImage(req.files, req.body.category, req.body.name);
+  const imageObj = await addImage(
+    req.files,
+    req.body.category,
+    req.body.name,
+    [] // empty image indexes array,since we are adding new product
+  );
 
   let categories = [req.body.category];
   if (req.body.subCategory) categories.push(req.body.subCategory);
@@ -34,8 +179,6 @@ const addNewProduct = asyncHandler(async (req, res) => {
     forRent: req.body.forRent,
     sellPrice: req.body.forSell === "true" ? req.body.sellPrice : 0,
     rentPrice: req.body.forRent === "true" ? req.body.rentPrice : 0,
-    image: imageObj.images[0],
-    images: imageObj.images.splice(1),
     category: categories,
     countInStock,
     sizeAvailable: {
@@ -49,9 +192,19 @@ const addNewProduct = asyncHandler(async (req, res) => {
     },
   });
 
-  await product.save();
+  const imagePaths = await saveImage(
+    req.files,
+    imageObj.imageNames,
+    imageObj.folderPath
+  );
+  const imagePathsToStore = await uploadImagesOnCloudinary(
+    imagePaths,
+    imageObj.images
+  );
+  product.image = imagePathsToStore[0];
+  product.images = imagePathsToStore.splice(1);
 
-  await saveImage(req.files, imageObj.imageNames, imageObj.folderPath);
+  await product.save();
 
   res.status(201).json({
     success: true,
@@ -59,63 +212,6 @@ const addNewProduct = asyncHandler(async (req, res) => {
     newItem: product,
   });
 });
-
-async function addImage(files, categoryId, productName, indexes) {
-  try {
-    const category = await Category.findOne({ _id: categoryId }).select(
-      "categoryName -_id"
-    );
-    const categoryName = category.categoryName;
-    const folderPath = path.join(imageFolderPath + `${categoryName}`);
-
-    let i = 0;
-    let j = 0;
-    let images = [];
-    let imageNames = [];
-    if (indexes) {
-      indexes.sort();
-    }
-    for (const file of files) {
-      if (indexes) {
-        i = indexes[j];
-      }
-      const imageName = `${Date.now()}-${productName
-        .split(" ")
-        .join("-")}-${i}.${file.originalname.split(".").pop()}`;
-
-      imageNames.push(imageName);
-
-      imagePath = `/Images/${categoryName}/${imageName}`;
-      images.push(imagePath);
-
-      i++;
-      j++;
-    }
-    return {
-      images,
-      imageNames,
-      folderPath,
-    };
-  } catch (error) {
-    throw error;
-  }
-}
-
-async function saveImage(files, fileNames, folderPath) {
-  try {
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath);
-    }
-    let i = 0;
-    for (const file of files) {
-      const imagePath = path.join(folderPath, `${fileNames[i]}`);
-      fs.writeFileSync(imagePath, file.buffer);
-      i++;
-    }
-  } catch (error) {
-    throw error;
-  }
-}
 
 const updateProduct = asyncHandler(async (req, res) => {
   const productFields = Object.keys(Product.schema.obj);
@@ -125,7 +221,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   for (const field in req.body) {
     if (productFields.includes(field)) {
-      fieldsToUpdate[field] = req.body[field];
+      if (field !== "category") fieldsToUpdate[field] = req.body[field];
     }
     if (sizeFields.includes(field)) {
       sizeFieldsToUpdate[field] = req.body[field];
@@ -139,42 +235,54 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (!product) {
     throw new ApiError(404, "Product not found!");
   }
+  const indexes = req.body.indexes ? [...req.body.indexes] : [];
 
+  const parentCategory = product.category.find((obj) => obj.isParentCategory);
   let imageObj = "";
-  if (req.files.length) {
+  if (indexes.length) {
     const { deletedMainImage, deletedSmallImages } = await deleteImages(
-      product.category,
+      parentCategory,
       product.image,
       product.images,
-      req.body.indexes
+      indexes
     );
-
     if (deletedMainImage) product.image = "";
     product.images = product.images.filter(
       (image) => !deletedSmallImages.includes(image)
     );
 
-    imageObj = await addImage(
-      req.files,
-      req.body.category,
-      req.body.name,
-      req.body.indexes
-    );
+    if (req.files.length) {
+      imageObj = await addImage(
+        req.files,
+        parentCategory._id,
+        req.body.name,
+        indexes
+      );
+      const imagePaths = await saveImage(
+        req.files,
+        imageObj.imageNames,
+        imageObj.folderPath
+      );
+      const imagePathsToStore = await uploadImagesOnCloudinary(
+        imagePaths,
+        imageObj.images
+      );
 
-    function compareImageNames(a, b) {
-      const regex = /(\d+)\./;
-      const numA = parseInt(a.match(regex)[1]);
-      const numB = parseInt(b.match(regex)[1]);
-      return numA - numB;
-    }
+      function compareImageNames(a, b) {
+        const regex = /(\d+)\./;
+        const numA = parseInt(a.match(regex)[1]);
+        const numB = parseInt(b.match(regex)[1]);
+        return numA - numB;
+      }
 
-    if (req.body.indexes[0] === "0") {
-      product.image = imageObj.images[0];
-      product.images = [...product.images, ...imageObj.images.splice(1)];
-      product.images.sort(compareImageNames);
-    } else {
-      product.images = [...product.images, ...imageObj.images];
-      product.images.sort(compareImageNames);
+      if (indexes[0] === "0") {
+        product.image = imagePathsToStore[0];
+        product.images = [...product.images, ...imagePathsToStore.splice(1)];
+        product.images.sort(compareImageNames);
+      } else {
+        product.images = [...product.images, ...imagePathsToStore];
+        product.images.sort(compareImageNames);
+      }
     }
   }
 
@@ -186,11 +294,6 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 
   await product.save();
-
-  if (req.files.length) {
-    await saveImage(req.files, imageObj.imageNames, imageObj.folderPath);
-  }
-
   res.status(202).json({
     success: true,
     message: "Success!",
@@ -203,10 +306,14 @@ const deleteProduct = asyncHandler(async (req, res) => {
     _id: req.params.id,
   }).populate("category");
 
+  const parentCategory = deletedProduct.category.find(
+    (obj) => obj.isParentCategory
+  );
   await deleteImages(
-    deletedProduct.category,
+    parentCategory,
     deletedProduct.image,
-    deletedProduct.images
+    deletedProduct.images,
+    [] // empty indexes array since are deleting all images
   );
 
   res.status(200).json({
@@ -215,49 +322,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
     deletedProduct: deletedProduct,
   });
 });
-
-async function deleteImages(categories, image, images, indexes) {
-  try {
-    const parentCategory = categories.find((obj) => obj.isParentCategory);
-    const folderPath = imageFolderPath + parentCategory.categoryName;
-
-    const allImages = [image, ...images];
-    const deletedSmallImages = [];
-    const deletedMainImage = "";
-
-    if (indexes) {
-      for (const image of allImages) {
-        const imageName = image.split("/").pop();
-        const imageIndex = imageName.split("-").pop().split(".")[0];
-        if (indexes.includes(imageIndex)) {
-          const imagePath = folderPath + "\\" + imageName;
-          fs.unlinkSync(imagePath);
-          if (imageIndex === 0) {
-            deletedMainImage = image;
-          } else {
-            deletedSmallImages.push(image);
-          }
-        }
-      }
-      return { deletedMainImage, deletedSmallImages };
-    }
-
-    if (fs.existsSync(folderPath)) {
-      if (image) {
-        const imagePath = folderPath + "\\" + image.split("/").pop();
-        fs.unlinkSync(imagePath);
-      }
-      if (images.length) {
-        for (const image of images) {
-          const imagePath = folderPath + "\\" + image.split("/").pop();
-          fs.unlinkSync(imagePath);
-        }
-      }
-    }
-  } catch (error) {
-    throw error;
-  }
-}
 
 const getOneProduct = asyncHandler(async (req, res) => {
   const product = await Product.findOne({ _id: req.params.id });
@@ -301,7 +365,17 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
     throw new ApiError(404, "No products found!!");
   }
 
-  res.status(200).json({
+  for (const product of products) {
+    if (useFileFrom === "localFiles") {
+      product.image = "/" + product.image.split("/").splice(2).join("/");
+    } else if (useFileFrom === "cloudinaryFiles") {
+      product.image =
+        `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload` +
+        product.image;
+    }
+  }
+
+  https: res.status(200).json({
     success: true,
     message: "success!",
     products,

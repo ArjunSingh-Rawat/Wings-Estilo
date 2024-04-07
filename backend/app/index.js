@@ -5,6 +5,7 @@ const {
   rentCategories,
   publicPages,
   policyPages,
+  useFileFrom,
 } = require("../constants");
 const Product = require("../api/models/productModel");
 const {
@@ -78,6 +79,24 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
     if (!["sell", "rent"].includes(req.params.rentOrSell)) {
       throw new Error("type sell or rent not provided");
     }
+    const images = [];
+    if (useFileFrom === "localFiles") {
+      product.image = "/" + product.image.split("/").splice(2).join("/");
+      for (const image of product.images) {
+        images.push("/" + image.split("/").splice(2).join("/"));
+      }
+    } else if (useFileFrom === "cloudinaryFiles") {
+      product.image =
+        `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload` +
+        product.image;
+      for (const image of product.images) {
+        images.push(
+          `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload` +
+            image
+        );
+      }
+    }
+
     res.render("pages/product", {
       _id: product._id,
       name: product.name,
@@ -86,7 +105,7 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
       shortDescription: product.shortDescription,
       description: product.description,
       image: product.image,
-      images: product.images,
+      images,
       isProductInWishlist,
       rentOrSell: req.params.rentOrSell,
     });

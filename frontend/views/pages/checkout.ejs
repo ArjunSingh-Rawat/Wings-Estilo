@@ -31,7 +31,7 @@
           >
             <img
               class="ordered-product-img"
-              src="<%=product.image%>"
+              src="<%= "/" + product.image.split("/").splice(2).join("/")%>"
               alt="<%=product.name%>"
             />
             <div class="ordered-product-detail">

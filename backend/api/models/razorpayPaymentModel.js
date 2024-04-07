@@ -9,4 +9,4 @@ const razorpayPaymentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("RazorpayPayment", razorpayPaymentSchema);
+module.exports = mongoose.model("Razorpay", razorpayPaymentSchema);

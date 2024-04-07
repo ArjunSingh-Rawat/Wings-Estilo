@@ -60,7 +60,7 @@ function renderBagPage(items) {
     let html = `
     <div id="item${i}" class="item" data-product-Id = "${_id}" data-product-size="${productSize}">
             <div class="item-img" >
-              <img src="${image}" alt="" />
+              <img src="${"/" + image.split("/").splice(2).join("/")}" alt="" />
             </div>
             <div class="item-details">
               <p class="item-name">${name}</p>
@@ -137,8 +137,6 @@ document
   .querySelector(".place-order button")
   .addEventListener("click", async () => {
     const bagItems = await getBagItems();
-    console.log(bagItems);
-
     const products = [];
 
     for (const item of bagItems) {

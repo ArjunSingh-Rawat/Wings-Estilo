@@ -35,7 +35,7 @@ document
     if (event.target.classList.contains("add-address")) {
       window.location.href = "/profile?section=addresses&from=checkout";
     } else if (event.target.classList.contains("change-address")) {
-      getAlertPopup("Change default address to user another address!");
+      getAlertPopup("Change default address to use another address!");
     }
   });
 
