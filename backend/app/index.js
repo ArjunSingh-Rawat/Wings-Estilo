@@ -4,6 +4,7 @@ const {
   sellCategories,
   rentCategories,
   publicPages,
+  policyPages,
   useFileFrom,
 } = require("../constants");
 const Product = require("../api/models/productModel");
@@ -20,6 +21,12 @@ const router = express.Router();
 for (const page in publicPages) {
   router.get(`/${page}`, (req, res) => {
     res.render(`pages/${publicPages[page]}`);
+  });
+}
+
+for (const page in policyPages) {
+  router.get(`/${page}`, (req, res) => {
+    res.render(`pages/policies/${policyPages[page]}`);
   });
 }
 

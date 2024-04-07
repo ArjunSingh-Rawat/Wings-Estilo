@@ -294,7 +294,7 @@
 
 /* media query */
 
-@media (max-width: 768px) {
+@media (max-width: 999px) {
   .top-bar {
     padding: 5px 20px;
   }
