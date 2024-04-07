@@ -37,6 +37,13 @@ const publicPages = {
   rental: "rental-home",
 };
 
+const policyPages = {
+  "terms-and-condition": "termsAndCondition",
+  "privacy-policy": "privacyPolicy",
+  "shipping-policy": "shippingPolicy",
+  "cancellation-and-exchange-policy": "cancellationAndExchangePolicy",
+};
+
 const stateNames = [
   "Andaman And Nicobar Islands",
   "Andhra Pradesh",
@@ -81,4 +88,5 @@ module.exports = {
   rentCategories,
   publicPages,
   stateNames,
+  policyPages,
 };
