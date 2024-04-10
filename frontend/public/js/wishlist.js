@@ -41,19 +41,41 @@ wishlistItemsDiv.addEventListener("click", async (event) => {
 function renderBagPage(items) {
   let i = 0;
   for (const item of items) {
-    const { name, image, sellPrice, _id } = item;
+    const { name, image, sellPrice, rentPrice, _id } = item;
+    let sellOrRent = "";
+    let price = 0;
+    if (item.forRent && item.forSell) {
+      sellOrRent = "sell";
+      price = sellPrice;
+    } else if (item.forSell) {
+      sellOrRent = "sell";
+      price = sellPrice;
+    } else if (item.forRent) {
+      sellOrRent = "rent";
+      price = rentPrice;
+    }
 
     let html = `
     <div id="item${i}" class="item-box" data-product-id="${_id}">
       <div class="item-img">
-        <img src="${"/" + image.split("/").splice(2).join("/")}" alt="#" />
+      <a href="/${sellOrRent}/${name}/${_id}/buy"><img src="${
+        "/" + image.split("/").splice(2).join("/")
+      }" alt="#" /></a>
         <i id="remove-item" class="bx bx-x" data-item-id="item${i}"></i>
       </div>
       <div class="img-info">
         <p class="item-name">${name}</p>
-        <p class="item-price">Rs.${sellPrice} <del>Rs.${
-          sellPrice + 500
-        }</del></p>
+        <p class="item-price">Rs.${price}${
+          sellOrRent === "rent" ? "/day" : ""
+        } <span class="item-rent-or-sell">${
+          item.forSell
+            ? `<i class='bx bxs-purchase-tag-alt' onclick="window.location.href='/sell/${name}/${_id}/buy'"></i>`
+            : ""
+        } ${
+          item.forRent
+            ? `<img class="item-rent-img rent-icon" onclick="window.location.href='/rent/${name}/${_id}/buy'" src="/Images/general-img/for-rent.png"  alt="" />`
+            : ""
+        }</span></p>
       </div>
     </div>`;
     i++;
