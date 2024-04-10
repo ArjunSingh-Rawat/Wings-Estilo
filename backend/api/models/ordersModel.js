@@ -24,11 +24,19 @@ const orderSchema = new mongoose.Schema(
         },
         status: {
           type: String,
-          enum: ["Pending", "Processing", "Shipped", "Delivered"],
-          default: "Pending",
+          enum: ["Processing", "Shipped", "Delivered", "canceled"],
+          default: "Processing",
+        },
+        updatedAt: {
+          type: Date,
         },
       },
     ],
+    orderStatus: {
+      type: String,
+      enum: ["incomplete", "complete"],
+      default: "incomplete",
+    },
     totalAmount: {
       type: Number,
       required: true,

@@ -314,23 +314,30 @@
   color: #ff8080;
 }
 
+.ordered-product-info #ordered-product-quantity {
+  margin-top: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  color: grey;
+}
+
 .order-delivery-info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 25px;
 }
 
-.order-delivery-info #order-date {
+.order-delivery-info #order-status {
   display: flex;
   align-items: center;
 }
 
-#order-date .bx {
+#order-status .bx {
   font-size: 16px;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   color: white;
-  background-color: rgb(200, 200, 200);
+  background-color: rgb(0, 180, 0);
   border-radius: 50%;
   margin-right: 5px;
   display: flex;
@@ -338,7 +345,7 @@
   align-items: center;
 }
 
-#order-date span {
+#order-status span {
   font-size: 14px;
   font-weight: 600;
   color: grey;
@@ -350,6 +357,11 @@
   font-weight: 500;
   color: grey;
   margin: 5px 0;
+}
+
+.shipped-or-delivered-date {
+  margin-top: 20px;
+  font-size: 13px;
 }
 
 /* address-section */
@@ -819,23 +831,29 @@
     color: #ff8080;
   }
 
+  .ordered-product-info #ordered-product-quantity {
+    font-size: 12px;
+    font-weight: 500;
+    color: grey;
+  }
+
   .order-delivery-info {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
 
-  .order-delivery-info #order-date {
+  .order-delivery-info #order-status {
     display: flex;
     align-items: center;
   }
 
-  #order-date .bx {
+  #order-status .bx {
     font-size: 16px;
     width: 18px;
     height: 18px;
     color: white;
-    background-color: rgb(200, 200, 200);
+    background-color: rgb(0, 180, 0);
     border-radius: 50%;
     margin-right: 5px;
     display: flex;
@@ -843,7 +861,7 @@
     align-items: center;
   }
 
-  #order-date span {
+  #order-status span {
     font-size: 14px;
     font-weight: 600;
     color: grey;
@@ -1072,17 +1090,17 @@
     gap: 10px;
   }
 
-  .order-delivery-info #order-date {
+  .order-delivery-info #order-status {
     display: flex;
     align-items: center;
   }
 
-  #order-date .bx {
+  #order-status .bx {
     font-size: 16px;
     width: 18px;
     height: 18px;
     color: white;
-    background-color: rgb(200, 200, 200);
+    background-color: rgb(0, 180, 0);
     border-radius: 50%;
     margin-right: 5px;
     display: flex;
@@ -1090,7 +1108,7 @@
     align-items: center;
   }
 
-  #order-date span {
+  #order-status span {
     font-size: 14px;
     font-weight: 600;
     color: grey;

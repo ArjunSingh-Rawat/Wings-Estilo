@@ -224,6 +224,7 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
       product: product.productId,
       productSize: product.productSize,
       quantity: product.quantity,
+      updateAt: new Date(),
     });
     totalAmount += product.productPrice * +product.quantity;
   }
@@ -271,15 +272,10 @@ const getOrderDetails = asyncHandler(async (req, res) => {
   const userId = req.user.userid;
   const orders = await Order.find({ user: userId })
     .populate({
-      path: "user",
-      select: "firstName lastName email gender phoneNumber",
-    })
-    .populate({
       path: "items.product",
       select: "name sellPrice rentPrice image",
     })
-    .populate({ path: "payment.details", select: "-_id -__v -updateAt" })
-    .populate("shippingAddress");
+    .select("-user -payment -shippingAddress");
 
   if (!orders) {
     throw new ApiError(404, "orders not found!");
@@ -291,10 +287,37 @@ const getOrderDetails = asyncHandler(async (req, res) => {
   });
 });
 
+const updateOrder = asyncHandler(async (req, res) => {
+  const orderId = req.params.id;
+  const { itemsDetailsToChange } = req.body;
+
+  const order = await Order.findOne({ _id: orderId });
+  for (const itemDetail of itemsDetailsToChange) {
+    order.items[itemDetail.index].status = itemDetail.status;
+    order.items[itemDetail.index].updatedAt = Date.now();
+  }
+  let orderStatus = "incomplete";
+  for (const item of order.items) {
+    if (item.status !== "Delivered") {
+      orderStatus = "incomplete";
+      break;
+    } else orderStatus = "complete";
+  }
+
+  order.orderStatus = orderStatus;
+  await order.save();
+
+  res.status(202).json({
+    success: true,
+    message: "order updated successfully",
+  });
+});
+
 module.exports = {
   initiateOrder,
   checkQuantity,
   startRazorpayPaymentProcess,
   createOrderOnSuccessfulPayment,
   getOrderDetails,
+  updateOrder,
 };

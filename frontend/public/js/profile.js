@@ -347,22 +347,10 @@ async function asyncHandler() {
     });
 
   displayCorrectOrderDiv();
+  renderOrderInfo(userData.orderInfo);
 }
 
 asyncHandler();
-
-function displayCorrectOrderDiv() {
-  const ordersDiv = document.querySelector(".my-orders-section");
-
-  for (child of ordersDiv.children) {
-    child.style.display = "none";
-  }
-  if (userData.orderInfo.length > 0) {
-    ordersDiv.querySelector(".orders-div").style.display = "flex";
-  } else {
-    ordersDiv.querySelector(".no-orders-div").style.display = "flex";
-  }
-}
 
 function toggleEditOrSaveBtn(editOrSave, editSection) {
   if (editOrSave === "edit") {
@@ -549,6 +537,109 @@ function closeConfirmDiv() {
 async function logout() {
   let response = await fetch("/api/user/logout");
   window.location.href = response.url;
+}
+
+/*------------- Order Js-------------*/
+
+function displayCorrectOrderDiv() {
+  const ordersDiv = document.querySelector(".my-orders-section");
+
+  for (child of ordersDiv.children) {
+    child.style.display = "none";
+  }
+  if (userData.orderInfo.length > 0) {
+    ordersDiv.querySelector(".orders-div").style.display = "flex";
+  } else {
+    ordersDiv.querySelector(".no-orders-div").style.display = "flex";
+  }
+}
+
+const orderListDiv = document.querySelector(".orders-list");
+
+const itemStatus = {
+  Processing: {
+    message: "Item processing, on its way to shipping",
+    icon: "bx-cog",
+  },
+  Shipped: {
+    message: "Item shipped, on its way to delivery",
+    icon: "bxs-package",
+  },
+  Delivered: {
+    message: "Delivery successful! Enjoy your purchase!",
+    icon: "bx-check",
+  },
+};
+
+function renderOrderInfo(orders) {
+  orderListDiv.innerHTML = "";
+  for (const order of orders) {
+    const orderDate = new Date(order.createdAt);
+    const orderDateString = `${orderDate.getDate()}-${
+      orderDate.getMonth() + 1
+    }-${orderDate.getFullYear()}`;
+    for (const item of order.items) {
+      let message = itemStatus[item.status].message;
+      let icon = itemStatus[item.status].icon;
+      const date = new Date(item.updatedAt);
+      let shippedOrDeliveredDate = "";
+
+      if (item.status !== "Processing" && item.updatedAt) {
+        shippedOrDeliveredDate = `${item.status} on: ${date.getDate()}-${
+          date.getMonth() + 1
+        }-${date.getFullYear()}, ${date.toLocaleTimeString(undefined, {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}`;
+      } else {
+        shippedOrDeliveredDate = "";
+      }
+      const itemHtml = `<div class="order">
+                        <div class="order-info">
+                          <div class="order-img">
+                            <img
+                              src="${item.product.image
+                                .split("/")
+                                .splice(2)
+                                .join("/")}"
+                              alt="${item.product.name}"
+                            />
+                          </div>
+                          <div class="ordered-product-info">
+                            <p id="ordered-product-name">${
+                              item.product.name
+                            }</p>
+                            <p id="ordered-product-size">Size: ${
+                              item.productSize
+                            }</p>
+                            <p id="ordered-product-prize">Rs. ${
+                              item.product.sellPrice
+                            }</p>
+                            <p id="ordered-product-quantity">Quantity: ${
+                              item.quantity
+                            }</p>
+                          </div>
+                        </div>
+                        <div class="order-delivery-info">
+                          <div id="ordered-date">
+                            Order Date: <span style="margin-left:10px;">${orderDateString}</span>
+                          </div>
+                          <div>
+                            <p id="order-status">
+                              <i class="bx ${icon}"></i><span>${
+                                item.status
+                              }</span>
+                            </p>
+                            <p id="order-alert">
+                              ${message}
+                            </p>
+                            <p class="shipped-or-delivered-date">${shippedOrDeliveredDate}</p>
+                          </div>
+                        </div>
+                      </div>`;
+      orderListDiv.innerHTML += itemHtml;
+    }
+  }
 }
 
 /*-------------------- Fetch Data ------------------*/

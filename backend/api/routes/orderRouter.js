@@ -5,12 +5,14 @@ const {
   startRazorpayPaymentProcess,
   createOrderOnSuccessfulPayment,
   getOrderDetails,
+  updateOrder,
 } = require("../controllers/orderController");
 const {
   validateOrderDetails,
   validateShippingAddress,
   getSelectedProduct,
 } = require("../middleware/validateProductOrder");
+const { authorizeAdminUser } = require("../middleware/authMiddlewares");
 
 const router = express.Router();
 
@@ -40,5 +42,7 @@ router.get("/products", getSelectedProduct, (req, res) => {
 });
 
 router.get("/", getOrderDetails);
+
+router.put("/:id", authorizeAdminUser, updateOrder);
 
 module.exports = router;
