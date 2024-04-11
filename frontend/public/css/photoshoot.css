@@ -10,9 +10,10 @@ html {
   object-fit: contain;
 }
 
-.heading {
+.photo-head {
   text-align: center;
   font-family: "Charmonman", cursive;
+  color: black;
 }
 
 .container {
@@ -351,7 +352,7 @@ pre-wedding-section {
 }
 
 @media (max-width: 768px) {
-  .heading {
+  .photo-head {
     font-size: 19px;
     padding-top: 20px;
     color: #ff8080;
