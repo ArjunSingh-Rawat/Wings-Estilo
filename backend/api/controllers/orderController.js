@@ -12,6 +12,7 @@ const ApiError = require("../../utils/apiError");
 const {
   sendOrderDetailsToAdmin,
 } = require("../../utils/sendOrderDetailToAdmin");
+const { deliveryCharges } = require("../../constants");
 
 const initiateOrder = asyncHandler(async (req, res) => {
   const { products } = req.body;
@@ -156,12 +157,14 @@ const startRazorpayPaymentProcess = asyncHandler(async (req, res) => {
       productPrice: productData.product.sellPrice,
     });
   }
-
-  const { order, key } = await createRazorpayOrder(amount);
   const shippingAddress = req.body.shippingAddress;
 
+  const deliveryCharge = deliveryCharges[shippingAddress.state.toLowerCase()];
+  amount += deliveryCharge;
+  const { order, key } = await createRazorpayOrder(amount);
+
   const orderDetailToken = jwt.sign(
-    { products, shippingAddress },
+    { products, shippingAddress: shippingAddress._id },
     process.env.CHECKOUT_TOKEN_SECRET,
     {
       expiresIn: 30 * 60,

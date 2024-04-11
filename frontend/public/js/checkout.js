@@ -1,6 +1,7 @@
 const checkoutDetails = {
   userData: null,
   products: [],
+  deliveryCharge: 0,
 };
 
 async function getCheckoutDetails() {
@@ -18,6 +19,17 @@ async function getCheckoutDetails() {
     }
   }
 
+  const state = checkoutDetails.userData.addresses[0].state;
+  const response = await getDeliveryCharge(state);
+  if (response.success) {
+    checkoutDetails.deliveryCharge = response.deliveryCharge;
+    document.querySelector(
+      ".delivery-charge"
+    ).innerText = `Rs. ${response.deliveryCharge}`;
+  } else {
+    getAlertPopup(response.message);
+  }
+
   if (!userInfo.addresses.length) {
     showAddAddressBtn();
   } else {
@@ -25,7 +37,7 @@ async function getCheckoutDetails() {
     renderUserInfo(checkoutDetails.userData);
   }
 
-  renderTotalPrice(checkoutDetails.products);
+  renderTotalPrice(checkoutDetails.products, checkoutDetails.deliveryCharge);
 }
 getCheckoutDetails();
 
@@ -60,7 +72,10 @@ itemsDiv.addEventListener("click", async (event) => {
           productQuantity + 1;
         const index = +itemId.slice(-1);
         checkoutDetails.products[index].quantity = productQuantity + 1;
-        renderTotalPrice(checkoutDetails.products);
+        renderTotalPrice(
+          checkoutDetails.products,
+          checkoutDetails.deliveryCharge
+        );
       } else {
         getAlertPopup(response.message);
       }
@@ -76,7 +91,10 @@ itemsDiv.addEventListener("click", async (event) => {
           productQuantity - 1;
         const index = +itemId.slice(-1);
         checkoutDetails.products[index].quantity = productQuantity - 1;
-        renderTotalPrice(checkoutDetails.products);
+        renderTotalPrice(
+          checkoutDetails.products,
+          checkoutDetails.deliveryCharge
+        );
       } else {
         getAlertPopup(response.message);
       }
@@ -95,7 +113,7 @@ document
     if (checkoutDetails.userData) {
       const data = await startPaymentProcess(
         products,
-        checkoutDetails.userData.addresses[0]._id
+        checkoutDetails.userData.addresses[0]
       );
       payWithRazorpay(data.key, data.order, checkoutDetails.userData);
     }
@@ -170,7 +188,7 @@ function renderUserInfo(userData) {
   document.querySelector("#user-email").innerText = userData.email;
 }
 
-function renderTotalPrice(products) {
+function renderTotalPrice(products, deliveryCharge) {
   let totalAmount = 0;
   let totalItems = 0;
   for (const productData of products) {
@@ -180,7 +198,9 @@ function renderTotalPrice(products) {
   }
   document.querySelector(".total-items").innerText = totalItems;
   document.querySelector(".total-amount").innerText = `Rs. ${totalAmount}`;
-  document.querySelector(".net-amount").innerText = `Rs. ${totalAmount + 80}`;
+  document.querySelector(".net-amount").innerText = `Rs. ${
+    totalAmount + deliveryCharge
+  }`;
 }
 
 function showAddAddressBtn() {
@@ -250,10 +270,23 @@ async function startPaymentProcess(products, shippingAddress) {
       },
       body: JSON.stringify({
         products,
-        shippingAddress,
+        shippingAddress: {
+          _id: shippingAddress._id,
+          state: shippingAddress.state,
+        },
       }),
     });
 
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return false;
+  }
+}
+
+async function getDeliveryCharge(state) {
+  try {
+    const res = await fetch(`/api/order/delivery-charge/${state}`);
     const data = await res.json();
     return data;
   } catch (error) {
