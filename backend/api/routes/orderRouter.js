@@ -13,7 +13,7 @@ const {
   getSelectedProduct,
 } = require("../middleware/validateProductOrder");
 const { authorizeAdminUser } = require("../middleware/authMiddlewares");
-
+const { deliveryCharges } = require("../../constants");
 const router = express.Router();
 
 router.post("/initiate", initiateOrder);
@@ -44,5 +44,23 @@ router.get("/products", getSelectedProduct, (req, res) => {
 router.get("/", getOrderDetails);
 
 router.put("/:id", authorizeAdminUser, updateOrder);
+
+router.get("/delivery-charge/:state", (req, res) => {
+  try {
+    const state = req.params.state.toLowerCase();
+    const deliveryCharge = deliveryCharges[state];
+
+    res.status(200).json({
+      success: true,
+      message: "here is your delivery charge!",
+      deliveryCharge,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: true,
+      message: "Wrong state provided!",
+    });
+  }
+});
 
 module.exports = router;

@@ -16,6 +16,10 @@ const addProduct = asyncHandler(async (req, res) => {
     throw new ApiError(406, "Product is out of stock!");
   }
 
+  if (!product.forSell) {
+    throw new ApiError(406, "Only purchasable item can be added in bag!");
+  }
+
   let bag = await Bag.findOne({ user: userId });
   if (!bag) {
     bag = await Bag.create({

@@ -83,6 +83,45 @@ const stateNames = [
   "West Bengal",
 ];
 
+const deliveryCharges = {
+  "andaman and nicobar islands": 80,
+  "andhra pradesh": 80,
+  "arunachal pradesh": 80,
+  assam: 80,
+  bihar: 80,
+  chandigarh: 80,
+  chhattisgarh: 80,
+  delhi: 80,
+  goa: 80,
+  gujarat: 80,
+  haryana: 80,
+  "himachal pradesh": 80,
+  "jammu and kashmir": 80,
+  jharkhand: 80,
+  karnataka: 80,
+  kerala: 80,
+  ladakh: 80,
+  lakshadweep: 80,
+  "madhya pradesh": 50,
+  maharashtra: 80,
+  manipur: 80,
+  meghalaya: 80,
+  mizoram: 80,
+  nagaland: 80,
+  odisha: 80,
+  puducherry: 80,
+  punjab: 80,
+  rajasthan: 80,
+  sikkim: 80,
+  "tamil nadu": 80,
+  telangana: 80,
+  "the dadra and nagar haveli and daman and diu": 80,
+  tripura: 80,
+  uttarakhand: 80,
+  "uttar pradesh": 80,
+  "west bengal": 80,
+};
+
 useFileFrom = "localFiles";
 
 module.exports = {
@@ -92,4 +131,5 @@ module.exports = {
   stateNames,
   policyPages,
   useFileFrom,
+  deliveryCharges,
 };

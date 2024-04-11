@@ -106,7 +106,7 @@ const signInSignUpHandler = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     // secure: true,
-    maxAge: 1000 * 60 * 60,
+    maxAge: 1000 * 60 * 60 * 6,
   };
   pageRedirectUrl = redirectUrlSanitizer(pageRedirectUrl);
 

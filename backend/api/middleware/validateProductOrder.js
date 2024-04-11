@@ -92,7 +92,7 @@ const getSelectedProduct = asyncHandler(async (req, res, next) => {
   const products = [];
   for (const productId in productToQuery) {
     const product = await Product.findOne({ _id: productId }).select(
-      "name sellPrice shortDescription image"
+      "name sellPrice rentPrice shortDescription image"
     );
 
     if (!product) {
@@ -121,7 +121,7 @@ const validateShippingAddress = asyncHandler(async (req, res, next) => {
     throw new ApiError(404, "user not found");
   }
 
-  if (!user.addresses.includes(shippingAddress)) {
+  if (!user.addresses.includes(shippingAddress._id)) {
     throw new ApiError(406, "Wrong address provided!");
   }
 

@@ -36,11 +36,15 @@
             />
             <div class="ordered-product-detail">
               <p id="ordered-product-name"><%=product.name%></p>
-              <p id="ordered-product-price">Rs. <%=product.sellPrice%></p>
+              <% if (rentOrSell === 'sell') { %>
+                <p id="ordered-product-price">Rs. <%=product.sellPrice%></p>
+                <% } else { %>
+                  <p id="ordered-product-price">Rs. <%=product.rentPrice%>/day</p>
+              <% } %>
               <p id="ordered-product-size">
                 Size: <span><%=productSize%></span>
               </p>
-
+              
               <div class="quantity-remove-btn">
                 <div class="quantity-btn" data-item-id="item<%=i%>">
                   <button class="q-minus quantity-toggle">-</button>
@@ -51,7 +55,7 @@
             </div>
           </div>
           <% i++ %> <% } %> <% } %>
-        </div>
+          </div>
 
         <div class="checkout-continue-div">
           <p id="checkout-confirmation-email">
@@ -62,27 +66,35 @@
         </div>
       </div>
 
-      <div class="checkout-price-detail">
-        <P class="price-details">PRICE DETAILS</P>
-        <div class="item-price-total">
-          <div class="total">
-            <p>Price(<span class="total-items">0</span> items)</p>
-            <p class="total-amount">Rs.00</p>
+      <% if (rentOrSell === 'sell') { %>
+        <div class="checkout-price-detail">
+          <P class="price-details">PRICE DETAILS</P>
+          <div class="item-price-total">
+            <div class="total">
+              <p>Price(<span class="total-items">0</span> items)</p>
+              <p class="total-amount">Rs.00</p>
+              </div>
+            <div class="dc">
+              <p>Delivery Charges</p>
+              <p class="delivery-charge">Rs...</p>
+            </div>
           </div>
-          <div class="dc">
-            <p>Delivery Charges</p>
-            <p>Rs.80</p>
+          <div class="total-amt">
+            <p>Total Amount</p>
+            <p class="net-amount">Rs. 00</p>
           </div>
         </div>
-        <div class="total-amt">
-          <p>Total Amount</p>
-          <p class="net-amount">Rs. 00</p>
-        </div>
-      </div>
+      <% } %>
+      
     </section>
 
     <%- include("../partials/footer") %>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="/js/checkout.js"></script>
+    
+    <% if (rentOrSell === 'sell') { %>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+      <script src="/js/checkout.js"></script>
+    <% } else { %>
+      <script src="/js/rentCheckout.js"></script>
+    <% } %>
   </body>
 </html>
