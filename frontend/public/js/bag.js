@@ -128,7 +128,7 @@ async function updateProductDetails(item, productId) {
 async function updateTotalPrice() {
   const totalAmount = await getTotalAmount();
   document.querySelector(".total-amount").innerText = `Rs.${totalAmount}`;
-  document.querySelector(".net-amount").innerText = `Rs.${totalAmount + 80}`;
+  document.querySelector(".net-amount").innerText = `Rs.${totalAmount}`;
 }
 updateTotalPrice();
 

@@ -221,7 +221,10 @@
     
 
     </script>
-  
-    <script src="/js/product.js"></script>
+    <% if (rentOrSell === 'sell') { %>
+      <script src="/js/product.js"></script>
+      <% } else { %>
+        <script src="/js/rentProduct.js"></script>
+    <% } %>
   </body>
 </html>

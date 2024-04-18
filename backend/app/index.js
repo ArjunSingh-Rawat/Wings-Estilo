@@ -79,6 +79,13 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
     if (!["sell", "rent"].includes(req.params.rentOrSell)) {
       throw new Error("type sell or rent not provided");
     }
+
+    if (req.params.rentOrSell === "rent" && !product.forRent) {
+      throw new Error("Product is not for rent");
+    } else if (req.params.rentOrSell === "sell" && !product.forSell) {
+      throw new Error("Product is not for sell");
+    }
+
     const images = [];
     if (useFileFrom === "localFiles") {
       product.image = "/" + product.image.split("/").splice(2).join("/");
@@ -119,6 +126,16 @@ router.get("/sell/checkout", getSelectedProduct, (req, res) => {
     .setHeader("Cache-Control", "no-cache,no-store,must-revalidate")
     .render("pages/checkout", {
       products: req.products,
+      rentOrSell: "sell",
+    });
+});
+
+router.get("/rent/checkout", getSelectedProduct, (req, res) => {
+  res
+    .setHeader("Cache-Control", "no-cache,no-store,must-revalidate")
+    .render("pages/rentCheckout", {
+      products: req.products,
+      rentOrSell: "rent",
     });
 });
 
