@@ -19,15 +19,17 @@ async function getCheckoutDetails() {
     }
   }
 
-  const state = checkoutDetails.userData.addresses[0].state;
-  const response = await getDeliveryCharge(state);
-  if (response.success) {
-    checkoutDetails.deliveryCharge = response.deliveryCharge;
-    document.querySelector(
-      ".delivery-charge"
-    ).innerText = `Rs. ${response.deliveryCharge}`;
-  } else {
-    getAlertPopup(response.message);
+  if (checkoutDetails.userData.addresses.length) {
+    const state = checkoutDetails.userData.addresses[0].state;
+    const response = await getDeliveryCharge(state);
+    if (response.success) {
+      checkoutDetails.deliveryCharge = response.deliveryCharge;
+      document.querySelector(
+        ".delivery-charge"
+      ).innerText = `Rs. ${response.deliveryCharge}`;
+    } else {
+      getAlertPopup(response.message);
+    }
   }
 
   if (!userInfo.addresses.length) {
@@ -172,18 +174,23 @@ function showChangeAddressBtn() {
 }
 
 function renderTotalPrice(products, deliveryCharge) {
+  console.log("delivery charges", deliveryCharge);
   let totalAmount = 0;
   let totalItems = 0;
   for (const productData of products) {
-    const productPrice = productData.product.rentPrice;
+    const productPrice = productData.product.sellPrice;
     totalAmount += productPrice * productData.quantity;
     totalItems++;
   }
   document.querySelector(".total-items").innerText = totalItems;
   document.querySelector(".total-amount").innerText = `Rs. ${totalAmount}`;
-  document.querySelector(".net-amount").innerText = `Rs. ${
-    totalAmount + deliveryCharge
-  }`;
+  if (deliveryCharge === 0) {
+    document.querySelector(".net-amount").innerText = `....`;
+  } else {
+    document.querySelector(".net-amount").innerText = `Rs. ${
+      totalAmount + deliveryCharge
+    }`;
+  }
 }
 
 /*------------- fetch data ------------*/
