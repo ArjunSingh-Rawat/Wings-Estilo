@@ -9,281 +9,268 @@
 
     <section class="admin-sidebar">
       <div class="admin-sidebar-btn">
-        <button>ADD PRODUCT</button>
-        <div class="update-product-dropdown">
-          <button class="update-product-dropbtn">UPDATE PRODUCT</button>
-          <div class="update-content">
-            <ul>
-              <li>item</li>
-              <li>item</li>
-              <li>item</li>
-              <li>item</li>
-            </ul>
-          </div>
-        </div>
+        <button id="add-product-section">ADD PRODUCT</button>
+        <button id="update-product-section">UPDATE PRODUCT</button>
+        <button id="order-details-section">ORDERS</button>
       </div>
     </section>
 
-    <form id="product-info-form" action="#">
-      <section class="product-img-section">
-        <h1>Add Product Images</h1>
-        <div class="add-img-div">
-          <div class="main-img-div">
-            <div class="no-img-div">
-              <input type="file" id="file-0" name="file" required />
-              <label for="file-0">
-                <i class="bx bx-image-add"></i>
-              </label>
+    <section class="add-product-section">
+      <form id="product-info-form" action="#">
+        <section class="product-img-section">
+          <h1>Add Product Images</h1>
+          <div class="add-img-div">
+            <div class="main-img-div">
+              <div class="no-img-div">
+                <input type="file" id="file-0" name="file" required />
+                <label for="file-0">
+                  <i class="bx bx-image-add"></i>Change Image
+                </label>
+              </div>
+              <div class="img-div"></div>
             </div>
-          </div>
-          <div class="small-img-div">
-            <div class="small-imgs">
-              <div class="small-img">
-                <div class="no-img-div">
-                  <input type="file" name="file" id="file-1" required />
-                  <label for="file-1">
-                    <i class="bx bx-image-add"></i>
-                  </label>
+            <div class="small-img-div">
+              <div class="small-imgs">
+                <div class="small-img">
+                  <div class="no-img-div">
+                    <input type="file" name="file" id="file-1" required />
+                    <label for="file-1">
+                      <i class="bx bx-image-add"></i>Change Image
+                    </label>
+                  </div>
+                  <div class="img-div"></div>
                 </div>
-              </div>
-              <div class="small-img">
-                <div class="no-img-div">
-                  <label for="file-2">
-                    <i class="bx bx-image-add"></i>
-                  </label>
-                  <input type="file" id="file-2" name="file" />
+                <div class="small-img">
+                  <div class="no-img-div">
+                    <label for="file-2">
+                      <i class="bx bx-image-add"></i>Change Image
+                    </label>
+                    <input type="file" id="file-2" name="file" />
+                  </div>
+                  <div class="img-div"></div>
                 </div>
-              </div>
-              <div class="small-img">
-                <div class="no-img-div">
-                  <label for="file-3">
-                    <i class="bx bx-image-add"></i>
-                  </label>
-                  <input type="file" id="file-3" name="file" />
+                <div class="small-img">
+                  <div class="no-img-div">
+                    <label for="file-3">
+                      <i class="bx bx-image-add"></i>Change Image
+                    </label>
+                    <input type="file" id="file-3" name="file" />
+                  </div>
+                  <div class="img-div"></div>
                 </div>
-              </div>
-              <div class="small-img">
-                <div class="no-img-div">
-                  <label for="file-4">
-                    <i class="bx bx-image-add"></i>
-                  </label>
-                  <input type="file" id="file-4" name="file" />
+                <div class="small-img">
+                  <div class="no-img-div">
+                    <label for="file-4">
+                      <i class="bx bx-image-add"></i>Change Image
+                    </label>
+                    <input type="file" id="file-4" name="file" />
+                  </div>
+                  <div class="img-div"></div>
                 </div>
-              </div>
-              <div class="small-img">
-                <div class="no-img-div">
-                  <label for="file-5">
-                    <i class="bx bx-image-add"></i>
-                  </label>
-                  <input type="file" id="file-5" name="file" />
+                <div class="small-img">
+                  <div class="no-img-div">
+                    <label for="file-5">
+                      <i class="bx bx-image-add"></i>Change Image
+                    </label>
+                    <input type="file" id="file-5" name="file" />
+                  </div>
+                  <div class="img-div"></div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- product-info-section -->
-      <section class="product-info-section">
-        <h1>Add Product Information</h1>
-        <div id="product-info-div">
-          <!-- form-left-div -->
-          <div class="form-left-div">
-            <!-- product-name -->
-            <div class="add-product-name">
-              <label for="product-name">Add product name:</label>
-              <input type="text" id="product-name" name="name" required />
-            </div>
-
-            <!-- sell-rent -->
-            <div class="rent-sell">
-              <div class="sell">
-                <input type="checkbox" id="sell" name="forSell" value="true" />
-                <label for="sell">For selling</label>
-              </div>
-              <div class="rent">
-                <input type="checkbox" id="rent" name="forRent" value="true" />
-                <label for="rent">For rental</label>
-              </div>
-            </div>
-
-            <!-- product-price -->
-            <div class="product-price">
-              <div class="add-product-price">
-                <label for="sell-price">Add selling product price:</label>
-                <input
-                  type="text"
-                  id="sell-price"
-                  name="sellPrice"
-                  required
-                  pattern="[0-9]+"
-                  title="value should be number"
-                  disabled
-                />
-              </div>
-              <div class="add-product-price">
-                <label for="rent-price">Add rental product price:</label>
-                <input
-                  type="text"
-                  id="rent-price"
-                  name="rentPrice"
-                  required
-                  pattern="[0-9]+"
-                  title="value should be number"
-                  disabled
-                />
-              </div>
-            </div>
-
-            <!-- product-category -->
-            <div class="product-category">
-              <div class="main-category">
-                <label for="main-category">Select category:</label>
-                <select id="main-category" name="category"></select>
-              </div>
-
-              <div class="sub-category">
-                <label for="sub-category">Select sub category:</label>
-                <select id="sub-category" name="subCategory">
-                  <option disabled selected value="">
-                    --Select sub category--
-                  </option>
-                </select>
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- form-right-div -->
-          <div class="form-right-div">
-            <div class="product-description">
-              <div class="short-description">
-                <label for="short-description">Add short-description:</label>
-                <textarea
-                  id="short-description"
-                  name="shortDescription"
-                ></textarea>
+        <!-- product-info-section -->
+        <section class="product-info-section">
+          <h1>Add Product Information</h1>
+          <div id="product-info-div">
+            <!-- form-left-div -->
+            <div class="form-left-div">
+              <!-- product-name -->
+              <div class="add-product-name">
+                <label for="product-name">Add product name:</label>
+                <input type="text" id="product-name" name="name" required />
               </div>
 
-              <div class="main-description">
-                <label for="main-description">Add description:</label>
-                <textarea id="main-description" name="description"></textarea>
+              <!-- sell-rent -->
+              <div class="rent-sell">
+                <div class="sell">
+                  <input
+                    type="checkbox"
+                    id="sell"
+                    name="forSell"
+                    value="true"
+                  />
+                  <label for="sell">For selling</label>
+                </div>
+                <div class="rent">
+                  <input
+                    type="checkbox"
+                    id="rent"
+                    name="forRent"
+                    value="true"
+                  />
+                  <label for="rent">For rental</label>
+                </div>
+              </div>
+
+              <!-- product-price -->
+              <div class="product-price">
+                <div class="add-product-price">
+                  <label for="sell-price">Add selling product price:</label>
+                  <input
+                    type="text"
+                    id="sell-price"
+                    name="sellPrice"
+                    required
+                    pattern="[0-9]+"
+                    title="value should be number"
+                    disabled
+                  />
+                </div>
+                <div class="add-product-price">
+                  <label for="rent-price">Add rental product price:</label>
+                  <input
+                    type="text"
+                    id="rent-price"
+                    name="rentPrice"
+                    required
+                    pattern="[0-9]+"
+                    title="value should be number"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <!-- product-category -->
+              <div class="product-category">
+                <div class="main-category">
+                  <label for="main-category">Select category:</label>
+                  <select id="main-category" name="category"></select>
+                </div>
+
+                <div class="sub-category">
+                  <label for="sub-category">Select sub category:</label>
+                  <select id="sub-category" name="subCategory">
+                    <option disabled selected value="">
+                      --Select sub category--
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            <div class="product-size">
-              <p id="size-title">Product quantity in size:</p>
+            <!-- form-right-div -->
+            <div class="form-right-div">
+              <div class="product-description">
+                <div class="short-description">
+                  <label for="short-description">Add short-description:</label>
+                  <textarea
+                    id="short-description"
+                    name="shortDescription"
+                  ></textarea>
+                </div>
 
-              <div class="sizes">
-                <div class="size">
-                  <label for="size">XS</label>
-                  <input type="text" id="size" name="xs" />
-                </div>
-                <div class="size">
-                  <label for="size">S</label>
-                  <input type="text" id="size" name="s" />
-                </div>
-                <div class="size">
-                  <label for="size">M</label>
-                  <input type="text" id="size" name="m" />
-                </div>
-                <div class="size">
-                  <label for="size">L</label>
-                  <input type="text" id="size" name="l" />
-                </div>
-                <div class="size">
-                  <label for="size">XL</label>
-                  <input type="text" id="size" name="xl" />
-                </div>
-                <div class="size">
-                  <label for="size">XXL</label>
-                  <input type="text" id="size" name="xxl" />
-                </div>
-                <div class="size">
-                  <label for="size">3XXL</label>
-                  <input type="text" id="size" name="threeXl" />
+                <div class="main-description">
+                  <label for="main-description">Add description:</label>
+                  <textarea id="main-description" name="description"></textarea>
                 </div>
               </div>
-            </div>
 
-            <!-- form-buttons -->
-            <div class="form-buttons">
-              <button id="submit">SUBMIT</button>
-              <button id="resetBtn" type="reset" onclick="clearForm()">
-                RESET
-              </button>
+              <div class="product-size">
+                <p id="size-title">Product quantity in size:</p>
+
+                <div class="sizes">
+                  <div class="size">
+                    <label for="size">XS</label>
+                    <input type="text" id="size" name="xs" />
+                  </div>
+                  <div class="size">
+                    <label for="size">S</label>
+                    <input type="text" id="size" name="s" />
+                  </div>
+                  <div class="size">
+                    <label for="size">M</label>
+                    <input type="text" id="size" name="m" />
+                  </div>
+                  <div class="size">
+                    <label for="size">L</label>
+                    <input type="text" id="size" name="l" />
+                  </div>
+                  <div class="size">
+                    <label for="size">XL</label>
+                    <input type="text" id="size" name="xl" />
+                  </div>
+                  <div class="size">
+                    <label for="size">XXL</label>
+                    <input type="text" id="size" name="xxl" />
+                  </div>
+                  <div class="size">
+                    <label for="size">3XXL</label>
+                    <input type="text" id="size" name="threeXl" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- form-buttons -->
+              <div class="form-buttons">
+                <button id="submit">SUBMIT</button>
+                <button id="resetBtn" type="reset" onclick="clearForm()">
+                  RESET
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </form>
+        </section>
+      </form>
+    </section>
 
     <section class="update-product-section">
-      <h1>Update Product Information</h1>
-      <div class="update-product-div">
-        <div class="up-item">
-          <a class="up-img" href="#">
-            <img
-              loading="lazy"
-              src="/Images/home-images/home-maternity-gowns/a.jpg"
-              alt=""
-            />
-          </a>
-          <div class="up-item-info">
-            <div class="name-price">
-              <a class="name" href="#">Wings estilo gown name</a>
-              <p class="price">Rs. 2000</p>
-            </div>
+      <section class="prompt-category">
+        <div class="product-category">
+          <div class="update-product-main-category">
+            <label for="update-product-main-category">Select category:</label>
+            <select id="update-product-main-category" name="category"></select>
           </div>
-        </div>
 
-        <div class="up-item">
-          <a class="up-img" href="#">
+          <div class="update-product-sub-category">
+            <label for="update-product-sub-category"
+              >Select sub category:</label
+            >
+            <select id="update-product-sub-category" name="subCategory">
+              <option disabled selected value="">
+                --Select sub category--
+              </option>
+            </select>
+          </div>
+        </div>
+        <button id="find-products-to-update">Find</button>
+      </section>
+      <section class="products-to-update" style="display: none">
+        <h1>Update Product Information</h1>
+        <button class="up-back-btn">Go Back</button>
+        <div class="update-product-div">
+          <!-- <div class="up-item">
             <img
+              class="up-img"
               loading="lazy"
               src="/Images/home-images/home-maternity-gowns/a.jpg"
               alt=""
             />
-          </a>
-          <div class="up-item-info">
-            <div class="name-price">
-              <a class="name" href="#">Wings estilo gown name</a>
-              <p class="price">Rs. 2000</p>
+            <div class="up-item-info">
+              <div class="name-price">
+                <p class="name"></p>
+                <p class="price">Rs. 2000</p>
+              </div>
             </div>
-          </div>
+          </div> -->
         </div>
+      </section>
+    </section>
 
-        <div class="up-item">
-          <a class="up-img" href="#">
-            <img
-              loading="lazy"
-              src="/Images/home-images/home-maternity-gowns/a.jpg"
-              alt=""
-            />
-          </a>
-          <div class="up-item-info">
-            <div class="name-price">
-              <a class="name" href="#">Wings estilo gown name</a>
-              <p class="price">Rs. 2000</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="up-item">
-          <a class="up-img" href="#">
-            <img
-              loading="lazy"
-              src="/Images/home-images/home-maternity-gowns/a.jpg"
-              alt=""
-            />
-          </a>
-          <div class="up-item-info">
-            <div class="name-price">
-              <a class="name" href="#">Wings estilo gown name</a>
-              <p class="price">Rs. 2000</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <section class="order-details-section">
+      <h1>Orders Details</h1>
     </section>
     <!-- product-img-section -->
     <div class="loader-container">

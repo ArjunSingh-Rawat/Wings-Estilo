@@ -375,7 +375,40 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
     }
   }
 
-  https: res.status(200).json({
+  res.status(200).json({
+    success: true,
+    message: "success!",
+    products,
+    quantity: products.length,
+  });
+});
+
+const getProductsByCategoryForAdmin = asyncHandler(async (req, res) => {
+  const categoryId = req.params.categoryId;
+  const products = await Product.find({
+    category: categoryId,
+  });
+
+  if (!products || !products.length) {
+    throw new ApiError(404, "No products found!!");
+  }
+
+  for (const product of products) {
+    if (useFileFrom === "localFiles") {
+      product.image = "/" + product.image.split("/").splice(2).join("/");
+      let arr = [];
+      for (const image of product.images) {
+        let src = "/" + image.split("/").splice(2).join("/");
+        arr.push(src);
+      }
+      product.images = arr;
+    } else if (useFileFrom === "cloudinaryFiles") {
+      product.image =
+        `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload` +
+        product.image;
+    }
+  }
+  res.status(200).json({
     success: true,
     message: "success!",
     products,
@@ -390,4 +423,5 @@ module.exports = {
   getOneProduct,
   getAllProducts,
   getProductsByCategory,
+  getProductsByCategoryForAdmin,
 };

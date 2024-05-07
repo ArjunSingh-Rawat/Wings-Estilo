@@ -6,6 +6,7 @@ const {
   getOneProduct,
   getAllProducts,
   getProductsByCategory,
+  getProductsByCategoryForAdmin,
 } = require("../controllers/productController");
 
 const { authorizeAdminUser } = require("../middleware/authMiddlewares");
@@ -24,6 +25,8 @@ router.delete("/:id", authorizeAdminUser, deleteProduct);
 router.get("/:id", getOneProduct);
 
 router.get("/", getAllProducts);
+
+router.get("/category/:categoryId/admin", getProductsByCategoryForAdmin);
 
 router.get("/category/:name/:rentOrSell", getProductsByCategory);
 
