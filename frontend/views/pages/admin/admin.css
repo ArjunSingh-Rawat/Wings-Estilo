@@ -28,12 +28,12 @@
   box-shadow: 4px 4px 5px #de7575;
 }
 
-/* product-info-form */
-#product-info-form {
+/* add-product-form */
+#add-product-form {
   margin-left: 250px;
 }
 
-.product-img-section {
+.add-product-img-section {
   background-color: #fff6f2;
   padding: 30px 0;
 
@@ -42,7 +42,7 @@
   align-items: center;
 }
 
-.product-img-section h1,
+.add-product-img-section h1,
 .product-info-section h1,
 .update-product-section h1 {
   font-size: 20px;
@@ -160,11 +160,11 @@
   gap: 30px;
 }
 
-.rent-sell label {
+.add-product-rent-sell label {
   font-size: 15px;
 }
 
-.rent-sell input {
+.add-product-rent-sell input {
   width: 18px;
   height: 18px;
 }
