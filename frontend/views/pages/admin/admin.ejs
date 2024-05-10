@@ -545,9 +545,128 @@
     </section>
 
     <section class="order-details-section">
-      <h1>Orders Details</h1>
+      <h1>Order Details</h1>
+
+      <section class="ordered-list-section">
+        <div class="order-detail-filters">
+          <div class="od-search-filter">
+            <label for="searchBy">Search by:</label>
+            <input id="searchBy" type="text" placeholder="Order id or email" />
+          </div>
+
+          <div class="od-sort-filter">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy" name="filter">
+              <option value="date">Date</option>
+              <option value="status">Status</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="order-details-div">
+          <table class="od-table" style="width: 100%">
+            <tr>
+              <th>S.NO</th>
+              <th>ORDER ID</th>
+              <th>USER NAME</th>
+              <th>USER EMAIL</th>
+              <th>DATE</th>
+              <th>STATUS</th>
+              <th>DETAILS</th>
+            </tr>
+            <tr>
+              <td>1.</td>
+              <td>1234</td>
+              <td>Vijay Singh Rawat</td>
+              <td>example@gmail.com</td>
+              <td>01/01/2024</td>
+              <td>incomplete</td>
+              <td class="show-details">Show Details</td>
+            </tr>
+            <tr>
+              <td>2.</td>
+              <td>1234</td>
+              <td>Arjun Singh Rawat</td>
+              <td>example@gmail.com</td>
+              <td>01/01/2024</td>
+              <td>incomplete</td>
+              <td class="show-details">Show Details</td>
+            </tr>
+            <tr>
+              <td>3.</td>
+              <td>1234</td>
+              <td>Adarsh Gupta</td>
+              <td>example@gmail.com</td>
+              <td>01/01/2024</td>
+              <td>incomplete</td>
+              <td class="show-details">Show Details</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <section class="ordered-product-detail-section">
+        <div class="ordered-product-detail-div">
+          <div class="ordered-user-detail">
+            <div class="back-button"><i class="bx bx-arrow-back"></i></div>
+            <div class="user-order-id">
+              <p>Order Id: <span>1234</span></p>
+            </div>
+
+            <div class="user-name-phone">
+              <p>Name: <span>Vijay Singh Rawat</span></p>
+              <p>Name: <span>9876543210</span></p>
+              <p>Email: <span>example@gmail.com</span></p>
+            </div>
+
+            <div class="user-address">
+              <p>
+                Address:<span
+                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Alias culpa ipsa reiciendis nemo accusantium</span
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="ordered-product-detail">
+            <table class="product-detail-table">
+              <tr>
+                <th>S.NO</th>
+                <th>PRODUCT</th>
+                <th>PRODUCT NAME</th>
+                <th>SIZE</th>
+                <th>QUANTITY</th>
+                <th>STATUS</th>
+                <th>OPEN</th>
+              </tr>
+              <tr>
+                <td>1.</td>
+                <td id="op-img">
+                  <img
+                    src="/Images/home-images/home-maternity-gowns/a.jpg"
+                    alt=""
+                  />
+                </td>
+                <td id="op-name">Maternity gown</td>
+                <td id="op-size">M</td>
+                <td id="op-quantity">2</td>
+                <td id="op-status">
+                  <select name="status">
+                    <option value="date">Pending</option>
+                    <option value="status">Shipped</option>
+                    <option value="status">Delivered</option>
+                  </select>
+                </td>
+                <td id="op-open">Open product page</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
     </section>
-    <!-- product-img-section -->
+
+    <!-- loader -->
     <div class="loader-container">
       <div class="loader"></div>
     </div>
