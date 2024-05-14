@@ -48,6 +48,17 @@ const updateProductSellPriceInput = document.querySelector(
 const updateProductRentPriceInput = document.querySelector(
   "#update-product-rent-price"
 );
+const orderListSection = document.querySelector(".ordered-list-section");
+const orderedProductDetailsSection = document.querySelector(
+  ".ordered-product-detail-section"
+);
+const orderDetailsSections = [orderListSection, orderedProductDetailsSection];
+const orderListTable = document.querySelector(".od-table");
+const orderedProductDetailTable = document.querySelector(
+  ".product-detail-table"
+);
+const orderUserDetailsDiv = document.querySelector(".user-name-phone");
+const orderShippingAddressDiv = document.querySelector(".Shipping-address-div");
 
 const sectionsButtonArray = adminNav.children;
 const sections = {
@@ -68,6 +79,11 @@ const imageTypes = ["image/jpeg", "image/png"];
 let foundProductsForUpdate = null;
 let productSelectedForUpdate = null;
 let updatedImageIndexes = [];
+let orders = [];
+let showDetailsOfOrder = {};
+let updateOrderProduct = [];
+let orderSelectedToUpdate = {};
+let statusChangedOfProducts = {};
 
 /*--------- Display correct section ------------*/
 
@@ -251,6 +267,75 @@ updateProductForm.addEventListener("submit", async (event) => {
   }
 });
 
+/*-------------- Order Details --------------*/
+toggleOrderDetailsSections("order-list");
+
+getOrders()
+  .then((data) => {
+    renderOrderListTable(data);
+    orders = data;
+  })
+  .catch((error) => console.log(error));
+
+orderListTable.addEventListener("click", (event) => {
+  const element = event.target;
+  if (element.classList.contains("show-details")) {
+    const orderIndex = element.dataset.orderIndex - 1;
+
+    orderSelectedToUpdate = orders[orderIndex];
+    renderOrderDetails(orders[orderIndex]);
+    toggleOrderDetailsSections("order-details");
+  }
+});
+
+document
+  .querySelector("#search-order-id")
+  .addEventListener("keyup", (event) => {
+    const valueToSearch = event.target.value;
+    searchOrderByIdOrEmail(valueToSearch);
+  });
+
+orderedProductDetailsSection.addEventListener("click", async (event) => {
+  const element = event.target;
+  if (element.classList.contains("back-button")) {
+    toggleOrderDetailsSections("order-list");
+  } else if (element.classList.contains("edit-product-status-btn")) {
+    enableOrDisableProductStatusUpdate("enable");
+    toggleEditOrUpdateDiv("edit");
+  } else if (element.classList.contains("update")) {
+    if (statusChangedOfProducts) {
+      startOrStopLoader("start");
+      const response = await updateOrderProductStatus(
+        orderSelectedToUpdate._id,
+        statusChangedOfProducts
+      );
+      startOrStopLoader("stop");
+
+      if (response.success) {
+        for (const productChangedIndex in statusChangedOfProducts) {
+          orderSelectedToUpdate.items[productChangedIndex].status =
+            statusChangedOfProducts[productChangedIndex];
+        }
+        renderOrderProductDetails(orderSelectedToUpdate.items);
+        toggleEditOrUpdateDiv("update");
+        getAlertPopup("Updated Successfully!");
+      } else {
+        cancelUpdateAndResetProductStatus();
+        getAlertPopup(response.message);
+      }
+    }
+  } else if (element.classList.contains("cancel")) {
+    cancelUpdateAndResetProductStatus();
+    statusChangedOfProducts = {};
+  }
+});
+
+orderedProductDetailTable.addEventListener("change", (event) => {
+  const element = event.target;
+  const index = element.dataset.itemIndex - 1;
+  statusChangedOfProducts[index] = element.value;
+});
+
 /*-------- Functions ---------*/
 function toggleSections(sectionToShow) {
   for (const section in sections) {
@@ -426,6 +511,205 @@ function cleanUpUpdatedProductDetails(updatedProduct) {
   updatedProduct.category = arr;
 }
 
+function toggleOrderDetailsSections(section) {
+  for (const section of orderDetailsSections) {
+    section.style.display = "none";
+  }
+  if (section === "order-list") {
+    orderListSection.style.display = "block";
+  } else if (section === "order-details") {
+    orderedProductDetailsSection.style.display = "block";
+  }
+}
+
+function renderOrderListTable(orders) {
+  let i = 1;
+  for (const order of orders) {
+    const { _id, orderStatus, createdAt } = order;
+    const { firstName, lastName, email } = order.user;
+    const date = new Date(createdAt);
+
+    const row = orderListTable.insertRow(i);
+    row.innerHTML = `
+    <td>${i}.</td>
+    <td>${_id}</td>
+    <td>${firstName + " " + lastName}</td>
+    <td>${email}</td>
+    <td>${date.toLocaleDateString()}</td>
+    <td>${orderStatus}</td>
+    <td data-order-index="${i}" class="show-details">Show Details</td>`;
+    i++;
+  }
+}
+
+function renderOrderDetails(order) {
+  renderOrderUserDetails(order);
+  renderOrderProductDetails(order.items);
+}
+
+function renderOrderUserDetails(orderDetails) {
+  orderUserDetailsDiv.innerHTML = "";
+  document.querySelector("#order-id").innerHTML = orderDetails._id;
+  const { firstName, lastName, email, phoneNumber } = orderDetails.user;
+  const obj = {
+    Name: firstName + " " + lastName,
+    "Phone Number": phoneNumber,
+    Email: email,
+  };
+
+  for (const element in obj) {
+    const p = document.createElement("p");
+    p.innerText = `${element}: `;
+    const span = document.createElement("span");
+    span.innerText = obj[element];
+    p.appendChild(span);
+    orderUserDetailsDiv.appendChild(p);
+  }
+
+  //shipping address
+  orderShippingAddressDiv.innerHTML = "";
+  const {
+    name,
+    phoneNumber: number,
+    addressLine1,
+    addressLine2,
+    district,
+    state,
+    pinCode,
+  } = orderDetails.shippingAddress;
+  const p1 = document.createElement("p");
+  p1.id = "my-name-phone";
+  const span1 = document.createElement("span");
+  span1.innerText = name;
+  const span2 = document.createElement("span");
+  span2.innerText = number;
+  p1.appendChild(span1);
+  p1.appendChild(span2);
+  orderShippingAddressDiv.appendChild(p1);
+
+  const p2 = document.createElement("p");
+  p2.innerText =
+    addressLine1 + " " + addressLine2 + " " + district + " " + state;
+  const span3 = document.createElement("span");
+  span3.innerText = `- ${pinCode}`;
+  p2.appendChild(span3);
+  orderShippingAddressDiv.appendChild(p2);
+}
+
+function renderOrderProductDetails(products) {
+  console.log(products);
+  const rows = orderedProductDetailTable.rows;
+
+  while (rows.length > 1) {
+    orderedProductDetailTable.deleteRow(1);
+  }
+  let i = 1;
+  for (const item of products) {
+    const row = orderedProductDetailTable.insertRow(i);
+    const image = "/" + item.product.image.split("/").splice(2).join("/");
+    const productName = item.product.name;
+    const { productSize, quantity } = item;
+    row.innerHTML = `
+    <td>${i}.</td>
+    <td id="op-img">
+      <img
+        src="${image}"
+        alt="${productName}"
+      />
+    </td>
+    <td id="op-name">${productName}</td>
+    <td id="op-size">${productSize}</td>
+    <td id="op-quantity">${quantity}</td>
+    <td id="op-status">${item.status}</td>
+    <td onclick="window.location.href = '/sell/${productName
+      .split(" ")
+      .join("-")}/${item.product._id}/buy'" id="op-open">Open product page</td>
+    <td id="update-product-status">
+      <select disabled data-item-index="${i}" name="productStatus">
+        <option value="Processing">Processing</option>
+        <option value="Shipped">Shipped</option>
+        <option value="Delivered">Delivered</option>
+      </select>
+    </td>
+    `;
+    i++;
+    // pre select current status of product in selection options
+    const options = row.querySelector("select").options;
+    for (const option of options) {
+      if (option.value === item.status) {
+        option.selected = true;
+      } else {
+        option.selected = false;
+      }
+    }
+  }
+}
+
+function resetProductStatusInSelectElement() {
+  const selectElements = orderedProductDetailTable.querySelectorAll("select");
+  const items = orderSelectedToUpdate.items;
+  for (let i = 0; i < items.length; i++) {
+    const options = selectElements[i].options;
+    for (const option of options) {
+      if (items[i].status === option.value) {
+        option.selected = true;
+      } else {
+        option.selected = false;
+      }
+    }
+  }
+}
+
+function enableOrDisableProductStatusUpdate(enableOrDisable) {
+  const selectElements = orderedProductDetailTable.querySelectorAll("select");
+  if (enableOrDisable === "enable") {
+    for (const element of selectElements) {
+      element.disabled = false;
+    }
+  } else if (enableOrDisable === "disable") {
+    for (const element of selectElements) {
+      element.disabled = true;
+    }
+  }
+}
+
+function toggleEditOrUpdateDiv(editOrUpdateOrCancel) {
+  if (editOrUpdateOrCancel === "edit") {
+    document.querySelector(".edit-product-status-btn").style.display = "none";
+    document.querySelector("#update-order-btns").style.display = "block";
+  } else if (
+    editOrUpdateOrCancel === "update" ||
+    editOrUpdateOrCancel === "cancel"
+  ) {
+    document.querySelector(".edit-product-status-btn").style.display = "block";
+    document.querySelector("#update-order-btns").style.display = "none";
+  }
+}
+
+function cancelUpdateAndResetProductStatus() {
+  resetProductStatusInSelectElement();
+  enableOrDisableProductStatusUpdate("disable");
+  toggleEditOrUpdateDiv("cancel");
+}
+
+function searchOrderByIdOrEmail(valueToSearch) {
+  valueToSearch = valueToSearch.toUpperCase();
+  const rows = orderListTable.rows;
+  for (let i = 1; i < rows.length; i++) {
+    const orderId = rows[i].cells[1].innerText.toUpperCase();
+    const email = rows[i].cells[3].innerText.toUpperCase();
+
+    if (
+      orderId.indexOf(valueToSearch) > -1 ||
+      email.indexOf(valueToSearch) > -1
+    ) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+}
+
 /*---------- fetching data -----------*/
 
 async function getAllCategories() {
@@ -461,4 +745,27 @@ async function getProductsByCategory(categoryId) {
     return resData.products;
   }
   return false;
+}
+
+async function getOrders() {
+  const res = await fetch("/api/order");
+  if (res.ok) {
+    const data = await res.json();
+    return data.orders;
+  }
+  return false;
+}
+
+async function updateOrderProductStatus(orderId, changedItemIndexAndValue) {
+  const res = await fetch(`/api/order/${orderId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      itemsDetailsToChange: changedItemIndexAndValue,
+    }),
+  });
+  const response = await res.json();
+  return response;
 }

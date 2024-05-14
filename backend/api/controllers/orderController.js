@@ -278,7 +278,12 @@ const getOrderDetails = asyncHandler(async (req, res) => {
       path: "items.product",
       select: "name sellPrice rentPrice image",
     })
-    .select("-user -payment -shippingAddress");
+    .populate({
+      path: "user",
+      select: "firstName lastName email phoneNumber -_id",
+    })
+    .populate("shippingAddress")
+    .select("-payment");
 
   if (!orders) {
     throw new ApiError(404, "orders not found!");
@@ -295,9 +300,9 @@ const updateOrder = asyncHandler(async (req, res) => {
   const { itemsDetailsToChange } = req.body;
 
   const order = await Order.findOne({ _id: orderId });
-  for (const itemDetail of itemsDetailsToChange) {
-    order.items[itemDetail.index].status = itemDetail.status;
-    order.items[itemDetail.index].updatedAt = Date.now();
+  for (const itemIndex in itemsDetailsToChange) {
+    order.items[itemIndex].status = itemsDetailsToChange[itemIndex];
+    order.items[itemIndex].updatedAt = Date.now();
   }
   let orderStatus = "incomplete";
   for (const item of order.items) {

@@ -530,3 +530,21 @@
   text-decoration: underline;
   color: #ff8080;
 }
+
+.Shipping-address-div {
+  width: 100%;
+  border: 1px solid lightgrey;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+#my-name-phone span {
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 20px;
+  padding: 10px 0;
+  display: inline-block;
+}
+.edit-product-status {
+  height: 20px;
+}
