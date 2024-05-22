@@ -558,12 +558,23 @@
             />
           </div>
 
-          <div class="od-sort-filter">
-            <label for="sortBy">Sort by:</label>
-            <select id="sortBy" name="filter">
-              <option value="date">Date</option>
-              <option value="status">Status</option>
+          <div class="od-sort-filter-div">
+            <label for="order-sort-by">Sort by:</label>
+            <select id="order-sort-by" name="filter">
+              <option value="none" selected disabled>select sort by</option>
+              <option value="latest">latest</option>
+              <option value="oldest">oldest</option>
             </select>
+
+            <label for="order-filter-by">Filter by:</label>
+            <select id="order-filter-by" name="filter">
+              <option value="none" selected disabled>select filter by</option>
+              <option value="complete">complete</option>
+              <option value="incomplete">incomplete</option>
+            </select>
+
+            <label for="clear-all-btn">clear all</label>
+            <input type="radio" id="clear-all-btn" />
           </div>
         </div>
 

@@ -59,6 +59,7 @@ const orderedProductDetailTable = document.querySelector(
 );
 const orderUserDetailsDiv = document.querySelector(".user-name-phone");
 const orderShippingAddressDiv = document.querySelector(".Shipping-address-div");
+const orderFilterDiv = document.querySelector(".od-sort-filter-div");
 
 const sectionsButtonArray = adminNav.children;
 const sections = {
@@ -84,6 +85,9 @@ let showDetailsOfOrder = {};
 let updateOrderProduct = [];
 let orderSelectedToUpdate = {};
 let statusChangedOfProducts = {};
+let arrayToSort = [];
+let incompleteOrdersArray = [];
+let completeOrdersArray = [];
 
 /*--------- Display correct section ------------*/
 
@@ -274,6 +278,13 @@ getOrders()
   .then((data) => {
     renderOrderListTable(data);
     orders = data;
+    arrayToSort = [...orders];
+    incompleteOrdersArray = orders.filter(
+      (order) => order.orderStatus === "incomplete"
+    );
+    completeOrdersArray = orders.filter(
+      (order) => order.orderStatus === "complete"
+    );
   })
   .catch((error) => console.log(error));
 
@@ -334,6 +345,31 @@ orderedProductDetailTable.addEventListener("change", (event) => {
   const element = event.target;
   const index = element.dataset.itemIndex - 1;
   statusChangedOfProducts[index] = element.value;
+});
+
+let currentFilter = "";
+orderFilterDiv.addEventListener("change", (event) => {
+  const element = event.target;
+  if (element.value === "latest") {
+    sortFilterArrays(sortByLatest);
+  } else if (element.value === "oldest") {
+    sortFilterArrays(sortByOldest);
+  } else if (element.value === "complete") {
+    currentFilter = "complete";
+    renderOrderListTable([...completeOrdersArray, ...incompleteOrdersArray]);
+  } else if (element.value === "incomplete") {
+    currentFilter = "incomplete";
+    renderOrderListTable([...incompleteOrdersArray, ...completeOrdersArray]);
+  } else if (element.id === "clear-all-btn") {
+    renderOrderListTable(orders);
+    element.checked = false;
+    orderFilterDiv.querySelectorAll("option").forEach((option) => {
+      option.value === "none"
+        ? (option.selected = true)
+        : (option.selected = false);
+    });
+    currentFilter = "";
+  }
 });
 
 /*-------- Functions ---------*/
@@ -524,6 +560,9 @@ function toggleOrderDetailsSections(section) {
 
 function renderOrderListTable(orders) {
   let i = 1;
+  while (orderListTable.rows.length > 1) {
+    orderListTable.deleteRow(1);
+  }
   for (const order of orders) {
     const { _id, orderStatus, createdAt } = order;
     const { firstName, lastName, email } = order.user;
@@ -597,7 +636,6 @@ function renderOrderUserDetails(orderDetails) {
 }
 
 function renderOrderProductDetails(products) {
-  console.log(products);
   const rows = orderedProductDetailTable.rows;
 
   while (rows.length > 1) {
@@ -710,6 +748,32 @@ function searchOrderByIdOrEmail(valueToSearch) {
   }
 }
 
+function sortByLatest(a, b) {
+  const x = new Date(a.createdAt);
+  const y = new Date(b.createdAt);
+  return y.getTime() - x.getTime();
+}
+
+function sortByOldest(a, b) {
+  const x = new Date(a.createdAt);
+  const y = new Date(b.createdAt);
+  return x.getTime() - y.getTime();
+}
+
+function sortFilterArrays(sortByFunc) {
+  if (currentFilter === "incomplete") {
+    const x = incompleteOrdersArray.sort(sortByFunc);
+    const y = completeOrdersArray.sort(sortByFunc);
+    renderOrderListTable([...x, ...y]);
+  } else if (currentFilter === "complete") {
+    const x = incompleteOrdersArray.sort(sortByFunc);
+    const y = completeOrdersArray.sort(sortByFunc);
+    renderOrderListTable([...y, ...x]);
+  } else {
+    arrayToSort.sort(sortByFunc);
+    renderOrderListTable(arrayToSort);
+  }
+}
 /*---------- fetching data -----------*/
 
 async function getAllCategories() {
