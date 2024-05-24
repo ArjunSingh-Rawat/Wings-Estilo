@@ -60,6 +60,9 @@ const orderedProductDetailTable = document.querySelector(
 const orderUserDetailsDiv = document.querySelector(".user-name-phone");
 const orderShippingAddressDiv = document.querySelector(".Shipping-address-div");
 const orderFilterDiv = document.querySelector(".od-sort-filter-div");
+const deleteOrCancelProductDiv = document.querySelector(
+  ".confirm-product-delete-div"
+);
 
 const sectionsButtonArray = adminNav.children;
 const sections = {
@@ -205,16 +208,20 @@ document
 setMainCategories(updateFormMainCategoryElement);
 
 // open update form with selected product or delete product
-updateProductsDiv.addEventListener("click", async (event) => {
+let selectedProductIdToUpdateOrDelete = null;
+updateProductsDiv.addEventListener("click", (event) => {
   const element = event.target;
-  const productId = element.parentElement.dataset.productId;
+  selectedProductIdToUpdateOrDelete = element.parentElement.dataset.productId;
   if (element.classList.contains("update-product")) {
     const product = foundProductsForUpdate.find(
-      (product) => product._id === productId
+      (product) => product._id === selectedProductIdToUpdateOrDelete
     );
     productSelectedForUpdate = product;
     preFillUpdateProductForm(product);
     toggleUpdateProductSections(u_pFormSection);
+  }
+  if (element.classList.contains("delete-product")) {
+    toggleDisplayOfConfirmDeletePopup("flex");
   }
 });
 
@@ -268,6 +275,28 @@ updateProductForm.addEventListener("submit", async (event) => {
     updateFoundProductsData(data.newItem);
   } else {
     getAlertPopup(res.message);
+  }
+});
+
+// delete product
+deleteOrCancelProductDiv.addEventListener("click", async (event) => {
+  const element = event.target;
+  if (element.classList.contains("delete")) {
+    startOrStopLoader("start");
+    const response = await deleteProduct(selectedProductIdToUpdateOrDelete);
+    startOrStopLoader("stop");
+
+    if (response.success) {
+      toggleDisplayOfConfirmDeletePopup("none");
+      deleteProductFormFoundProducts(selectedProductIdToUpdateOrDelete);
+      renderUpdateProducts(foundProductsForUpdate);
+      getAlertPopup("product deleted successfully!");
+    } else {
+      toggleDisplayOfConfirmDeletePopup("none");
+      getAlertPopup(response.message);
+    }
+  } else if (element.classList.contains("cancel")) {
+    toggleDisplayOfConfirmDeletePopup("none");
   }
 });
 
@@ -433,7 +462,9 @@ async function setImageInDiv(imageUrl, noImageDiv) {
 }
 
 function clearForm(addOrUpdateForm, e) {
-  e.preventDefault();
+  if (e) {
+    e.preventDefault();
+  }
   if (addOrUpdateForm === "add-product-form") {
     addProductForm.reset();
     addProductForm.querySelectorAll(".product-images").forEach((image) => {
@@ -467,7 +498,7 @@ function renderUpdateProducts(products) {
                   <div class="up-item-info">
                     <div class="name-price">
                       <p class="name"></p>
-                      <p class="price">Rs. 2000</p>
+                      <p class="price"></p>
                     </div>
                   </div>
                   <div class="update-delete-product" data-product-id="${product._id}"><button class="update-product">Update</button><button class="delete-product">Delete</button></div>`;
@@ -527,6 +558,13 @@ function updateFoundProductsData(updatedProduct) {
   );
   cleanUpUpdatedProductDetails(updatedProduct);
   foundProductsForUpdate[index] = updatedProduct;
+}
+
+function deleteProductFormFoundProducts(productId) {
+  const index = foundProductsForUpdate.findIndex(
+    (product) => product._id === productId
+  );
+  foundProductsForUpdate.splice(index, 1);
 }
 
 function cleanUpUpdatedProductDetails(updatedProduct) {
@@ -774,6 +812,11 @@ function sortFilterArrays(sortByFunc) {
     renderOrderListTable(arrayToSort);
   }
 }
+
+function toggleDisplayOfConfirmDeletePopup(flexOrNone) {
+  deleteOrCancelProductDiv.style.display = flexOrNone;
+}
+
 /*---------- fetching data -----------*/
 
 async function getAllCategories() {
@@ -830,6 +873,15 @@ async function updateOrderProductStatus(orderId, changedItemIndexAndValue) {
       itemsDetailsToChange: changedItemIndexAndValue,
     }),
   });
+  const response = await res.json();
+  return response;
+}
+
+async function deleteProduct(productId) {
+  const res = await fetch(`api/products/${productId}`, {
+    method: "DELETE",
+  });
+
   const response = await res.json();
   return response;
 }

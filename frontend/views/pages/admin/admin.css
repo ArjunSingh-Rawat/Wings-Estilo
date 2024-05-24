@@ -292,7 +292,8 @@
   color: #ff8080;
 }
 
-.loader-container {
+.loader-container,
+.confirm-product-delete-div {
   position: fixed;
   top: 0;
   left: 0;
@@ -304,6 +305,10 @@
   justify-content: center;
   align-items: center;
   display: none;
+}
+
+.confirm-product-delete-div {
+  z-index: 99;
 }
 
 .loader {
