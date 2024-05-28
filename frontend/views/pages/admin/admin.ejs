@@ -15,6 +15,7 @@
       </div>
     </section>
 
+    <!-- ADD PRODUCT SECTION -->
     <section class="add-product-section">
       <form id="add-product-form" action="#">
         <section class="add-product-img-section">
@@ -266,7 +267,7 @@
           class="up-back-btn"
           onclick="u_pGoBackToSection('prompt-category')"
         >
-          Go Back
+          <i class="bx bx-arrow-back back-button"></i>
         </button>
         <div class="update-product-div">
           <!-- <div class="up-item">
@@ -286,8 +287,11 @@
         </div>
       </section>
       <section class="update-product-form-section">
-        <button onclick="u_pGoBackToSection('products-to-update')">
-          Go Back
+        <button
+          class="up-back-btn"
+          onclick="u_pGoBackToSection('products-to-update')"
+        >
+          <i class="bx bx-arrow-back back-button"></i>
         </button>
         <form id="update-product-form" action="#">
           <section class="update-product-img-section">
@@ -573,7 +577,7 @@
               <option value="incomplete">incomplete</option>
             </select>
 
-            <label for="clear-all-btn">clear all</label>
+            <label id="clear-all-label" for="clear-all-btn">Clear all</label>
             <input type="radio" id="clear-all-btn" />
           </div>
         </div>
@@ -641,8 +645,10 @@
     <div class="confirm-product-delete-div">
       <div class="btns">
         <h3>Do you really want to delete</h3>
-        <button class="cancel">Cancel</button>
-        <button class="delete">Delete</button>
+        <div>
+          <button class="cancel">Cancel</button>
+          <button class="delete">Delete</button>
+        </div>
       </div>
     </div>
 
