@@ -65,7 +65,8 @@
 .small-imgs {
   display: grid;
   grid-template-columns: repeat(3, 120px);
-  gap: 20px;
+  column-gap: 20px;
+  row-gap: 40px;
 }
 
 .small-imgs div {
@@ -88,7 +89,7 @@
 
 .img-div {
   width: 100%;
-  height: 90%;
+  height: 100%;
 }
 
 .main-img-div img,
@@ -101,7 +102,6 @@
 .no-img-div {
   width: 100%;
   height: 10%;
-  background-color: #ff8080;
 }
 
 .main-img-div input,
@@ -119,13 +119,13 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background-color: #ff8080;
   color: white;
 }
 
 .main-img-div .bx,
 .small-img .bx {
   font-size: 30px;
-  color: white;
 }
 
 .small-img .bx {
@@ -311,6 +311,28 @@
   z-index: 99;
 }
 
+.confirm-product-delete-div .btns {
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-product-delete-div .btns h3 {
+  font-weight: 500;
+}
+
+.confirm-product-delete-div .btns button {
+  padding: 5px 20px;
+  border: none;
+  background-color: #ff8080;
+  color: white;
+  cursor: pointer;
+  margin: 20px 0;
+}
+
 .loader {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
@@ -384,6 +406,37 @@
   color: #ff8080;
 }
 
+.prompt-category #find-products-to-update {
+  padding: 5px 20px;
+  border: none;
+  background-color: #ff8080;
+  color: white;
+  cursor: pointer;
+  margin: 20px 0;
+}
+
+/* products-tp-update */
+
+.up-back-btn {
+  background-color: rgb(245, 245, 245);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid black;
+  font-size: 20px;
+}
+
+.up-item .update-delete-product button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #ff8080;
+  color: white;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
 /* Order Details Section */
 
 .order-details-section {
@@ -412,9 +465,21 @@
   outline: none;
 }
 
-.od-sort-filter select {
-  padding: 5px;
+.od-sort-filter-div select {
+  padding: 5px 10px;
   font-size: 15px;
+  margin-right: 10px;
+}
+
+.od-sort-filter-div #clear-all-btn {
+  display: none;
+}
+
+.od-sort-filter-div #clear-all-label {
+  background-color: #ff8080;
+  padding: 5px 10px;
+  color: white;
+  cursor: pointer;
 }
 
 /* order-detail-table */
@@ -427,7 +492,7 @@
 
 .od-table th {
   width: 10%;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 500;
   padding: 10px 20px;
   background-color: #ff8080;
@@ -510,7 +575,7 @@
   padding: 10px 20px;
   background-color: #ff8080;
   color: white;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
 }
 
@@ -540,7 +605,7 @@
   width: 100%;
   border: 1px solid lightgrey;
   padding: 10px;
-  margin-bottom: 5px;
+  margin: 15px 0;
 }
 
 #my-name-phone span {
@@ -550,6 +615,15 @@
   padding: 10px 0;
   display: inline-block;
 }
-.edit-product-status {
-  height: 20px;
+.edit-product-status button,
+#update-order-btns button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #ff8080;
+  color: white;
+  cursor: pointer;
+}
+
+#update-order-btns {
+  padding: 20px;
 }
