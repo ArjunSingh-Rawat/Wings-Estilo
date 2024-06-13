@@ -1,6 +1,9 @@
 const User = require("../models/userModel");
 const { v4: uuid } = require("uuid");
-const { verifyPhoneOtp } = require("../../utils/sendAndVerifyOtp");
+const {
+  verifyPhoneOtp,
+  verifyEmailOtp,
+} = require("../../utils/sendAndVerifyOtp");
 const validatePhoneNumber = require("../../utils/validatePhoneNumber");
 const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
@@ -262,6 +265,31 @@ const updatePhoneNumber = asyncHandler(async (req, res) => {
   });
 });
 
+const updatePhoneNumberWithEmail = asyncHandler(async (req, res) => {
+  const { otp, phoneNumber } = req.body;
+  validatePhoneNumber(phoneNumber);
+
+  const user = await User.findOne({ _id: req.user.userid });
+  await verifyEmailOtp(otp, user._id, phoneNumber);
+
+  user.phoneNumber = phoneNumber;
+  user.isNumberVerified = true;
+  try {
+    await user.save();
+  } catch (error) {
+    if (error.code === 11000) {
+      throw new ApiError(403, "Phone number not available!!");
+    } else {
+      throw error;
+    }
+  }
+  res.status(200).json({
+    success: true,
+    message: "successfully added number",
+    user,
+  });
+});
+
 module.exports = {
   redirectToGoogleOauth,
   signInSignUpHandler,
@@ -271,4 +299,5 @@ module.exports = {
   getOneUser,
   updateUserPersonalInfo,
   updatePhoneNumber,
+  updatePhoneNumberWithEmail,
 };

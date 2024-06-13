@@ -10,6 +10,7 @@ const {
   getOneUser,
   updateUserPersonalInfo,
   updatePhoneNumber,
+  updatePhoneNumberWithEmail,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -26,7 +27,9 @@ router.get("/info", verifyToken, getOneUser);
 
 router.put("/info", verifyToken, updateUserPersonalInfo);
 
-router.put("/phone-number", verifyToken, updatePhoneNumber);
+router.put("/phone-number/phone", verifyToken, updatePhoneNumber);
+
+router.put("/phone-number/email", verifyToken, updatePhoneNumberWithEmail);
 
 router.use("/otp", verifyToken, otpRouter);
 

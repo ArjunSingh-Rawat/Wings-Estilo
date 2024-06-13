@@ -1,6 +1,7 @@
 const otpGenerator = require("./otpGenerator");
 const Otp = require("../api/models/otpModel");
 const twilio = require("twilio");
+const nodemailer = require("nodemailer");
 const ApiError = require("./apiError");
 
 let client = "";
@@ -36,12 +37,15 @@ async function sendOtpOnNumber(
       );
 
       if (!client) {
-        throw new ApiError(406, "Cannot send OTP due to invalid credentials!");
+        throw new ApiError(
+          406,
+          "Cannot send OTP due to invalid twilio sms credentials!"
+        );
       }
 
       const message = `You are one step away from adding you first number\nYour verification OTP:${primaryOtp}`;
       if (client) {
-        await sendTwilioMessage(message, phoneNumber);
+        // await sendTwilioMessage(message, phoneNumber);
       }
     } else {
       await Otp.findOneAndUpdate(
@@ -57,7 +61,10 @@ async function sendOtpOnNumber(
       );
 
       if (!client) {
-        throw new ApiError(406, "Cannot send OTP due to invalid credentials!");
+        throw new ApiError(
+          406,
+          "Cannot send OTP due to invalid twilio sms credentials!"
+        );
       }
 
       const messageForPrimaryNumber = `If you are attempting to update your mobile number\nUse code ${primaryOtp} to verify on wingsestilo.in\nValid for 2 minutes`;
@@ -70,14 +77,6 @@ async function sendOtpOnNumber(
   } catch (error) {
     throw error;
   }
-}
-
-async function sendTwilioMessage(message, phoneNumber) {
-  await client.messages.create({
-    body: message,
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: "+91" + phoneNumber,
-  });
 }
 
 async function verifyPhoneOtp(otp, userId, phoneNumber, primary) {
@@ -130,4 +129,111 @@ async function verifyPhoneOtp(otp, userId, phoneNumber, primary) {
   }
 }
 
-module.exports = { sendOtpOnNumber, verifyPhoneOtp, client };
+async function sendTwilioMessage(message, phoneNumber) {
+  await client.messages.create({
+    body: message,
+    from: process.env.TWILIO_PHONE_NUMBER,
+    to: "+91" + phoneNumber,
+  });
+}
+
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.sendinblue.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.NODEMAILER_AUTH_USER,
+    pass: process.env.NODEMAILER_AUTH_PASS,
+  },
+});
+
+async function sendOtpOnUserEmail(phoneNumber, userId, userEmail) {
+  try {
+    const otp = otpGenerator();
+    const otpData = await Otp.findOne({ user: userId });
+
+    if (!otpData) {
+      await Otp.create({
+        user: userId,
+        emailOtp: otp,
+        eOtpCreatedAt: Date.now(),
+        phoneNumber,
+      });
+    } else {
+      const currentTime = new Date().getTime();
+      const timeDifference =
+        currentTime - new Date(otpData.eOtpCreatedAt).getTime();
+
+      const timeDifferenceInSeconds = timeDifference / 1000;
+      const otpTimeRemaining = 120 - timeDifferenceInSeconds;
+
+      if (timeDifferenceInSeconds < 120) {
+        throw new ApiError(
+          406,
+          `You can send OTP after ${Math.ceil(otpTimeRemaining)} seconds.`
+        );
+      } else {
+        otpData.emailOtp = otp;
+        otpData.eOtpCreatedAt = Date.now();
+        otpData.phoneNumber = phoneNumber;
+        await otpData.save();
+      }
+    }
+
+    await sendOtpViaNodemailer(otp, userEmail);
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function verifyEmailOtp(otp, userId, phoneNumber) {
+  try {
+    if (!otp) {
+      throw new ApiError(406, "Otp not found!");
+    }
+
+    const otpData = await Otp.findOne({ user: userId });
+
+    if (!otpData) {
+      throw new ApiError(406, "no otp data found!");
+    }
+
+    if (phoneNumber && +phoneNumber !== otpData.phoneNumber) {
+      throw new ApiError(406, "Phone number provided is not correct!");
+    }
+
+    const dbOtp = otpData.emailOtp;
+
+    if (otp !== dbOtp) {
+      throw new ApiError(406, "Wrong otp provided!");
+    }
+
+    const currentTime = new Date().getTime();
+    const timeDifference =
+      currentTime - new Date(otpData.eOtpCreatedAt).getTime();
+    const timeDifferenceInMinute = timeDifference / 1000 / 60;
+
+    if (timeDifferenceInMinute > 2) {
+      throw new ApiError(403, "Otp Expired!!!");
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function sendOtpViaNodemailer(otp, userEmail) {
+  await transporter.sendMail({
+    from: "arjunsinghrawat102@gmail.com",
+    to: userEmail,
+    subject: "OTP for updating phone number",
+    text: `your otp to update phone number is ${otp}\n valid for 2 minutes`,
+  });
+}
+
+module.exports = {
+  sendOtpOnNumber,
+  verifyPhoneOtp,
+  sendOtpOnUserEmail,
+  verifyEmailOtp,
+  client,
+};

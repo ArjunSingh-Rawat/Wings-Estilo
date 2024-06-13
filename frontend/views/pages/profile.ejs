@@ -47,10 +47,15 @@
           <div class="personal-info info">
             <div class="pi-title">
               <p class="p">PERSONAL INFORMATION</p>
-              <p id="personal-info-edit" class="edit-btn">Edit</p>
-              <p id="personal-info-save" class="edit-btn" style="display: none">
-                Save
-              </p>
+              <p id="personal-info-edit-element" class="edit-btn">Edit</p>
+              <div
+                id="personal-info-save-element"
+                class="save-cancel-div"
+                style="display: none"
+              >
+                <p id="personal-info-save" class="edit-btn">Save</p>
+                <p id="personal-info-cancel" class="edit-btn">Cancel</p>
+              </div>
             </div>
 
             <div class="first-name info-div">
@@ -109,10 +114,15 @@
           <div class="contact-info info">
             <div class="ci-title">
               <p class="p">MOBILE NUMBER</p>
-              <p id="phone-number-edit" class="edit-btn">Edit</p>
-              <p id="phone-number-save" class="edit-btn" style="display: none">
-                Save
-              </p>
+              <p id="phone-number-edit-element" class="edit-btn">Edit</p>
+              <div
+                id="phone-number-save-element"
+                class="save-cancel-div"
+                style="display: none"
+              >
+                <p id="phone-number-save" class="edit-btn">Save</p>
+                <p id="phone-number-cancel" class="edit-btn">Cancel</p>
+              </div>
             </div>
 
             <div class="number info-div">
@@ -309,12 +319,14 @@
 
     <div id="otp-container">
       <div id="otp-popup">
-        <div onclick="showOtpCloseConfirm()" class="close-btn">&times;</div>
+        <div onclick="closeOtpDiv();clearOtpInputValues()" class="close-btn">
+          &times;
+        </div>
         <div class="verify-otp">VERIFY OTP</div>
         <div class="otp-value-container">
           <div class="primary-otp">
             <div class="enter-otp">
-              Enter OTP sent on +91 <span class="primary-number"></span>
+              Enter OTP sent on <span class="user-email"></span>
             </div>
             <div class="otp-values">
               <input id="p-0" type="text" maxlength="1" />
@@ -325,33 +337,13 @@
               <input id="p-5" type="text" maxlength="1" />
             </div>
           </div>
-          <div class="update-otp">
-            <div class="enter-otp">
-              Enter OTP sent on +91 <span class="update-number"></span>
-            </div>
-            <div class="otp-values">
-              <input id="u-0" type="text" maxlength="1" />
-              <input id="u-1" type="text" maxlength="1" />
-              <input id="u-2" type="text" maxlength="1" />
-              <input id="u-3" type="text" maxlength="1" />
-              <input id="u-4" type="text" maxlength="1" />
-              <input id="u-5" type="text" maxlength="1" />
-            </div>
-          </div>
           <div class="otp-errors"></div>
         </div>
         <div class="otp-not-rec">
-          OTP not received? <span class="resend-otp">resend</span> in 60sec
+          OTP not received? resend in <span>120 sec</span>
         </div>
         <button onclick="submitOtp()" id="otp-submit-btn">Submit</button>
-
-        <div class="confirm-close-otp" style="display: none">
-          <div onclick="closeConfirmDiv()" class="close-confirm-btn">
-            &times;
-          </div>
-          <p>Next you will be able to edit after 10 minutes</p>
-          <button onclick="closeOtpDiv();clearOtpInputValues()">Confirm</button>
-        </div>
+        <button onclick="resendOtp()" id="otp-resend-btn">Resend</button>
       </div>
     </div>
     <!-- footer -->
