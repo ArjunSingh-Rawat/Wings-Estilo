@@ -7,314 +7,46 @@
   </head>
   <body>
     <%- include("../partials/header")%>
-    <h1 class="photo-head">___Book Your Maternity Photoshoot____</h1>
-    <div class="mater-poster">
-      <img src="/Images/photoshoot/maternity.png" alt="" />
-    </div>
-    <section class="container">
-      <div class="grid">
-        <div class="grid-item">
-          <a href="#">
-            <img src="/Images/photoshoot/ONE.JPG" alt="" />
-          </a>
-        </div>
-        <div class="img-info">
-          <a href="#">
-            <!-- <span class="product-name">Maternity Wear Gown</span> -->
-          </a>
-        </div>
-        <!-- <span class="price">Rs.3000</span> -->
+    <section class="maternity-photoshoot-section">
+      <div class="m-hero-img">
+        <img src="/Images/photoshoot/maternity-photoshoot.jpg" alt="" />
       </div>
-      <div class="grid">
-        <div class="grid-item">
-          <a href="#">
-            <img src="/Images/photoshoot/TWO.JPG" alt="" />
-          </a>
-        </div>
-        <div class="img-info">
-          <a href="#">
-            <!-- <span class="product-name">Maternity Wear Gown</span> -->
-          </a>
-        </div>
-        <!-- <span class="price">Rs.3000</span> -->
-      </div>
-      <div class="grid">
-        <div class="grid-item">
-          <a href="#">
-            <img src="/Images/photoshoot/THREE.jpg" alt="" />
-          </a>
-        </div>
-        <div class="img-info">
-          <a href="#">
-            <!-- <span class="product-name">Maternity Wear Gown</span> -->
-          </a>
-        </div>
-        <!-- <span class="price">Rs.3000</span> -->
-      </div>
-      <div class="grid">
-        <div class="grid-item">
-          <a href="#">
-            <img src="/Images/photoshoot/FOUR.JPG" alt="" />
-          </a>
-        </div>
-        <div class="img-info">
-          <a href="#">
-            <!-- <span class="product-name">Maternity Wear Gown</span> -->
-          </a>
-        </div>
-        <!-- <span class="price">Rs.3000</span> -->
+      <div class="m-hero-img-res">
+        <img src="/Images/photoshoot/maternity-photoshoot1.jpg" alt="" />
       </div>
     </section>
 
-    <section class="outer-section">
-      <section class="container2" id="form-section">
-        <h1>For booking Please fill the form below..</h1>
-        <form class="contact-form">
-          <label for="Name">Name</label>
-          <input
-            type="text"
-            id="Name"
-            size="52"
-            placeholder="Enter name"
-            required
-          />
+    <section class="photoshoot-form-section">
+      <form action="" class="photoshoot-form">
+        <div class="pf-box1">
+          <label for="fname">Full name:</label>
+          <input type="text" id="fname" name="fname" />
+        </div>
 
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            `
-            size="52"
-            placeholder="Enter email"
-            required
-          />
+        <div class="pf-box2">
+          <label for="email">Enter your email:</label>
+          <input type="email" id="email" name="email" />
+        </div>
 
-          <label for="phone">Phone</label>
-          <input
-            type="text"
-            id="phone"
-            size="52"
-            placeholder="Enter phone no."
-            required
-          />
+        <div class="pf-box3">
+          <label for="phone">Phone number:</label>
+          <input type="text" id="phone" name="phone" />
+        </div>
 
-          <label for="photoType">Select Photoshoot Type:</label>
-          <div class="select-wrapper">
-            <select id="photoType" name="photoType">
-              <option value="select">--Select Photoshoot--</option>
-              <option value="maternity">Maternity photoshoot</option>
-              <option value="baby">Baby photoshoot</option>
-              <option value="pre-wedding">Pre-wedding photoshoot</option>
-              <option value="e-commerce">E-commerce photoshoot</option>
-              <option value="Model-shoot">Model photoshoot</option>
-              <option value="product-shoot">Product photoshoot</option>
-            </select>
-          </div>
+        <div class="pf-box4">
+          <label for="address">Adress:</label>
+          <textarea id="address" name="address"> </textarea>
+        </div>
 
-          <label for="booking-date">Booking Date</label>
-          <input type="date" id="booking-date" name="date" />
+        <input id="pf-submit-button" type="submit" value="Submit" />
+      </form>
 
-          <label for="address">Address</label>
-          <textarea id="address" cols="50" rows="10" required></textarea>
-
-          <button class="btn">Submit</button>
-        </form>
-      </section>
-      <div class="side-img">
-        <img src="/Images/photoshoot/THREE.jpg" alt="" />
+      <div class="pf-img-div">
+        <img src="/Images/photoshoot/maternity-img1.jpg" alt="" />
       </div>
     </section>
-
-    <section class="container3">
-      <div class="side-img1">
-        <img src="/Images/photoshoot/ONE.JPG" alt="" />
-      </div>
-
-      <div class="terms">
-        <h1 class="Conditions">Terms & Conditions</h1>
-        <ul class="list">
-          <li>Candidate entries are accepted from all over India.</li>
-          <li>All candidates will be rewarded with a GIFT voucher.</li>
-          <li>
-            Selection and Short listing of the participants will not be biased
-            i.e. it will be under the sole discretion of WingsEstilo.com, based
-            on the confident gesture and elegance.
-          </li>
-          <li>
-            The selected candidates will be communicated through Mobile Phones
-            and E-mail and pass on further details regarding the photo shoot and
-            its venue.
-          </li>
-          <li>
-            The venue and the probs to be used will be decided by the delegates
-            of Wings Estilo Maternity Wear.
-          </li>
-          <li>
-            Outfits for the Maternity shoot can be chosen from WingsEstilo.com.
-            or from the outlets of Wings Estilo Maternity Wear.
-          </li>
-          <li>
-            The Maternity photoshoot will be conducted in Gwalior only. The
-            Maternity shoot can be served only for the applicants who are
-            willing to travel to Gwalior.
-          </li>
-          <li>
-            Each candidate profile will be analyzed separately, so fake profiles
-            are not acceptable or entertained.
-          </li>
-          <li>
-            The photographs from the Maternity Photoshoot will be displayed in
-            the official website and Facebook page of WingsEstilo
-            (WingsEstilo.com).
-          </li>
-          <li>
-            The candidates who participated once are strictly restricted from
-            new entry.
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Pre-Wedding Section -->
-
-    <section class="pre-wedding-section">
-      <h1 class="heading1">Book Your Pre-Wedding Shoot</h1>
-      <div class="pre-wedding-img">
-        <img src="/Images/photoshoot/PRE1.jpg" alt="" />
-        <img src="/Images/photoshoot/PRE2.jpg" alt="" />
-        <img src="/Images/photoshoot/PRE3.jpg" alt="" />
-        <img src="/Images/photoshoot/PRE4.jpg" alt="" />
-      </div>
-
-      <div class="showcase">
-        <div class="left-para">
-          <p>
-            "Every love story is distinct, and our pre-wedding photoshoots are
-            tailored to reflect the individuality of each couple. Whether you
-            envision a whimsical fairytale romance, a rustic countryside affair,
-            or a sleek urban rendezvous, our team works closely with you to
-            bring your vision to life. From selecting enchanting locations to
-            curating the perfect props and outfits, we ensure that every element
-            aligns seamlessly with your story."
-          </p>
-        </div>
-
-        <div class="right">
-          <img class="img" src="/Images/photoshoot/PRE2.jpg" alt="" />
-        </div>
-      </div>
-
-      <div class="showcase">
-        <div class="right">
-          <img class="img" src="/Images/photoshoot/PRE4.jpg" alt="" />
-        </div>
-        <div class="left-para">
-          <p>
-            "At [Wings Estilo], we are passionate about crafting unforgettable
-            experiences and creating art that transcends time. Allow us to be a
-            part of your love story, and together, let's embark on a journey of
-            laughter, romance, and everlasting memories. Contact us today to
-            learn more about our pre-wedding photoshoot packages and start
-            envisioning the magic that awaits."
-          </p>
-          <div>
-            <a href="#form-section">
-              <button class="book-btn">Book Now</button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="contact-sec">
-      <p class="help">NEED HELP?</p>
-      <p class="query">
-        If you have any questions or need further information, please contact us
-      </p>
-      <div class="help-section">
-        <div class="whatsapp-contact">
-          <i class="bx bxl-whatsapp"></i>
-          <h2 class="connect">WhatsApp</h2>
-          <p class="num">+91 8770616089</p>
-          <p class="num">+91 9171167503</p>
-          <p class="timing">Timings: Everyday 10 am - 8 pm</p>
-        </div>
-        <div class="phone-contact">
-          <i class="bx bxs-phone"></i>
-          <h2 class="connect">Call</h2>
-          <p class="num">+91 8770616089</p>
-          <p class="num">+91 9171167503</p>
-          <p class="timing">Timings: Everyday 10 am - 8 pm</p>
-        </div>
-        <div class="email-section">
-          <i class="bx bxs-envelope"></i>
-          <h2 class="connect">Email</h2>
-          <p class="num">info@wingseEstilo.com</p>
-          <p class="timing">Timings: Everyday 10 am - 8 pm</p>
-        </div>
-      </div>
-    </section>
-
-    <div class="prewed-poster">
-      <img src="/Images/photoshoot/pre1.png" alt="" />
-    </div>
-    <section class="pre-wedding-section">
-      <h1 class="heading1">Book Your E-commerce PhotoShoot</h1>
-      <div class="pre-wedding-img">
-        <img src="/Images/photoshoot/ECOM.JPG" alt="" />
-        <img src="/Images/photoshoot/ECOM2.JPG" alt="" />
-        <img src="/Images/photoshoot/ECOM5.jpg" alt="" />
-        <img src="/Images/photoshoot/ECOM4.jpg" alt="" />
-      </div>
-
-      <div class="showcase">
-        <div class="left-para">
-          <p>
-            "In today's competitive market, compelling visuals can make all the
-            difference in driving sales and engagement. Our e-commerce
-            photoshoots are designed to do just that, helping you attract more
-            customers, increase conversions, and stand out from the competition.
-            Whether you're launching a new product or revamping your online
-            store, our images will help you captivate your audience and leave a
-            lasting impression. (Make it simple and short)"
-          </p>
-        </div>
-
-        <div class="right">
-          <img class="img" src="/Images/photoshoot/ECOM4.jpg" alt="" />
-        </div>
-      </div>
-
-      <div class="showcase">
-        <div class="right">
-          <img class="img" src="/Images/photoshoot/ECOM5.jpg" alt="" />
-        </div>
-        <div class="left-para">
-          <p>
-            "At [Wings Estlio], we're passionate about helping brands thrive in
-            the digital age. Partner with us for your e-commerce photoshoot
-            needs, and let's elevate your online presence together. Contact us
-            today to learn more about our services and take the first step
-            toward unlocking the full potential of your brand in the digital
-            marketplace."
-          </p>
-          <div>
-            <a href="#form-section">
-              <button class="book-btn">Book Now</button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h1 class="heading">Book Your Baby Photoshoot</h1>
-      <div class="baby-poster">
-        <img src="/Images/photoshoot/baby1.png" alt="" />
-      </div>
-    </section>
-
-    <section class="FAQ">
+    <!-- faq -->
+    <section class="FAQ-section">
       <h1 class="faq">FREQUENTLY ASKED QUESTIONS</h1>
 
       <div class="questions">

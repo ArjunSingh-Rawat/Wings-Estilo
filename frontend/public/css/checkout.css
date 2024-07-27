@@ -256,6 +256,11 @@ body {
     font-size: 12px;
   }
 
+  #checkout-continue-btn {
+    padding: 5px 15px;
+    font-size: 12px;
+  }
+
   /* checkout-price-detail */
   .checkout-price-detail {
     width: 100%;

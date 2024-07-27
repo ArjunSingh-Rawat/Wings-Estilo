@@ -13,59 +13,46 @@
   </head>
   <body>
     <%- include("../partials/header") %>
-    <h1 class="contact">CONTACT US</h1>
-    <p class="para">
-      We'd love to hear from you! If you have any questions or comments for us,
-      fill out the form below we will get back to you within 24 hours. Or feel
-      free to write us at support@wingsestilo.com or call us at +91-8770616089.
-      We are available to take your calls on 24hrs.
-    </p>
 
-    <div class="box1">
-      <div class="market">
-        <p>Manufactured, Packed & Marketed By:</p>
-        <p>WingsEstilo Gwalior, 474002</p>
+    <section class="contact-us-section">
+      <h1>CONTACT US</h1>
+
+      <div class="contact-boxes">
+        <div>
+          <i class="bx bxs-envelope"></i>
+          <h3>Email Us</h3>
+          <p>example@gmail.com</p>
+        </div>
+        <div>
+          <i class="bx bxs-phone-call"></i>
+          <h3>Contact Us</h3>
+          <p>+91 9138498329</p>
+        </div>
+        <div>
+          <i class="bx bxs-time"></i>
+          <h3>Our Timings</h3>
+          <p>Mon-Sun: 10:00 AM - 07:00 PM</p>
+        </div>
       </div>
+    </section>
 
-      <div class="address">
-        <p>Address</p>
-        <p>Near Sai Baba Mandir Gwalior (M.P.)</p>
+    <section class="shop-section">
+      <div class="shop-img">
+        <img src="/Images/general-img/shop.png" alt="" />
       </div>
-    </div>
-    <div class="box2">
-      <div class="phone">
-        <p>Customer Support</p>
-        <p>8770616089, 9171167503</p>
+      <div class="shop-info">
+        <h2 id="h2-1">Our Shop</h2>
+        <h2 id="h2-2">Wing's Estilo - Gwalior, Madhya Pradesh</h2>
+        <p>
+          3 Shopping Complex Fornt Of Vishal Megha Mart, Fort Road, Phool Bagh,
+          Gwalior - 474002 (Near Sai Baba Mandir)
+        </p>
+        <p>Email: example@gmail.com</p>
+        <p>Phone: +91</p>
       </div>
+    </section>
 
-      <div class="address">
-        <p>Email</p>
-        <p>support@wingsestilo.com</p>
-      </div>
-    </div>
-
-    <h1 class="contact1">CONTACT</h1>
-
-    <section>
-      <div class="container">
-        <form action="#" method="post">
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" required />
-
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required />
-
-          <label for="phone">Phone Number:</label>
-          <input type="tel" id="phone" name="phone" required />
-
-          <label for="message">Message:</label>
-          <textarea id="message" name="message" rows="4" required></textarea>
-
-          <button class="submit-btn" type="submit">Submit</button>
-        </form>
-      </div>
-
-      <h1 class="map">GOOGLE MAP</h1>
+    <section class="google-map-section">
       <div class="google-map">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3579.3473445652335!2d78.16906131141671!3d26.21790117697254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3976c7ec67287ea7%3A0xc40f6c79ade088ef!2sWing&#39;s%20Estilo%20-%20Customise%20Boutique%20%2F%20Rental%20Dresses%20(Dresses%20on%20Rent)!5e0!3m2!1sen!2sin!4v1706373066859!5m2!1sen!2sin"
@@ -78,6 +65,7 @@
         ></iframe>
       </div>
     </section>
+
     <%- include("../partials/footer") %>
   </body>
 </html>
