@@ -1,8 +1,7 @@
 const { client } = require("./sendAndVerifyOtp");
 
-async function sendOrderDetailsToAdmin(orderDetails) {
+async function sendOrderDetailsToAdmin(orderDetails, sellOrRent) {
   try {
-    console.log(orderDetails);
     const { user, shippingAddress, items, createdAt, _id } = orderDetails;
     const userName = user.firstName + " " + user.lastName;
     const { email, phoneNumber } = user;
@@ -14,14 +13,19 @@ async function sendOrderDetailsToAdmin(orderDetails) {
 
     let itemString = "";
     for (let i = 0; i < items.length; i++) {
-      const { name, sellPrice, _id } = items[i].product;
+      const { name, _id } = items[i].product;
+      let price = 0;
+      sellOrRent === "sell"
+        ? (price = items[i].product.sellPrice)
+        : (price = items[i].product.rentPrice);
+
       itemString += `${
         i + 1
-      }) Name: _${name.trim()}_\n   Sell Price: ${sellPrice}\n   Quantity: ${
+      }) Name: _${name.trim()}_\n   Price: ${price}\n   Quantity: ${
         items[i].quantity
       }\n   Selected Size: _${
         items[i].productSize
-      }_\n*Product Id*: ${_id}\nhttps://wingsestilo.in/sell/${name
+      }_\n*Product Id*: ${_id}\nhttps://wingsestilo.in/${sellOrRent}/${name
         .split(" ")
         .join("-")}/${_id}/buy\n\n`;
     }
@@ -30,7 +34,7 @@ async function sendOrderDetailsToAdmin(orderDetails) {
       from: `whatsapp:${process.env.TWILIO_WHATSAPP_NUMBER}`,
       to: `whatsapp:${process.env.ADMIN_WHATSAPP_NUMBER}`,
       body:
-        `*Got new order*                              *${orderDate}*\n\n` +
+        `*Got new ${sellOrRent} order*                          *${orderDate}*\n\n` +
         `Order Id: *${_id}*\n\n` +
         `*User Details*:\n` +
         `Name: ${userName}\n` +

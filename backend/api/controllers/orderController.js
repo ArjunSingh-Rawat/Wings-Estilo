@@ -1,18 +1,23 @@
 const jwt = require("jsonwebtoken");
+const asyncHandler = require("../../utils/asyncHandler");
+const ApiError = require("../../utils/apiError");
+const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const {
   createRazorpayOrder,
   verifyRazorpayPayment,
 } = require("../../utils/razorpayPayment");
-const Order = require("../models/ordersModel");
 const RazorpayPayment = require("../models/razorpayPaymentModel");
-const User = require("../models/userModel");
-const asyncHandler = require("../../utils/asyncHandler");
-const ApiError = require("../../utils/apiError");
+const Order = require("../models/ordersModel");
+const RentOrder = require("../models/rentOrdersModel");
+const { deliveryCharges } = require("../../constants");
 const {
   sendOrderDetailsToAdmin,
 } = require("../../utils/sendOrderDetailToAdmin");
-const { deliveryCharges } = require("../../constants");
+
+const cookieOptions = {
+  httpOnly: true,
+};
 
 const initiateOrder = asyncHandler(async (req, res) => {
   const { products } = req.body;
@@ -34,11 +39,7 @@ const initiateOrder = asyncHandler(async (req, res) => {
     }
   );
 
-  const options = {
-    httpOnly: true,
-  };
-
-  res.status(200).cookie("checkout_token", checkoutToken, options).json({
+  res.status(200).cookie("checkout_token", checkoutToken, cookieOptions).json({
     success: true,
     message: "initiated order process!",
   });
@@ -135,26 +136,35 @@ const checkQuantity = asyncHandler(async (req, res) => {
     }
   );
 
-  const options = {
-    httpOnly: true,
-  };
-
-  res.cookie("checkout_token", newCheckoutToken, options).status(200).json({
-    success: true,
-    message: "quantity is available",
-  });
+  res
+    .cookie("checkout_token", newCheckoutToken, cookieOptions)
+    .status(200)
+    .json({
+      success: true,
+      message: "quantity is available",
+    });
 });
 
 const startRazorpayPaymentProcess = asyncHandler(async (req, res) => {
+  const sellOrRent = req.params.sellOrRent;
+  if (!["sell", "rent"].includes(sellOrRent)) {
+    throw new ApiError(406, "order type should contain sell or rent!!");
+  }
+
   let amount = 0;
   const products = [];
+  let selectFrom = null;
+  sellOrRent === "sell"
+    ? (selectFrom = "sellPrice")
+    : (selectFrom = "rentPrice");
+
   for (const productData of req.products) {
-    amount += productData.product.sellPrice * +productData.quantity;
+    amount += productData.product[selectFrom] * +productData.quantity;
     products.push({
       productId: productData.product._id,
       productSize: productData.productSize,
       quantity: +productData.quantity,
-      productPrice: productData.product.sellPrice,
+      productPrice: productData.product[selectFrom],
     });
   }
   const shippingAddress = req.body.shippingAddress;
@@ -184,27 +194,15 @@ const startRazorpayPaymentProcess = asyncHandler(async (req, res) => {
   });
 });
 
-const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
+const createSellOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
   const userId = req.user.userid;
-  const user = await User.findOne({ _id: userId });
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
+  await checkUser(userId);
 
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-    req.body;
-
-  verifyRazorpayPayment(
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature
+  const razorpayPaymentId = await verifyRazorpayPaymentAndSaveInDB(
+    req.body.razorpay_order_id,
+    req.body.razorpay_payment_id,
+    req.body.razorpay_signature
   );
-
-  const razorpayPayment = await RazorpayPayment.create({
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature,
-  });
 
   const orderDetailToken = req.signedCookies.orderDetails;
   const orderDetails = jwt.verify(
@@ -213,24 +211,7 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
   );
 
   const { products, shippingAddress } = orderDetails;
-
-  // TODO: logic when db fail to create RazorpayPayment or Order
-  // for now just throwing error
-  if (!razorpayPayment) {
-    throw new ApiError(500, "failed to save RazorpayPayment in DB!");
-  }
-
-  const items = [];
-  let totalAmount = 0;
-  for (const product of products) {
-    items.push({
-      product: product.productId,
-      productSize: product.productSize,
-      quantity: product.quantity,
-      updateAt: new Date(),
-    });
-    totalAmount += product.productPrice * +product.quantity;
-  }
+  const { totalAmount, items } = productInfoToDbFormat(products);
 
   let order = await Order.create({
     user: userId,
@@ -238,60 +219,53 @@ const createOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
     totalAmount,
     payment: {
       provider: "Razorpay",
-      details: razorpayPayment._id,
+      details: razorpayPaymentId,
     },
     shippingAddress,
   });
-
   if (!order) {
     throw new ApiError(500, "failed to save order in DB!!");
   }
 
-  const options = {
-    httpOnly: true,
-  };
   res
     .status(200)
-    .clearCookie("checkout_token", options)
-    .clearCookie("orderDetails", options)
+    .clearCookie("checkout_token", cookieOptions)
+    .clearCookie("orderDetails", cookieOptions)
     .redirect("/profile?section=orders");
 
-  order = await Order.findOne({ _id: order._id })
-    .populate({
-      path: "user",
-      select: "firstName lastName email gender phoneNumber",
-    })
-    .populate({
-      path: "items.product",
-      select: "name sellPrice rentPrice image",
-    })
-    .populate({ path: "payment.details", select: "-_id -__v -updateAt" })
-    .populate("shippingAddress");
-
-  await sendOrderDetailsToAdmin(order);
+  await getAndSendOrderDetailsToAdmin("sell", order._id);
 });
 
 const getOrderDetails = asyncHandler(async (req, res) => {
   const userId = req.user.userid;
-  const orders = await Order.find({ user: userId })
-    .populate({
+  const populateOptions = [
+    {
       path: "items.product",
       select: "name sellPrice rentPrice image",
-    })
-    .populate({
+    },
+    {
       path: "user",
       select: "firstName lastName email phoneNumber -_id",
-    })
-    .populate("shippingAddress")
-    .select("-payment");
+    },
+    "shippingAddress",
+  ];
+  const selectOptions = "-payment";
 
-  if (!orders) {
+  const sellOrders = await Order.find({ user: userId })
+    .populate(populateOptions)
+    .select(selectOptions);
+
+  const rentOrders = await RentOrder.find({ user: userId })
+    .populate(populateOptions)
+    .select(selectOptions);
+
+  if (!sellOrders && !rentOrders) {
     throw new ApiError(404, "orders not found!");
   }
   res.status(200).json({
     success: true,
     message: "orders found!",
-    orders,
+    orders: [...sellOrders, ...rentOrders],
   });
 });
 
@@ -321,11 +295,129 @@ const updateOrder = asyncHandler(async (req, res) => {
   });
 });
 
+const createRentOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
+  const userId = req.user.userid;
+  await checkUser(userId);
+
+  const razorpayPaymentId = await verifyRazorpayPaymentAndSaveInDB(
+    req.body.razorpay_order_id,
+    req.body.razorpay_payment_id,
+    req.body.razorpay_signature
+  );
+
+  const orderDetailToken = req.signedCookies.orderDetails;
+  const orderDetails = jwt.verify(
+    orderDetailToken,
+    process.env.CHECKOUT_TOKEN_SECRET
+  );
+
+  const { products, shippingAddress } = orderDetails;
+  const { totalAmount, items } = productInfoToDbFormat(products);
+
+  let order = await RentOrder.create({
+    user: userId,
+    items: items,
+    totalAmount,
+    payment: {
+      provider: "Razorpay",
+      details: razorpayPaymentId,
+    },
+    shippingAddress,
+  });
+  if (!order) {
+    throw new ApiError(500, "failed to save order in DB!!");
+  }
+
+  res
+    .status(200)
+    .clearCookie("checkout_token", cookieOptions)
+    .clearCookie("orderDetails", cookieOptions)
+    .redirect("/profile?section=orders");
+
+  await getAndSendOrderDetailsToAdmin("rent", order._id);
+});
+
+/*---------- functions---------------------*/
+
+async function checkUser(userId) {
+  const user = await User.findOne({ _id: userId });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+}
+
+async function verifyRazorpayPaymentAndSaveInDB(
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature
+) {
+  verifyRazorpayPayment(
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature
+  );
+
+  const razorpayPayment = await RazorpayPayment.create({
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  });
+
+  /*
+    TODO: logic when db fail to create RazorpayPayment or Order
+    for now just throwing error
+  */
+  if (!razorpayPayment) {
+    throw new ApiError(500, "failed to save RazorpayPayment in DB!");
+  }
+
+  return razorpayPayment._id;
+}
+
+function productInfoToDbFormat(products) {
+  const items = [];
+  let totalAmount = 0;
+  for (const product of products) {
+    items.push({
+      product: product.productId,
+      productSize: product.productSize,
+      quantity: product.quantity,
+      updateAt: new Date(),
+    });
+    totalAmount += product.productPrice * +product.quantity;
+  }
+  return { totalAmount, items };
+}
+
+async function getAndSendOrderDetailsToAdmin(sellOrRent, orderId) {
+  let findFrom = null;
+  if (sellOrRent === "sell") findFrom = Order;
+  else findFrom = RentOrder;
+
+  const order = await findFrom.findOne({ _id: orderId }).populate([
+    {
+      path: "user",
+      select: "firstName lastName email gender phoneNumber",
+    },
+    {
+      path: "items.product",
+      select: "name sellPrice rentPrice image",
+    },
+    {
+      path: "payment.details",
+      select: "-_id -__v -updateAt",
+    },
+    "shippingAddress",
+  ]);
+  await sendOrderDetailsToAdmin(order, sellOrRent);
+}
+
 module.exports = {
   initiateOrder,
   checkQuantity,
   startRazorpayPaymentProcess,
-  createOrderOnSuccessfulPayment,
+  createSellOrderOnSuccessfulPayment,
   getOrderDetails,
   updateOrder,
+  createRentOrderOnSuccessfulPayment,
 };

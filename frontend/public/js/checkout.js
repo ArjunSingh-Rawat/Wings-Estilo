@@ -141,7 +141,7 @@ function payWithRazorpay(key, razorpayOrder, user) {
     description: "Best service from our boutique",
     image: "/Images/general-img/favicon.png",
     order_id: razorpayOrder.id,
-    callback_url: "/api/order/create-order",
+    callback_url: "/api/order/create-sell-order",
     prefill: {
       name: user.name,
       email: user.email,
@@ -190,7 +190,6 @@ function renderUserInfo(userData) {
 }
 
 function renderTotalPrice(products, deliveryCharge) {
-  console.log("delivery charges", deliveryCharge);
   let totalAmount = 0;
   let totalItems = 0;
   for (const productData of products) {
@@ -269,7 +268,7 @@ async function checkQuantity(productId, productSize, quantity) {
 
 async function startPaymentProcess(products, shippingAddress) {
   try {
-    const res = await fetch("/api/order/start-payment", {
+    const res = await fetch("/api/order/sell/start-payment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -18,7 +18,6 @@ async function getCheckoutDetails() {
       checkoutDetails.products.push({ product, productSize, quantity });
     }
   }
-
   if (checkoutDetails.userData.addresses.length) {
     const state = checkoutDetails.userData.addresses[0].state;
     const response = await getDeliveryCharge(state);
@@ -115,8 +114,9 @@ document
     if (checkoutDetails.userData) {
       const data = await startPaymentProcess(
         products,
-        checkoutDetails.userData.addresses[0]._id
+        checkoutDetails.userData.addresses[0]
       );
+      payWithRazorpay(data.key, data.order, checkoutDetails.userData);
     }
   });
 
@@ -130,6 +130,34 @@ function getOrderProductsDetail() {
     products.push({ productId, productSize, quantity });
   }
   return products;
+}
+
+function payWithRazorpay(key, razorpayOrder, user) {
+  const options = {
+    key,
+    amount: razorpayOrder.amount,
+    currency: razorpayOrder.currency,
+    name: "Wings Estilo",
+    description: "Best service from our boutique",
+    image: "/Images/general-img/favicon.png",
+    order_id: razorpayOrder.id,
+    callback_url: "/api/order/create-rent-order",
+    prefill: {
+      name: user.name,
+      email: user.email,
+      contact: user.phoneNumber,
+    },
+    theme: {
+      color: "#3399cc",
+    },
+    modal: {
+      ondismiss: function () {
+        window.location.replace("/rent/checkout");
+      },
+    },
+  };
+  const razor = new window.Razorpay(options);
+  razor.open();
 }
 
 function renderUserInfo(userData) {
@@ -161,24 +189,11 @@ function renderUserInfo(userData) {
   document.querySelector("#user-email").innerText = userData.email;
 }
 
-function showAddAddressBtn() {
-  const btn = document.querySelector("#add-change-address-button");
-  btn.classList.add("add-address");
-  btn.innerText = "Add Address";
-}
-
-function showChangeAddressBtn() {
-  const btn = document.querySelector("#add-change-address-button");
-  btn.classList.add("change-address");
-  btn.innerText = "Change";
-}
-
 function renderTotalPrice(products, deliveryCharge) {
-  console.log("delivery charges", deliveryCharge);
   let totalAmount = 0;
   let totalItems = 0;
   for (const productData of products) {
-    const productPrice = productData.product.sellPrice;
+    const productPrice = productData.product.rentPrice;
     totalAmount += productPrice * productData.quantity;
     totalItems++;
   }
@@ -191,6 +206,18 @@ function renderTotalPrice(products, deliveryCharge) {
       totalAmount + deliveryCharge
     }`;
   }
+}
+
+function showAddAddressBtn() {
+  const btn = document.querySelector("#add-change-address-button");
+  btn.classList.add("add-address");
+  btn.innerText = "Add Address";
+}
+
+function showChangeAddressBtn() {
+  const btn = document.querySelector("#add-change-address-button");
+  btn.classList.add("change-address");
+  btn.innerText = "Change";
 }
 
 /*------------- fetch data ------------*/
@@ -241,14 +268,17 @@ async function checkQuantity(productId, productSize, quantity) {
 
 async function startPaymentProcess(products, shippingAddress) {
   try {
-    const res = await fetch("/api/order/start-payment", {
+    const res = await fetch("/api/order/rent/start-payment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         products,
-        shippingAddress,
+        shippingAddress: {
+          _id: shippingAddress._id,
+          state: shippingAddress.state,
+        },
       }),
     });
 

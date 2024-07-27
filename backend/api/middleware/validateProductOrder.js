@@ -52,7 +52,7 @@ async function validateOrderProducts(
 
   const product = await Product.findOne({ _id: selectedProductId })
     .populate("sizeAvailable")
-    .select("name sellPrice image sizeAvailable shortDescription");
+    .select("name sellPrice rentPrice image sizeAvailable shortDescription");
 
   if (!product) {
     throw new ApiError(404, "Product not found!");

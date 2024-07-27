@@ -3,9 +3,10 @@ const {
   initiateOrder,
   checkQuantity,
   startRazorpayPaymentProcess,
-  createOrderOnSuccessfulPayment,
   getOrderDetails,
   updateOrder,
+  createSellOrderOnSuccessfulPayment,
+  createRentOrderOnSuccessfulPayment,
 } = require("../controllers/orderController");
 const {
   validateOrderDetails,
@@ -21,16 +22,22 @@ router.post("/initiate", initiateOrder);
 router.post("/quantity", checkQuantity);
 
 router.post(
-  "/start-payment",
+  "/:sellOrRent/start-payment",
   validateOrderDetails,
   validateShippingAddress,
   startRazorpayPaymentProcess
 );
 
 router.post(
-  "/create-order",
+  "/create-sell-order",
   getSelectedProduct,
-  createOrderOnSuccessfulPayment
+  createSellOrderOnSuccessfulPayment
+);
+
+router.post(
+  "/create-rent-order",
+  getSelectedProduct,
+  createRentOrderOnSuccessfulPayment
 );
 
 router.get("/products", getSelectedProduct, (req, res) => {

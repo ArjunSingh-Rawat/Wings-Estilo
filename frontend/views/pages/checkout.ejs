@@ -90,11 +90,7 @@
 
     <%- include("../partials/footer") %>
     
-    <% if (rentOrSell === 'sell') { %>
-      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-      <script src="/js/checkout.js"></script>
-    <% } else { %>
-      <script src="/js/rentCheckout.js"></script>
-    <% } %>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/js/checkout.js"></script>
   </body>
 </html>

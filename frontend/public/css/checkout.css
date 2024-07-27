@@ -179,7 +179,8 @@ body {
 
 .total,
 .dc,
-.total-amt {
+.total-amt,
+.deposit {
   display: flex;
   justify-content: space-between;
 }
@@ -193,7 +194,8 @@ body {
 
 .total p,
 .dc p,
-.total-amt p {
+.total-amt p,
+.deposit p {
   font-size: 18;
   margin: 10px 0;
   font-weight: 500;

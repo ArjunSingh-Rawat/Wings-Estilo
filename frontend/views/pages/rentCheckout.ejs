@@ -73,15 +73,19 @@
             <p>Delivery Charges</p>
             <p class="delivery-charge">Rs...</p>
           </div>
+          <div class="deposit">
+            <p>Deposit Charges</p>
+            <p class="deposit-charge">Rs...</p>
+          </div>
         </div>
         <div class="total-amt">
           <p>Total Amount</p>
           <p class="net-amount">Rs. 00</p>
         </div>
       </div>
-      
-    </section>
+      </section>
     <%- include("../partials/footer") %>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="/js/rentCheckout.js"></script>
   </body>
 </html>
