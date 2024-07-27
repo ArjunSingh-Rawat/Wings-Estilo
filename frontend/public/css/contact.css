@@ -1,142 +1,129 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: montserrat, sans-serif;
-}
-
-h1 {
+.contact-us-section h1 {
   text-align: center;
   color: #ff8080;
-  padding-bottom: 20px;
-}
-.para {
-  margin: 10px 20px;
-  text-align: center;
-  width: 90%;
-  font-size: 18px;
-  /* font-weight: 500; */
+  padding: 20px 0;
 }
 
-.box1 {
-  text-align: center;
-  margin: 5% 0 0 0;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-.box2 {
-  margin: 50px 0;
-  text-align: center;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.contact {
-  margin: 12% 0 0 0;
-}
-body,
-html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-.container {
+.contact-boxes {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100%;
+  gap: 40px;
+  margin: 50px 0;
 }
 
-form {
-  margin: 20px 0;
-  width: 60%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.contact-boxes div {
+  width: 20%;
+  text-align: center;
+  background-color: #fff9f9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px #ff8080;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
+.contact-boxes div .bx {
+  font-size: 35px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea {
+.contact-boxes div h3 {
+  padding: 20px 0;
+}
+
+/* shop-section */
+
+.shop-section {
+  padding: 40px 0;
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(240, 240, 240);
+}
+
+.shop-img {
+  width: 350px;
+  margin-right: 25px;
+}
+
+.shop-img img {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
 }
 
-.submit-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
+.shop-info {
+  width: 500px;
+  margin-left: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.submit-btn:hover {
-  background-color: #0056b3;
+#h2-1 {
+  font-size: 35px;
+  font-weight: 600;
+  color: #ff8080;
 }
 
-@media (max-width: 768px) {
-  .contact {
+#h2-2 {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.shop-info p {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* google-map-section */
+
+.google-map-section {
+  padding: 0 50px;
+}
+
+@media (max-width: 799px) {
+  .contact-boxes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    margin: 30px 0;
+  }
+
+  .contact-boxes div {
+    width: 80%;
+  }
+
+  /* shop-section */
+
+  .shop-section {
+    padding: 40px 0;
+    margin: 30px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .shop-img {
+    width: 80%;
+    margin-right: 0;
+  }
+
+  .shop-info {
+    width: 80%;
+    margin-left: 0;
+  }
+
+  #h2-1 {
+    padding: 10px 0;
+  }
+
+  #h2-2 {
     font-size: 25px;
-    margin: 35% 0 0 0;
   }
-  .para {
-    margin: 2em 0;
-    width: 99%;
-    font-size: 12px;
-    text-align: center;
-    letter-spacing: 1px;
+
+  .shop-info p {
+    font-size: 16px;
   }
-  .para p {
-    margin-right: 20px;
-  }
-  .box1 {
-    width: 90%;
-    font-size: 13px;
-    border: 1px solid black;
-    margin-left: 18px;
-    letter-spacing: 1px;
-    padding: 5px 5px;
-    line-height: 18px;
-  }
-  .box2 {
-    margin: 0px;
-    width: 90%;
-    font-size: 13px;
-    border: 1px solid black;
-    margin-left: 18px;
-    letter-spacing: 1px;
-    padding: 5px 5px;
-    line-height: 18px;
-  }
-  .contact1 {
-    margin: 10% 0 0 0;
-    font-size: 25px;
-  }
-  form {
-    margin: 20px 0;
-    width: 100%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  label {
-    font-size: 12px;
-  }
-  .google-map {
-    width: 100%;
+
+  /* google-map-section */
+
+  .google-map-section {
+    padding: 0 30px;
   }
 }
