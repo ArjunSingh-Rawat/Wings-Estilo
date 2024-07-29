@@ -3,6 +3,9 @@ const Otp = require("../api/models/otpModel");
 const twilio = require("twilio");
 const nodemailer = require("nodemailer");
 const ApiError = require("./apiError");
+const fs = require("fs");
+const path = require("path");
+const ejs = require("ejs");
 
 let client = "";
 try {
@@ -222,11 +225,17 @@ async function verifyEmailOtp(otp, userId, phoneNumber) {
 }
 
 async function sendOtpViaNodemailer(otp, userEmail) {
+  const otpTemplateFile = fs.readFileSync(
+    path.join(__dirname, "./templates/emailOtp.ejs"),
+    "utf-8"
+  );
+
+  const emailTemplate = ejs.render(otpTemplateFile, { otp });
   await transporter.sendMail({
-    from: "arjunsinghrawat102@gmail.com",
+    from: process.env.WINGS_ESTILO_MAIL_ID,
     to: userEmail,
     subject: "OTP for updating phone number",
-    text: `your otp to update phone number is ${otp}\n valid for 2 minutes`,
+    html: emailTemplate,
   });
 }
 

@@ -1,0 +1,159 @@
+<head>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    table {
+      border-spacing: 0;
+    }
+    td {
+      padding: 0;
+    }
+    img {
+      border: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .social {
+      width: 28px;
+      margin: 0 5px;
+    }
+
+    .social-media {
+      padding: 12px 0 12px 90px;
+    }
+
+    .two-columns {
+      font-size: 0;
+      text-align: center;
+    }
+
+    .two-columns .column {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    h3 {
+      font-size: 28px;
+    }
+
+    .button {
+      background-color: black;
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <section class="wrapper">
+    <table class="main" width="100%">
+      <!-- border -->
+      <tr>
+        <td height="8" style="background-color: #ff8080"></td>
+      </tr>
+
+      <!-- header -->
+      <tr>
+        <td style="padding: 14px 0 4px; border-bottom: 1px solid lightgrey">
+          <table width="100%">
+            <tr>
+              <td class="two-columns">
+                <table class="column">
+                  <tr>
+                    <td style="padding: 0 22px 10px">
+                      <a href="https://wingsestilo.in"
+                        ><img
+                          src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722156592/Images/icons/logo.png"
+                          alt="wings estilo logo"
+                          width="200"
+                      /></a>
+                    </td>
+                  </tr>
+                </table>
+
+                <table class="column">
+                  <tr>
+                    <td class="social-media">
+                      <a href="https://www.facebook.com/wingsestilo/"
+                        ><img
+                          src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722266822/Images/icons/facebook.png"
+                          alt="facebook png"
+                          class="social"
+                      /></a>
+                      <a href="https://www.instagram.com/wings.estilo/"
+                        ><img
+                          src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722266822/Images/icons/instagram.png"
+                          alt="instagram png"
+                          class="social"
+                      /></a>
+                      <a href="https://www.youtube.com/@wingsestilodesigns"
+                        ><img
+                          src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722266822/Images/icons/youtube.png"
+                          alt="youtube png"
+                          class="social"
+                      /></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- title, text and button -->
+      <tr>
+        <td style="padding: 20px 15px 50px">
+          <table width="100%">
+            <tr>
+              <td>
+                <h3>Your OTP</h3>
+
+                <p
+                  style="line-height: 23px; font-size: 16px; padding: 0 0 22px"
+                >
+                  Use the following OTP to complete the procedure to change your
+                  email address. OTP is valid for
+                  <span style="font-weight: 600; color: #1f1f1f">2 minutes</span
+                  >.
+                </p>
+
+                <p
+                  style="
+                    margin: 0;
+                    margin-top: 50px;
+                    font-size: 40px;
+                    font-weight: 600;
+                    letter-spacing: 25px;
+                    color: #ff8080;
+                  "
+                >
+                  <%= otp %>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </section>
+</body>
