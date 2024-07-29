@@ -1,6 +1,10 @@
 const { client } = require("./sendAndVerifyOtp");
+const ejs = require("ejs");
+const fs = require("fs");
+const path = require("path");
+const nodemailer = require("nodemailer");
 
-async function sendOrderDetailsToAdmin(orderDetails, sellOrRent) {
+async function sendOrderDetailsToAdminViaWhatsapp(orderDetails, sellOrRent) {
   try {
     const { user, shippingAddress, items, createdAt, _id } = orderDetails;
     const userName = user.firstName + " " + user.lastName;
@@ -51,4 +55,56 @@ async function sendOrderDetailsToAdmin(orderDetails, sellOrRent) {
   }
 }
 
-module.exports = { sendOrderDetailsToAdmin };
+const transporter = nodemailer.createTransport({
+  host: "smtp-relay.sendinblue.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.NODEMAILER_AUTH_USER,
+    pass: process.env.NODEMAILER_AUTH_PASS,
+  },
+});
+
+async function sendOrderDetailsToAdminViaEmail(orderDetails, sellOrRent) {
+  sellOrRent = sellOrRent[0].toUpperCase() + sellOrRent.slice(1);
+  const orderConfirmationFile = fs.readFileSync(
+    path.join(__dirname, "./templates/orderConfirmationAdmin.ejs"),
+    "utf-8"
+  );
+  const { user, shippingAddress, items, createdAt, _id } = orderDetails;
+  const { name, addressLine1, addressLine2, district, state, pinCode } =
+    shippingAddress;
+  const address = `"${name} ${shippingAddress.phoneNumber}, ${addressLine1} ${addressLine2}, ${district}, ${state}, ${pinCode}"`;
+
+  for (const item of items) {
+    item.product.image =
+      `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload` +
+      item.product.image;
+  }
+
+  const emailTemplate = ejs.render(orderConfirmationFile, {
+    userName: user.firstName + " " + user.lastName,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    address,
+    sellOrRent,
+    orderDate: new Date(createdAt).toLocaleDateString(),
+    _id,
+    items,
+  });
+  await sendMailViaNodemailer(emailTemplate);
+}
+
+async function sendMailViaNodemailer(emailTemplate) {
+  await transporter.sendMail({
+    from: process.env.WINGS_ESTILO_MAIL_ID,
+    to: process.env.ADMIN_MAIL_ID,
+    subject: "Order Received",
+    html: emailTemplate,
+  });
+}
+
+module.exports = {
+  sendOrderDetailsToAdminViaWhatsapp,
+  sendOrderDetailsToAdminViaEmail,
+};

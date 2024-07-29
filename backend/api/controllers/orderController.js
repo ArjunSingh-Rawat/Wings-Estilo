@@ -12,7 +12,7 @@ const Order = require("../models/ordersModel");
 const RentOrder = require("../models/rentOrdersModel");
 const { deliveryCharges } = require("../../constants");
 const {
-  sendOrderDetailsToAdmin,
+  sendOrderDetailsToAdminViaEmail,
 } = require("../../utils/sendOrderDetailToAdmin");
 
 const cookieOptions = {
@@ -409,7 +409,7 @@ async function getAndSendOrderDetailsToAdmin(sellOrRent, orderId) {
     },
     "shippingAddress",
   ]);
-  await sendOrderDetailsToAdmin(order, sellOrRent);
+  await sendOrderDetailsToAdminViaEmail(order, sellOrRent);
 }
 
 module.exports = {

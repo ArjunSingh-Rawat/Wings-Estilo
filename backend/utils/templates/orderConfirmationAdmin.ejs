@@ -1,0 +1,210 @@
+<head>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    table {
+      border-spacing: 0;
+    }
+    td {
+      padding: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: lightgrey;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      text-align: center;
+    }
+
+    .two-columns {
+      font-size: 0;
+      text-align: center;
+    }
+
+    .two-columns .column {
+      width: 100%;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .two-columns .content {
+      text-align: left;
+      font-size: 16px;
+      line-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <section class="wrapper">
+    <table class="main" width="100%">
+      <!-- border -->
+      <tr>
+        <td height="8" style="background-color: #ff8080"></td>
+      </tr>
+
+      <!-- Header -->
+      <tr>
+        <td
+          class="header"
+          style="padding: 20px; border-bottom: 1px solid lightgrey"
+        >
+          <a href="#"
+            ><img
+              src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722156592/Images/icons/logo.png"
+              alt=""
+              width="250"
+          /></a>
+        </td>
+      </tr>
+
+      <!-- Title -->
+      <tr>
+        <td style="padding: 20px; font-size: 20px; font-weight: bold">
+          Got New <%=sellOrRent%> Order Date:<%= orderDate%>
+        </td>
+      </tr>
+
+      <!-- user-info -->
+      <tr>
+        <td style="padding: 30px; text-align: left; line-height: 20px">
+          <table style="margin-bottom: 30px">
+            <tr>
+              <td
+                style="font-size: 20px; font-weight: bold; padding-bottom: 15px"
+              >
+                User Details
+              </td>
+            </tr>
+            <tr>
+              <td>Name: <span><%=userName%></span></td>
+            </tr>
+            <tr>
+              <td>Email: <span><%=email%></span></td>
+            </tr>
+            <tr>
+              <td>Phone no: <span><%=phoneNumber%></span></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr>
+              <td
+                style="font-size: 20px; font-weight: bold; padding-bottom: 15px"
+              >
+                Shipping Address
+              </td>
+            </tr>
+
+            <tr>
+              <td><%=address%></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- two column section -->
+      <tr>
+        <% for(const item of items){ %>
+        <td>
+          <table width="100%">
+            <tr>
+              <td class="two-columns">
+                <table class="column">
+                  <tr>
+                    <td style="padding: 0 30px 20px 30px">
+                      <table class="content">
+                        <tr>
+                          <td>
+                            <a href="#"
+                              ><img
+                                src="<%= item.product.image %>"
+                                alt="<%= item.product.name %>"
+                                width="220"
+                            /></a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <table class="column">
+                  <tr>
+                    <td style="padding: 0 30px">
+                      <table class="content">
+                        <tr>
+                          <td>
+                            <table class="dress-info">
+                              <tr>
+                                <td
+                                  style="
+                                    font-size: 20px;
+                                    font-weight: bold;
+                                    padding-bottom: 15px;
+                                  "
+                                >
+                                  Product
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Name:
+                                  <span><%= item.product.name %></span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <%= sellOrRent %> Price:
+                                  <span>
+                                    <%= sellOrRent === 'Sell' ?
+                                    item.product.sellPrice:
+                                    item.product.rentPrice %>
+                                  </span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Quantity:
+                                  <span><%= item.quantity %></span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Selected Size:
+                                  <span><%= item.productSize %></span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Product id :<span
+                                    ><%= item.product._id %></span
+                                  >
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <% } %>
+      </tr>
+    </table>
+  </section>
+</body>
