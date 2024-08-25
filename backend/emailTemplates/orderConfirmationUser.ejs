@@ -1,0 +1,258 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+    }
+
+    table {
+      border-spacing: 0;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    img {
+      border: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .two-columns {
+      font-size: 0;
+    }
+
+    .two-columns .column {
+      width: 100%;
+      max-width: 200px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .two-columns .padding {
+      padding: 20px;
+    }
+
+    .two-columns .content {
+      font-size: 16px;
+    }
+
+    .social {
+      width: 38px;
+    }
+  </style>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif">
+  <section class="wrapper">
+    <table class="main" width="100%">
+      <!-- border -->
+      <tr>
+        <td height="8" style="background-color: #ff8080"></td>
+      </tr>
+
+      <!-- Header -->
+      <tr>
+        <td style="padding: 20px; text-align: center">
+          <a href="#"
+            ><img
+              src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722156592/Images/icons/logo.png"
+              alt=""
+              width="250"
+          /></a>
+        </td>
+      </tr>
+
+      <!-- banner -->
+      <tr>
+        <td style="background-color: #ff8080; padding: 40px 20px">
+          <h1 style="color: white; font-size: 35px; margin-bottom: 40px">
+            Thank you for your order!
+          </h1>
+          <p style="font-weight: bold; font-size: 20px; width: 80%">
+            We are working on getting your order to you ASAP!
+          </p>
+        </td>
+      </tr>
+
+      <!-- order-summary -->
+      <tr>
+        <td style="padding: 10px 20px; border-bottom: 1px solid grey">
+          <h2 style="color: grey">Order Summary</h2>
+        </td>
+      </tr>
+
+      <!-- order-detail -->
+      <tr>
+        <td style="padding: 20px">
+          <table>
+            <tr>
+              <td style="font-weight: 600; padding: 20px 0">
+                Order Id: <span><%= _id %></span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 5px 0"><%= orderDate %></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- two-column-section -->
+      <% for(const item of items){ %>
+      <tr>
+        <td>
+          <table width="100%">
+            <tr>
+              <td class="two-columns">
+                <table class="column">
+                  <tr>
+                    <td class="padding">
+                      <table class="content">
+                        <tr>
+                          <td>
+                            <img
+                              src="<%= item.product.image %>"
+                              alt="<%= item.product.name %>"
+                              style="
+                                width: 130px;
+                                height: 180px;
+                                object-fit: cover;
+                              "
+                            />
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <table class="column">
+                  <tr>
+                    <td class="padding">
+                      <table class="content">
+                        <tr>
+                          <td style="font-size: 18px; padding: 10px 0">
+                            <%= item.product.name %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Quantity:
+                            <span><%= item.quantity %></span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Size: <span><%= item.productSize %></span></td>
+                        </tr>
+                        <tr>
+                          <td
+                            style="
+                              color: #ff8080;
+                              font-weight: 600;
+                              padding: 10px 0;
+                            "
+                          >
+                            Rs. <% sellOrRent === 'sell' ?
+                            item.product.sellPrice : item.product.rentPrice %>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <% } %>
+      <!-- total -->
+      <tr>
+        <td style="padding: 20px; border-top: 1px solid grey">
+          <table>
+            <tr>
+              <td>Subtotal: <span>Rs <%= totalAmount %></span></td>
+            </tr>
+            <tr>
+              <td style="padding: 5px 0">
+                Delivery Charges: <span>Rs <%= deliveryCharge %></span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  font-size: 20px;
+                  padding: 20px 0;
+                  font-weight: bold;
+                  color: #ff8080;
+                "
+              >
+                Grand Total: <span>Rs <% totalAmount + deliveryCharge %></span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- footer -->
+      <tr>
+        <td style="background-color: #fff9f9; text-align: center">
+          <table width="100%">
+            <tr>
+              <td style="padding: 45px 20px">
+                <a href="#"
+                  ><img
+                    src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722156592/Images/icons/logo.png"
+                    alt=""
+                    width="260"
+                /></a>
+
+                <p style="padding: 5px 0 3px">
+                  Contact no: 3354654654, 65165165
+                </p>
+                <p style="padding: 3px">123 Street Road, City, State 5555</p>
+
+                <a href="https://www.facebook.com/wingsestilo/"
+                  ><img
+                    src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722266822/Images/icons/facebook.png"
+                    alt="facebook png"
+                    class="social"
+                /></a>
+                <a href="https://www.instagram.com/wings.estilo/"
+                  ><img
+                    src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722266822/Images/icons/instagram.png"
+                    alt="instagram png"
+                    class="social"
+                /></a>
+                <a href="https://www.youtube.com/@wingsestilodesigns"
+                  ><img
+                    src="https://res.cloudinary.com/dys4c08tf/image/upload/v1722266822/Images/icons/youtube.png"
+                    alt="youtube png"
+                    class="social"
+                /></a>
+              </td>
+            </tr>
+
+            <tr>
+              <td height="10" style="background-color: #ff8080"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </section>
+</body>

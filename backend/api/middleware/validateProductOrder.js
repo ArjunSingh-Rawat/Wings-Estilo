@@ -1,5 +1,6 @@
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
+const Addresses = require("../models/addressModel");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
@@ -116,6 +117,7 @@ const validateShippingAddress = asyncHandler(async (req, res, next) => {
   }
   const userId = req.user.userid;
   const user = await User.findOne({ _id: userId });
+  const address = await Addresses.findOne({ _id: shippingAddress._id });
 
   if (!user) {
     throw new ApiError(404, "user not found");
@@ -123,6 +125,10 @@ const validateShippingAddress = asyncHandler(async (req, res, next) => {
 
   if (!user.addresses.includes(shippingAddress._id)) {
     throw new ApiError(406, "Wrong address provided!");
+  }
+
+  if (address.state != shippingAddress.state) {
+    throw new ApiError(406, "state is not matching with given address id!!");
   }
 
   next();

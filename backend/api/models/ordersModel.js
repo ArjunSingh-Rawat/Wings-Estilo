@@ -57,6 +57,10 @@ const orderSchema = new mongoose.Schema(
       ref: "Address",
       required: true,
     },
+    deliveryCharge: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

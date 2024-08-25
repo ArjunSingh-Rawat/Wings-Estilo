@@ -226,7 +226,7 @@ async function verifyEmailOtp(otp, userId, phoneNumber) {
 
 async function sendOtpViaNodemailer(otp, userEmail) {
   const otpTemplateFile = fs.readFileSync(
-    path.join(__dirname, "./templates/emailOtp.ejs"),
+    path.join(__dirname, "../emailTemplates/emailOtp.ejs"),
     "utf-8"
   );
 

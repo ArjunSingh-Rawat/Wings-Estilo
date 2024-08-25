@@ -68,7 +68,7 @@ const transporter = nodemailer.createTransport({
 async function sendOrderDetailsToAdminViaEmail(orderDetails, sellOrRent) {
   sellOrRent = sellOrRent[0].toUpperCase() + sellOrRent.slice(1);
   const orderConfirmationFile = fs.readFileSync(
-    path.join(__dirname, "./templates/orderConfirmationAdmin.ejs"),
+    path.join(__dirname, "../emailTemplates/orderConfirmationAdmin.ejs"),
     "utf-8"
   );
   const { user, shippingAddress, items, createdAt, _id } = orderDetails;

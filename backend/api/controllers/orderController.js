@@ -14,6 +14,9 @@ const { deliveryCharges } = require("../../constants");
 const {
   sendOrderDetailsToAdminViaEmail,
 } = require("../../utils/sendOrderDetailToAdmin");
+const {
+  sendOrderConfirmationToUserViaEmail,
+} = require("../../utils/orderConfirmationToUser");
 
 const cookieOptions = {
   httpOnly: true,
@@ -174,7 +177,7 @@ const startRazorpayPaymentProcess = asyncHandler(async (req, res) => {
   const { order, key } = await createRazorpayOrder(amount);
 
   const orderDetailToken = jwt.sign(
-    { products, shippingAddress: shippingAddress._id },
+    { products, shippingAddress: shippingAddress._id, deliveryCharge },
     process.env.CHECKOUT_TOKEN_SECRET,
     {
       expiresIn: 30 * 60,
@@ -210,7 +213,7 @@ const createSellOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
     process.env.CHECKOUT_TOKEN_SECRET
   );
 
-  const { products, shippingAddress } = orderDetails;
+  const { products, shippingAddress, deliveryCharge } = orderDetails;
   const { totalAmount, items } = productInfoToDbFormat(products);
 
   let order = await Order.create({
@@ -221,6 +224,7 @@ const createSellOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
       provider: "Razorpay",
       details: razorpayPaymentId,
     },
+    deliveryCharge,
     shippingAddress,
   });
   if (!order) {
@@ -311,7 +315,7 @@ const createRentOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
     process.env.CHECKOUT_TOKEN_SECRET
   );
 
-  const { products, shippingAddress } = orderDetails;
+  const { products, shippingAddress, deliveryCharge } = orderDetails;
   const { totalAmount, items } = productInfoToDbFormat(products);
 
   let order = await RentOrder.create({
@@ -322,6 +326,7 @@ const createRentOrderOnSuccessfulPayment = asyncHandler(async (req, res) => {
       provider: "Razorpay",
       details: razorpayPaymentId,
     },
+    deliveryCharge,
     shippingAddress,
   });
   if (!order) {
@@ -409,7 +414,8 @@ async function getAndSendOrderDetailsToAdmin(sellOrRent, orderId) {
     },
     "shippingAddress",
   ]);
-  await sendOrderDetailsToAdminViaEmail(order, sellOrRent);
+  sendOrderConfirmationToUserViaEmail(order, sellOrRent);
+  sendOrderDetailsToAdminViaEmail(order, sellOrRent);
 }
 
 module.exports = {
