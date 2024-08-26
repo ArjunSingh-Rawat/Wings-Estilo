@@ -33,7 +33,6 @@ const publicPages = {
   "my-wishlist": "wishlist",
   contact: "contact",
   "about-us": "about",
-  photoshoot: "photoshoot",
   rental: "rental-home",
 };
 
