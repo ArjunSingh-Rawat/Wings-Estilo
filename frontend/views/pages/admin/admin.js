@@ -17,6 +17,7 @@ const addProductImageSection = document.querySelector(
 );
 const sellPriceInputElement = document.querySelector("#sell-price");
 const rentPriceInputElement = document.querySelector("#rent-price");
+const depositChargeInputElement = document.querySelector("#deposit-charge");
 const updateFormMainCategoryElement = document.querySelector(
   "#update-product-form-main-category"
 );
@@ -47,6 +48,9 @@ const updateProductSellPriceInput = document.querySelector(
 );
 const updateProductRentPriceInput = document.querySelector(
   "#update-product-rent-price"
+);
+const updateProductDepositChargeInput = document.querySelector(
+  "#update-product-deposit-charge"
 );
 const orderListSection = document.querySelector(".ordered-list-section");
 const orderedProductDetailsSection = document.querySelector(
@@ -145,6 +149,7 @@ document
       sellPriceInputElement.toggleAttribute("disabled");
     } else if (event.target.id === "rent") {
       rentPriceInputElement.toggleAttribute("disabled");
+      depositChargeInputElement.toggleAttribute("disabled");
     }
   });
 
@@ -245,6 +250,7 @@ document
       updateProductSellPriceInput.toggleAttribute("disabled");
     } else if (event.target.id === "rent") {
       updateProductRentPriceInput.toggleAttribute("disabled");
+      updateProductDepositChargeInput.toggleAttribute("disabled");
     }
   });
 
@@ -537,6 +543,9 @@ async function preFillUpdateProductForm(product) {
     } else if (input.name === "rentPrice") {
       product.forRent ? (input.disabled = false) : (input.display = true);
       input.value = product.rentPrice;
+    } else if (input.name === "depositCharge") {
+      product.forRent ? (input.disabled = false) : (input.display = true);
+      input.value = product.depositCharge;
     } else if (input.name === "category") {
       await setSubCategories(product.category[0], updateFormSubCategoryElement);
       input.disabled = true;

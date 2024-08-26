@@ -173,7 +173,9 @@ const startRazorpayPaymentProcess = asyncHandler(async (req, res) => {
   const shippingAddress = req.body.shippingAddress;
 
   const deliveryCharge = deliveryCharges[shippingAddress.state.toLowerCase()];
-  amount += deliveryCharge;
+  sellOrRent === "sell"
+    ? (amount += deliveryCharge)
+    : (amount += deliveryCharge + req.products[0].product.depositCharge);
   const { order, key } = await createRazorpayOrder(amount);
 
   const orderDetailToken = jwt.sign(

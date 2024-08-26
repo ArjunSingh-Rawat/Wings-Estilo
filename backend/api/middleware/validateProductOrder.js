@@ -53,7 +53,9 @@ async function validateOrderProducts(
 
   const product = await Product.findOne({ _id: selectedProductId })
     .populate("sizeAvailable")
-    .select("name sellPrice rentPrice image sizeAvailable shortDescription");
+    .select(
+      "name sellPrice rentPrice depositCharge image sizeAvailable shortDescription"
+    );
 
   if (!product) {
     throw new ApiError(404, "Product not found!");
@@ -93,7 +95,7 @@ const getSelectedProduct = asyncHandler(async (req, res, next) => {
   const products = [];
   for (const productId in productToQuery) {
     const product = await Product.findOne({ _id: productId }).select(
-      "name sellPrice rentPrice shortDescription image"
+      "name sellPrice rentPrice depositCharge shortDescription image"
     );
 
     if (!product) {

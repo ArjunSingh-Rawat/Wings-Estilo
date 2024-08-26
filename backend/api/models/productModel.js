@@ -57,6 +57,10 @@ const productSchema = new mongoose.Schema(
       min: [0, "should not be less than 0 got {VALUE}"],
       required: true,
     },
+    depositCharge: {
+      type: Number,
+      default: 0,
+    },
     shortDescription: {
       type: String,
       required: true,

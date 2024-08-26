@@ -29,6 +29,9 @@ async function getCheckoutDetails() {
     } else {
       getAlertPopup(response.message);
     }
+    document.querySelector(
+      ".deposit-charge"
+    ).innerText = `Rs. ${checkoutDetails.products[0].product.depositCharge}`;
   }
 
   if (!userInfo.addresses.length) {
@@ -206,6 +209,9 @@ function renderTotalPrice(products, deliveryCharge) {
       totalAmount + deliveryCharge
     }`;
   }
+  document.querySelector(".net-amount").innerText = `Rs. ${
+    totalAmount + deliveryCharge + products[0].product.depositCharge
+  }`;
 }
 
 function showAddAddressBtn() {

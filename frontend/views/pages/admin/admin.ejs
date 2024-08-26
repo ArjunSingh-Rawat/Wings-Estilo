@@ -144,6 +144,18 @@
                     disabled
                   />
                 </div>
+                <div class="add-product-price">
+                  <label for="deposit-charge">Deposit Charge:</label>
+                  <input
+                    type="text"
+                    id="deposit-charge"
+                    name="depositCharge"
+                    required
+                    pattern="[0-9]+"
+                    title="value should be number"
+                    disabled
+                  />
+                </div>
               </div>
 
               <!-- product-category -->
@@ -431,13 +443,27 @@
                     />
                   </div>
                   <div class="add-product-price">
-                    <label for="rent-price"
+                    <label for="update-product-rent-price"
                       >Add rental product price per day:</label
                     >
                     <input
                       type="text"
                       id="update-product-rent-price"
                       name="rentPrice"
+                      required
+                      pattern="[0-9]+"
+                      title="value should be number"
+                      disabled
+                    />
+                  </div>
+                  <div class="add-product-price">
+                    <label for="update-product-deposit-charge"
+                      >Deposit Charge:</label
+                    >
+                    <input
+                      type="text"
+                      id="update-product-deposit-charge"
+                      name="depositCharge"
                       required
                       pattern="[0-9]+"
                       title="value should be number"
