@@ -11,13 +11,38 @@
       <div class="title-and-filter">
         <div class="dress-title">
           <h1><%= categoryName %></h1>
-          <p class="total-products">0 Products</p>
         </div>
         <div class="filter"></div>
       </div>
-      <div class="dress-grid"></div>
+      <div class="dress-grid">
+        <% for(product of products) { %>
+          <% const productName = product.name.replace(/ /g, "-") %>
+          <% const price = rentOrSell === "sell" ? product.sellPrice : product.rentPrice %>
+          <% const priceSuffix = rentOrSell === "rent" ? "/day" : "" %>
+          <div class="item">
+            <a class="item-img" href=<%= `/${rentOrSell}/${productName}/${product._id}/buy` %> >
+              <img loading="lazy" src="<%= product.image %>" alt="<%= productName %>" />
+            </a>
+            <div class="item-info">
+                <div class="name-price">
+                  <a class="name" href=<%=`/${rentOrSell}/${productName}/${product._id}/buy`%> target = "_blank"><%= product.name %></a>
+                  <p class="price">&#8377;<span><%= price %><span><%= priceSuffix %></span></p>
+                </div>
+    
+                <div class="add">
+                  <i class="bx bx-heart heart" data-product-id="<%=product._id%>"></i>
+                </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
     </section>
 
+    <section class="product-pages">
+      <% for(let i = 1; i< totalPages + 1; i++){ %>
+        <span><%=i%></span>
+      <% } %>
+    </section>
     <!-- footer -->
     <%- include('../partials/footer') %>
 

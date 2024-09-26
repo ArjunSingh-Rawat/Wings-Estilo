@@ -123,6 +123,8 @@ const deliveryCharges = {
 
 useFileFrom = "localFiles";
 
+productLimit = 16;
+
 module.exports = {
   sellCategories,
   rentCategories,
@@ -130,5 +132,6 @@ module.exports = {
   stateNames,
   policyPages,
   useFileFrom,
+  productLimit,
   deliveryCharges,
 };

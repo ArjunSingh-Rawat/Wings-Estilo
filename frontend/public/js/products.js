@@ -1,88 +1,117 @@
 const contentBox = document.querySelector(".dress-grid");
 
 const path = window.location.href.split("/");
-const categoryName = path.pop();
+const categoryName = path.pop().split("?")[0];
 const rentOrSell = path.pop();
 
-renderProducts(categoryName);
+let wishList = null;
+let currentPage = 1;
 
-async function renderProducts(categoryName) {
-  const products = await getProducts(categoryName, rentOrSell);
-  const wishList = await getWishlistItems();
-  document.querySelector(".total-products").innerText = products
-    ? `${products.length} Products`
-    : "0 Products";
+initializeWishlist();
 
-  if (products) {
-    products.forEach((product) => {
-      let productInWishlist = false;
-      if (wishList) {
-        for (const item of wishList) {
-          if (product._id === item._id) {
-            productInWishlist = true;
-            break;
-          }
-        }
-      }
-      createProductHtml(product, productInWishlist);
-    });
+async function initializeWishlist() {
+  wishList = await getWishlistItems();
+  if (wishList) {
+    markWishListItems();
   }
 }
 
-function createProductHtml(product, productInWishlist) {
+document.querySelector(".product-pages").addEventListener("click", (e) => {
+  const pageNumber = +e.target.innerText;
+
+  if (currentPage !== pageNumber) {
+    history.pushState(
+      null,
+      "",
+      `/${rentOrSell}/${categoryName}?page=${pageNumber}`
+    );
+    renderProductByPage(pageNumber);
+    currentPage = pageNumber;
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+});
+
+async function renderProductByPage(pageNumber) {
+  const products = await getProducts(categoryName, rentOrSell, pageNumber);
+  contentBox.innerHTML = "";
+  if (products) {
+    const productHTML = products
+      .map((product) => createProductHtml(product))
+      .join("");
+    contentBox.innerHTML = productHTML;
+  }
+}
+
+function createProductHtml(product) {
+  const productInWishlist = isProductInWishlist(product._id);
   const classOfHeart = productInWishlist ? "bxs-heart" : "bx-heart";
   const productName = product.name.replace(/ /g, "-");
 
   const price = rentOrSell === "sell" ? product.sellPrice : product.rentPrice;
   const priceSuffix = rentOrSell === "rent" ? "/day" : "";
 
-  const productHtml = `
-      <div class="item">
-        <a class="item-img" href="/${rentOrSell}/${productName}/${product._id}/buy" >
-          <img src="${product.image}" alt="" />
-        </a>
-        <div class="item-info">
-            <div class="name-price">
-              <a class="name" href="/${productName}/${product._id}/buy" target = "_blank">${product.name}</a>
-              <p class="price">&#8377;<span>${price}<span>${priceSuffix}</span></p>
-            </div>
-
-            <div class="add">
-              <i class="bx ${classOfHeart} heart" data-product-id=${product._id}></i>
-            </div>
+  return `
+    <div class="item">
+      <a class="item-img" href="/${rentOrSell}/${productName}/${product._id}/buy">
+        <img loading="lazy" src="${product.image}" alt="${productName}" />
+      </a>
+      <div class="item-info">
+        <div class="name-price">
+          <a class="name" href="/${productName}/${product._id}/buy" target="_blank">${product.name}</a>
+          <p class="price">&#8377;<span>${price}<span>${priceSuffix}</span></p>
         </div>
-      </div>`;
-  contentBox.innerHTML += productHtml;
+        <div class="add">
+          <i class="bx ${classOfHeart} heart" data-product-id=${product._id}></i>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-document
-  .querySelector(".dress-grid")
-  .addEventListener("click", async (event) => {
-    if (event.target.classList.contains("heart")) {
-      event.preventDefault();
+function isProductInWishlist(productId) {
+  return wishList && wishList.some((item) => item._id === productId);
+}
 
-      const heart = event.target;
-      const productId = heart.dataset.productId;
-
-      if (heart.classList.contains("bx-heart")) {
-        if (await addToWishlist(productId)) {
-          changeHeartClass("bxs-heart", "bx-heart", heart);
-          heartTransform(heart);
-        } else {
-          getAlertPopup("Please login to perform this task!");
-        }
-      } else {
-        if (await removeFromWishlist(productId)) {
-          changeHeartClass("bx-heart", "bxs-heart", heart);
-          heartTransform(heart);
-        }
-      }
+function markWishListItems() {
+  const items = document.querySelectorAll(".heart");
+  items.forEach((item) => {
+    const productId = item.dataset.productId;
+    if (isProductInWishlist(productId)) {
+      item.classList.remove("bx-heart");
+      item.classList.add("bxs-heart");
     }
   });
+}
+
+contentBox.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("heart")) {
+    event.preventDefault();
+
+    const heart = event.target;
+    const productId = heart.dataset.productId;
+
+    if (heart.classList.contains("bx-heart")) {
+      if (await addToWishlist(productId)) {
+        changeHeartClass("bxs-heart", "bx-heart", heart);
+        heartTransform(heart);
+      } else {
+        getAlertPopup("Please login to perform this task!");
+      }
+    } else {
+      if (await removeFromWishlist(productId)) {
+        changeHeartClass("bx-heart", "bxs-heart", heart);
+        heartTransform(heart);
+      }
+    }
+  }
+});
 
 function heartTransform(heart) {
   heart.style.transform = "scale(2,2)";
-
   setTimeout(() => {
     heart.style.transform = "";
   }, 300);
@@ -94,49 +123,41 @@ function changeHeartClass(addCls, removeCls, heart) {
 }
 
 // fetching api data
-async function getProducts(categoryName, rentOrSell) {
+async function getProducts(categoryName, rentOrSell, pageNumber) {
   const res = await fetch(
-    `/api/products/category/${categoryName}/${rentOrSell}`
+    `/api/products/category/${categoryName}/${rentOrSell}?page=${pageNumber}`
   );
   if (res.ok) {
-    const data = await res.json();
-    return data.products;
+    const { products } = await res.json();
+    return products;
   }
   return false;
 }
 
 async function addToWishlist(productId) {
-  const res = await fetch("/api/wishlist", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      productId,
-    }),
-  });
-  return res.ok ? true : false;
+  return addOrRemoveInWishlist("/api/wishlist", "POST", productId);
 }
 
 async function removeFromWishlist(productId) {
-  const res = await fetch("/api/wishlist", {
-    method: "DELETE",
+  return addOrRemoveInWishlist("/api/wishlist", "DELETE", productId);
+}
+
+async function addOrRemoveInWishlist(url, method, productId) {
+  const res = await fetch(url, {
+    method,
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      productId,
-    }),
+    body: JSON.stringify({ productId }),
   });
-  return res.ok ? true : false;
+  return res.ok;
 }
 
 async function getWishlistItems() {
   const res = await fetch("/api/wishlist");
-
   if (res.ok) {
-    const resData = await res.json();
-    return resData.data;
+    const { data } = await res.json();
+    return data;
   }
   return false;
 }

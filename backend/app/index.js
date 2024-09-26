@@ -1,4 +1,5 @@
 const express = require("express");
+const Category = require("../api/models/categoryModel");
 const path = require("path");
 const {
   sellCategories,
@@ -6,6 +7,7 @@ const {
   publicPages,
   policyPages,
   useFileFrom,
+  productLimit,
 } = require("../constants");
 const Product = require("../api/models/productModel");
 const {
@@ -39,28 +41,8 @@ router.get("/profile", verifyTokenForStaticRoute, (req, res) => {
   }
 });
 
-router.get("/sell/:path", (req, res, next) => {
-  if (sellCategories.includes(req.params.path)) {
-    const categoryName = req.params.path.split("-").join(" ").toUpperCase();
-
-    res.render("pages/products", {
-      categoryName: categoryName,
-    });
-  } else {
-    next();
-  }
-});
-
-router.get("/rent/:path", (req, res, next) => {
-  if (rentCategories.includes(req.params.path)) {
-    const categoryName = req.params.path.split("-").join(" ").toUpperCase();
-    res.render("pages/products", {
-      categoryName: categoryName,
-    });
-  } else {
-    next();
-  }
-});
+router.get("/sell/:path", handleRentOrSell("sell", sellCategories));
+router.get("/rent/:path", handleRentOrSell("rent", rentCategories));
 
 router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
   try {
@@ -155,4 +137,66 @@ router.get("/admin.js", authorizeAdminUser, (req, res) => {
   );
 });
 
+// functions
+
+function handleRentOrSell(sellOrRent, categoryList) {
+  return async (req, res, next) => {
+    try {
+      if (categoryList.includes(req.params.path)) {
+        const categoryName = req.params.path.split("-").join(" ").toUpperCase();
+        const pageNumber = parseInt(req.query.page) || 1;
+
+        const { products, totalProducts } = await getProducts(
+          req.params.path,
+          sellOrRent,
+          pageNumber
+        );
+
+        const totalPages = Math.ceil(totalProducts / productLimit) || 1;
+        if (pageNumber > totalPages || pageNumber <= 0) {
+          throw new Error("Products not found!!");
+        }
+
+        res.render("pages/products", {
+          categoryName: categoryName,
+          rentOrSell: sellOrRent,
+          products,
+          totalPages,
+        });
+      } else {
+        next();
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+}
+
+async function getProducts(categoryName, sellOrRent, pageNumber) {
+  const skipCount = productLimit * (pageNumber - 1);
+  const categoryId = await Category.findOne({ categoryName }).select("_id");
+
+  const totalProducts = await Product.countDocuments({
+    category: categoryId,
+    [sellOrRent === "sell" ? "forSell" : "forRent"]: true,
+  });
+
+  const products = await Product.find({
+    category: categoryId,
+    [sellOrRent === "sell" ? "forSell" : "forRent"]: true,
+  })
+    .skip(skipCount)
+    .limit(productLimit);
+
+  for (const product of products) {
+    if (useFileFrom === "localFiles") {
+      product.image = "/" + product.image.split("/").splice(2).join("/");
+    } else if (useFileFrom === "cloudinaryFiles") {
+      product.image =
+        `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload` +
+        product.image;
+    }
+  }
+  return { products, totalProducts };
+}
 module.exports = router;

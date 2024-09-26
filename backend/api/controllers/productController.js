@@ -8,7 +8,7 @@ const {
   uploadOnCloudinary,
   deleteFromCloudinary,
 } = require("../../utils/cloudinary");
-const { useFileFrom } = require("../../constants");
+const { useFileFrom, productLimit } = require("../../constants");
 
 const imageFolderPath = path.join(
   __dirname,
@@ -349,18 +349,26 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
   }
   const categoryId = await Category.findOne({ categoryName }).select("_id");
 
-  let products = null;
-  if (rentOrSell === "sell") {
-    products = await Product.find({
-      category: categoryId,
-      forSell: true,
-    });
-  } else if (rentOrSell === "rent") {
-    products = await Product.find({
-      category: categoryId,
-      forRent: true,
-    });
+  const pageNumber = req.query.page || 1;
+  const skipCount = productLimit * (pageNumber - 1);
+
+  const totalPRoducts = await Product.countDocuments({
+    category: categoryId,
+    [rentOrSell === "sell" ? "forSell" : "forRent"]: true,
+  });
+  const totalPages = Math.ceil(totalPRoducts / productLimit);
+
+  if (pageNumber > totalPages || pageNumber <= 0) {
+    throw new ApiError(404, "products not available for this page number!!");
   }
+
+  const products = await Product.find({
+    category: categoryId,
+    [rentOrSell === "sell" ? "forSell" : "forRent"]: true,
+  })
+    .skip(skipCount)
+    .limit(productLimit);
+
   if (!products || !products.length) {
     throw new ApiError(404, "No products found!!");
   }
@@ -380,6 +388,7 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
     message: "success!",
     products,
     quantity: products.length,
+    totalPages,
   });
 });
 
