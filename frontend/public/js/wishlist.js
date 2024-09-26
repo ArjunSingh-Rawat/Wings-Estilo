@@ -10,21 +10,21 @@ async function loadBagPage() {
   }
   renderBagPage(items);
 }
+
 loadBagPage();
 
-const wishlistItemsDiv = document.querySelector(".wishlist-items");
-wishlistItemsDiv.addEventListener("click", async (event) => {
+itemsDiv.addEventListener("click", async (event) => {
   const element = event.target;
 
   if (element.id === "remove-item") {
     event.preventDefault();
     const toRemoveItem = getParentElement(element.dataset.itemId);
     const productId = toRemoveItem.dataset.productId;
-    const res = await removeItemFromWishlist(productId);
+    const success = await removeItemFromWishlist(productId);
 
-    if (res) {
-      wishlistItemsDiv.removeChild(toRemoveItem);
-      displayQuantityOfItem(wishlistItemsDiv.children.length);
+    if (success) {
+      itemsDiv.removeChild(toRemoveItem);
+      displayQuantityOfItem(itemsDiv.children.length);
     }
   } else if (element.classList.contains("move-btn")) {
     const productId = getParentElement(element.dataset.itemId).dataset
@@ -33,54 +33,84 @@ wishlistItemsDiv.addEventListener("click", async (event) => {
     window.location.href = "/my-bag";
   }
 
-  if (wishlistItemsDiv.children.length <= 0) {
+  if (itemsDiv.children.length === 0) {
     displayEmptyPage();
   }
 });
 
 function renderBagPage(items) {
-  let i = 0;
-  for (const item of items) {
-    const { name, image, sellPrice, rentPrice, _id } = item;
-    let sellOrRent = "";
-    let price = 0;
-    if (item.forRent && item.forSell) {
-      sellOrRent = "sell";
-      price = sellPrice;
-    } else if (item.forSell) {
-      sellOrRent = "sell";
-      price = sellPrice;
-    } else if (item.forRent) {
-      sellOrRent = "rent";
-      price = rentPrice;
+  itemsDiv.innerHTML = "";
+
+  items.forEach((item, index) => {
+    const { name, image, sellPrice, rentPrice, _id, forRent, forSell } = item;
+    const price =
+      forRent && forSell ? sellPrice : forSell ? sellPrice : rentPrice;
+    const sellOrRent = forSell ? "sell" : "rent";
+
+    const itemBox = document.createElement("div");
+    itemBox.className = "item-box";
+    itemBox.id = `item${index}`;
+    itemBox.dataset.productId = _id;
+
+    const itemImg = document.createElement("div");
+    itemImg.className = "item-img";
+
+    const imgLink = document.createElement("a");
+    imgLink.href = `/${sellOrRent}/${name}/${_id}/buy`;
+
+    const imgElement = document.createElement("img");
+    imgElement.src = `${"/" + image.split("/").splice(2).join("/")}`;
+    imgElement.alt = name;
+
+    const removeIcon = document.createElement("i");
+    removeIcon.id = "remove-item";
+    removeIcon.className = "bx bx-x";
+    removeIcon.dataset.itemId = `item${index}`;
+
+    imgLink.appendChild(imgElement);
+    itemImg.appendChild(imgLink);
+    itemImg.appendChild(removeIcon);
+
+    const imgInfo = document.createElement("div");
+    imgInfo.className = "img-info";
+
+    const itemName = document.createElement("p");
+    itemName.className = "item-name";
+    itemName.textContent = name;
+
+    const itemPrice = document.createElement("p");
+    itemPrice.className = "item-price";
+    itemPrice.textContent = `Rs.${price}${sellOrRent === "rent" ? "/day" : ""}`;
+
+    const rentOrSellSpan = document.createElement("span");
+    rentOrSellSpan.className = "item-rent-or-sell";
+
+    if (forSell) {
+      const sellIcon = document.createElement("i");
+      sellIcon.className = "bx bxs-purchase-tag-alt";
+      sellIcon.onclick = () =>
+        (window.location.href = `/sell/${name}/${_id}/buy`);
+      rentOrSellSpan.appendChild(sellIcon);
     }
 
-    let html = `
-    <div id="item${i}" class="item-box" data-product-id="${_id}">
-      <div class="item-img">
-      <a href="/${sellOrRent}/${name}/${_id}/buy"><img src="${
-        "/" + image.split("/").splice(2).join("/")
-      }" alt="#" /></a>
-        <i id="remove-item" class="bx bx-x" data-item-id="item${i}"></i>
-      </div>
-      <div class="img-info">
-        <p class="item-name">${name}</p>
-        <p class="item-price">Rs.${price}${
-          sellOrRent === "rent" ? "/day" : ""
-        } <span class="item-rent-or-sell">${
-          item.forSell
-            ? `<i class='bx bxs-purchase-tag-alt' onclick="window.location.href='/sell/${name}/${_id}/buy'"></i>`
-            : ""
-        } ${
-          item.forRent
-            ? `<img class="item-rent-img rent-icon" onclick="window.location.href='/rent/${name}/${_id}/buy'" src="/Images/general-img/for-rent.png"  alt="" />`
-            : ""
-        }</span></p>
-      </div>
-    </div>`;
-    i++;
-    itemsDiv.innerHTML += html;
-  }
+    if (forRent) {
+      const rentIcon = document.createElement("img");
+      rentIcon.className = "item-rent-img rent-icon";
+      rentIcon.src = "/Images/general-img/for-rent.png";
+      rentIcon.alt = "Rent";
+      rentIcon.onclick = () =>
+        (window.location.href = `/rent/${name}/${_id}/buy`);
+      rentOrSellSpan.appendChild(rentIcon);
+    }
+
+    imgInfo.appendChild(itemName);
+    imgInfo.appendChild(itemPrice);
+    itemPrice.appendChild(rentOrSellSpan);
+    itemBox.appendChild(itemImg);
+    itemBox.appendChild(imgInfo);
+
+    itemsDiv.appendChild(itemBox);
+  });
 
   displayWishlistPage();
   displayQuantityOfItem(items.length);
@@ -97,7 +127,7 @@ function displayWishlistPage() {
 }
 
 function getParentElement(itemId) {
-  return wishlistItemsDiv.querySelector(`#${itemId}`);
+  return itemsDiv.querySelector(`#${itemId}`);
 }
 
 function displayQuantityOfItem(quantity) {
@@ -108,12 +138,11 @@ function displayQuantityOfItem(quantity) {
 
 async function getWishlistItems() {
   const res = await fetch("/api/wishlist");
-
   if (res.ok) {
-    const resData = await res.json();
-    return resData.data;
+    const { data } = await res.json();
+    return data;
   }
-  return false;
+  return null;
 }
 
 async function removeItemFromWishlist(productId) {
@@ -122,11 +151,9 @@ async function removeItemFromWishlist(productId) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      productId,
-    }),
+    body: JSON.stringify({ productId }),
   });
-  return res.ok ? true : false;
+  return res.ok;
 }
 
 async function addProductToBag(productId) {

@@ -54,22 +54,58 @@ function createProductHtml(product) {
   const price = rentOrSell === "sell" ? product.sellPrice : product.rentPrice;
   const priceSuffix = rentOrSell === "rent" ? "/day" : "";
 
-  return `
-    <div class="item">
-      <a class="item-img" href="/${rentOrSell}/${productName}/${product._id}/buy">
-        <img loading="lazy" src="${product.image}" alt="${productName}" />
-      </a>
-      <div class="item-info">
-        <div class="name-price">
-          <a class="name" href="/${productName}/${product._id}/buy" target="_blank">${product.name}</a>
-          <p class="price">&#8377;<span>${price}<span>${priceSuffix}</span></p>
-        </div>
-        <div class="add">
-          <i class="bx ${classOfHeart} heart" data-product-id=${product._id}></i>
-        </div>
-      </div>
-    </div>
-  `;
+  const itemDiv = document.createElement("div");
+  itemDiv.classList.add("item");
+
+  const productLink = document.createElement("a");
+  productLink.classList.add("item-img");
+  productLink.href = `/${rentOrSell}/${productName}/${product._id}/buy`;
+
+  const productImage = document.createElement("img");
+  productImage.loading = "lazy";
+  productImage.src = product.image;
+  productImage.alt = productName;
+
+  productLink.appendChild(productImage);
+
+  // info div
+  const itemInfoDiv = document.createElement("div");
+  itemInfoDiv.classList.add("item-info");
+
+  const namePriceDiv = document.createElement("div");
+  namePriceDiv.classList.add("name-price");
+
+  const productNameLink = document.createElement("a");
+  productNameLink.classList.add("name");
+  productNameLink.href = `/${productName}/${product._id}/buy`;
+  productNameLink.target = "_blank";
+  productNameLink.textContent = product.name;
+
+  // price element
+  const priceElement = document.createElement("p");
+  priceElement.classList.add("price");
+  priceElement.innerHTML = `&#8377;<span>${price}</span><span>${priceSuffix}</span>`;
+
+  namePriceDiv.appendChild(productNameLink);
+  namePriceDiv.appendChild(priceElement);
+
+  // wishlist heart
+  const addDiv = document.createElement("div");
+  addDiv.classList.add("add");
+
+  const heartIcon = document.createElement("i");
+  heartIcon.classList.add("bx", classOfHeart, "heart");
+  heartIcon.dataset.productId = product._id;
+
+  addDiv.appendChild(heartIcon);
+
+  itemInfoDiv.appendChild(namePriceDiv);
+  itemInfoDiv.appendChild(addDiv);
+
+  itemDiv.appendChild(productLink);
+  itemDiv.appendChild(itemInfoDiv);
+
+  return itemDiv;
 }
 
 function isProductInWishlist(productId) {
