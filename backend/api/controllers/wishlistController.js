@@ -1,13 +1,17 @@
 const User = require("../models/userModel");
 const asyncHandler = require("../../utils/asyncHandler");
 const ApiError = require("../../utils/apiError");
+const mongoose = require("mongoose");
+
+const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 const addProduct = asyncHandler(async (req, res) => {
   const productId = req.body.productId;
 
-  if (!productId) {
-    throw new ApiError(400, "product id not provided!");
+  if (!productId || !isValidObjectId(productId)) {
+    throw new ApiError(400, "Valid product id not provided!");
   }
+
   const user = await User.findOneAndUpdate(
     { _id: req.user.userid },
     {
@@ -50,10 +54,9 @@ const deleteWishlistItems = asyncHandler(async (req, res) => {
   const user = req.user.userid;
   const productId = req.body.productId;
 
-  if (!productId) {
-    throw new ApiError(400, "product id not provided!");
+  if (!productId || !isValidObjectId(productId)) {
+    throw new ApiError(400, "Valid product id not provided!");
   }
-
   const wishList = await User.findOneAndUpdate(
     { _id: user },
     {
