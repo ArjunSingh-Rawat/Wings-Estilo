@@ -1,13 +1,72 @@
 const contentBox = document.querySelector(".dress-grid");
+const paginationDiv = document.querySelector(".pagination");
+const pageNumberElements = document.querySelectorAll(".page-link");
+const previousArrowButton = document.querySelector(".pagination .btn1");
+const nextArrowButton = document.querySelector(".pagination .btn2");
 
 const path = window.location.href.split("/");
 const categoryName = path.pop().split("?")[0];
 const rentOrSell = path.pop();
 
 let wishList = null;
-let currentPage = 1;
+const u = new URLSearchParams(window.location.search);
+let currentPage = +u.get("page") || 1;
 
 initializeWishlist();
+displayCorrectArrowBtn(currentPage);
+markActivePageNumber(currentPage);
+
+contentBox.addEventListener("click", async (event) => {
+  if (event.target.classList.contains("heart")) {
+    event.preventDefault();
+
+    const heart = event.target;
+    const productId = heart.dataset.productId;
+
+    if (heart.classList.contains("bx-heart")) {
+      if (await addToWishlist(productId)) {
+        changeHeartClass("bxs-heart", "bx-heart", heart);
+        heartTransform(heart);
+      } else {
+        getAlertPopup("Please login to perform this task!");
+      }
+    } else {
+      if (await removeFromWishlist(productId)) {
+        changeHeartClass("bx-heart", "bxs-heart", heart);
+        heartTransform(heart);
+      }
+    }
+  }
+});
+
+paginationDiv.addEventListener("click", (e) => {
+  const element = e.target;
+  if (element.classList.contains("page-link")) {
+    const pageNumber = +element.value;
+
+    if (currentPage !== pageNumber) {
+      loadProductsByPage(pageNumber);
+      currentPage = pageNumber;
+    }
+  } else if (
+    element.classList.contains("btn1") ||
+    element.classList.contains("bx-left-arrow-alt")
+  ) {
+    loadProductsByPage(currentPage - 1);
+    currentPage -= 1;
+  } else if (
+    element.classList.contains("btn2") ||
+    element.classList.contains("bx-right-arrow-alt")
+  ) {
+    loadProductsByPage(currentPage + 1);
+    currentPage += 1;
+  }
+
+  markActivePageNumber(currentPage);
+  displayCorrectArrowBtn(currentPage);
+});
+
+//functions
 
 async function initializeWishlist() {
   wishList = await getWishlistItems();
@@ -15,34 +74,41 @@ async function initializeWishlist() {
     markWishListItems();
   }
 }
+function isProductInWishlist(productId) {
+  return wishList && wishList.some((item) => item._id === productId);
+}
 
-document.querySelector(".product-pages").addEventListener("click", (e) => {
-  const pageNumber = +e.target.innerText;
+function heartTransform(heart) {
+  heart.style.transform = "scale(2,2)";
+  setTimeout(() => {
+    heart.style.transform = "";
+  }, 300);
+}
 
-  if (currentPage !== pageNumber) {
-    history.pushState(
-      null,
-      "",
-      `/${rentOrSell}/${categoryName}?page=${pageNumber}`
-    );
-    renderProductByPage(pageNumber);
-    currentPage = pageNumber;
+function markWishListItems() {
+  const items = document.querySelectorAll(".heart");
+  items.forEach((item) => {
+    const productId = item.dataset.productId;
+    if (isProductInWishlist(productId)) {
+      item.classList.remove("bx-heart");
+      item.classList.add("bxs-heart");
+    }
+  });
+}
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-});
+function changeHeartClass(addCls, removeCls, heart) {
+  heart.classList.add(addCls);
+  heart.classList.remove(removeCls);
+}
 
 async function renderProductByPage(pageNumber) {
   const products = await getProducts(categoryName, rentOrSell, pageNumber);
   contentBox.innerHTML = "";
   if (products) {
-    const productHTML = products
-      .map((product) => createProductHtml(product))
-      .join("");
-    contentBox.innerHTML = productHTML;
+    products.forEach((product) => {
+      const productElement = createProductHtml(product);
+      contentBox.appendChild(productElement);
+    });
   }
 }
 
@@ -108,54 +174,40 @@ function createProductHtml(product) {
   return itemDiv;
 }
 
-function isProductInWishlist(productId) {
-  return wishList && wishList.some((item) => item._id === productId);
-}
-
-function markWishListItems() {
-  const items = document.querySelectorAll(".heart");
-  items.forEach((item) => {
-    const productId = item.dataset.productId;
-    if (isProductInWishlist(productId)) {
-      item.classList.remove("bx-heart");
-      item.classList.add("bxs-heart");
-    }
+function loadProductsByPage(pageNumber) {
+  history.pushState(
+    null,
+    "",
+    `/${rentOrSell}/${categoryName}?page=${pageNumber}`
+  );
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
   });
+
+  renderProductByPage(pageNumber);
 }
 
-contentBox.addEventListener("click", async (event) => {
-  if (event.target.classList.contains("heart")) {
-    event.preventDefault();
+function markActivePageNumber(pageNumber) {
+  let elementToActive = null;
+  pageNumberElements.forEach((e) => {
+    e.classList.remove("activePage");
+    if (e.value === pageNumber) elementToActive = e;
+  });
+  elementToActive.classList.add("activePage");
+}
 
-    const heart = event.target;
-    const productId = heart.dataset.productId;
-
-    if (heart.classList.contains("bx-heart")) {
-      if (await addToWishlist(productId)) {
-        changeHeartClass("bxs-heart", "bx-heart", heart);
-        heartTransform(heart);
-      } else {
-        getAlertPopup("Please login to perform this task!");
-      }
-    } else {
-      if (await removeFromWishlist(productId)) {
-        changeHeartClass("bx-heart", "bxs-heart", heart);
-        heartTransform(heart);
-      }
-    }
+function displayCorrectArrowBtn(currentPage) {
+  if (currentPage === 2) {
+    previousArrowButton.style.display = "flex";
+  } else if (currentPage <= 1) {
+    previousArrowButton.style.display = "none";
   }
-});
-
-function heartTransform(heart) {
-  heart.style.transform = "scale(2,2)";
-  setTimeout(() => {
-    heart.style.transform = "";
-  }, 300);
-}
-
-function changeHeartClass(addCls, removeCls, heart) {
-  heart.classList.add(addCls);
-  heart.classList.remove(removeCls);
+  if (currentPage >= pageNumberElements.length) {
+    nextArrowButton.style.display = "none";
+  } else if (currentPage === pageNumberElements.length - 1) {
+    nextArrowButton.style.display = "flex";
+  }
 }
 
 // fetching api data

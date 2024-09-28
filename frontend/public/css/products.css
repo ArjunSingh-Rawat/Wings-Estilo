@@ -90,6 +90,13 @@
   align-items: center;
 }
 
+.pagination-show {
+  display: none;
+}
+.pagination-hide {
+  display: flex;
+}
+
 .pagination ul {
   margin: 20px 30px;
   display: flex;

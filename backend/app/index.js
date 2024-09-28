@@ -156,12 +156,15 @@ function handleRentOrSell(sellOrRent, categoryList) {
         if (pageNumber > totalPages || pageNumber <= 0) {
           throw new Error("Products not found!!");
         }
+        const pageNumberDisplay =
+          totalPages === 1 ? "pagination-show" : "pagination-hide";
 
         res.render("pages/products", {
           categoryName: categoryName,
           rentOrSell: sellOrRent,
           products,
           totalPages,
+          pageNumberDisplay,
         });
       } else {
         next();
