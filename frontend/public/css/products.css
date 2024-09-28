@@ -82,6 +82,52 @@
   transition: 0.4s;
 }
 
+/* pagination */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination ul {
+  margin: 20px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.pagination ul li {
+  background-color: rgb(240, 240, 240);
+  margin: 0 10px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pagination .btn1,
+.btn2 {
+  font-size: 30px;
+  font-weight: 500;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pagination ul .activePage {
+  background-color: #ff8080;
+  color: white;
+}
+
 /* media query */
 
 @media (max-width: 650px) {
@@ -120,6 +166,20 @@
 
   .price {
     font-size: 14px;
+  }
+
+  /* pagination */
+
+  .pagination ul {
+    margin: 20px 10px;
+  }
+
+  .pagination ul li {
+    margin: 0 5px;
+    width: 40px;
+    height: 40px;
+
+    font-size: 18px;
   }
 }
 
