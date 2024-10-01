@@ -7,6 +7,7 @@ const {
   getAllProducts,
   getProductsByCategory,
   getProductsByCategoryForAdmin,
+  getSimilarCategoryProducts,
 } = require("../controllers/productController");
 
 const { authorizeAdminUser } = require("../middleware/authMiddlewares");
@@ -29,5 +30,7 @@ router.get("/", getAllProducts);
 router.get("/category/:categoryId/admin", getProductsByCategoryForAdmin);
 
 router.get("/category/:name/:rentOrSell", getProductsByCategory);
+
+router.get("/similar/:rentOrSell/:productId", getSimilarCategoryProducts);
 
 module.exports = router;

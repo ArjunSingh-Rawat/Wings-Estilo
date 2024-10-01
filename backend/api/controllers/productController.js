@@ -345,7 +345,7 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
   const categoryName = req.params.name;
   const rentOrSell = req.params.rentOrSell;
   if (!rentOrSell && ["sell", "rent"].includes(rentOrSell)) {
-    throw new ApiError(403, "ren of sell not provided in url path");
+    throw new ApiError(403, "rent of sell not provided in url path");
   }
   const categoryId = await Category.findOne({ categoryName }).select("_id");
 
@@ -425,6 +425,50 @@ const getProductsByCategoryForAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const getSimilarCategoryProducts = asyncHandler(async (req, res) => {
+  const rentOrSell = req.params.rentOrSell;
+  const productId = req.params.productId;
+
+  if (!rentOrSell && ["sell", "rent"].includes(rentOrSell)) {
+    throw new ApiError(403, "rent of sell not provided in url path");
+  }
+
+  if (!productId) {
+    throw new ApiError(403, "productId not provided.");
+  }
+
+  const product = await Product.findOne({
+    _id: productId,
+  });
+  const categoryId = product.category[1] || product.category[0];
+
+  const products = await Product.find({
+    category: categoryId,
+    [rentOrSell === "sell" ? "forSell" : "forRent"]: true,
+    _id: { $ne: productId },
+  }).limit(4);
+
+  if (!products || !products.length || products.length < 4) {
+    throw new ApiError(404, "No products found!!");
+  }
+
+  for (const product of products) {
+    if (useFileFrom === "localFiles") {
+      product.image = "/" + product.image.split("/").splice(2).join("/");
+    } else if (useFileFrom === "cloudinaryFiles") {
+      product.image =
+        `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload` +
+        product.image;
+    }
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "success!",
+    products,
+  });
+});
+
 module.exports = {
   addNewProduct,
   updateProduct,
@@ -433,4 +477,5 @@ module.exports = {
   getAllProducts,
   getProductsByCategory,
   getProductsByCategoryForAdmin,
+  getSimilarCategoryProducts,
 };

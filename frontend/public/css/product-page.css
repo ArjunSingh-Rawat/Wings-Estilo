@@ -297,6 +297,7 @@
   color: #ff8080;
   font-size: 25px;
   margin-right: 10px;
+  transition: 0.4s;
 }
 
 .name {
