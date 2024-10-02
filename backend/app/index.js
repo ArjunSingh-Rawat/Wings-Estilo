@@ -17,8 +17,21 @@ const {
 const {
   getSelectedProduct,
 } = require("../api/middleware/validateProductOrder");
+const {
+  staticPageRateLimitMiddleware,
+} = require("../api/middleware/rateLimit");
 
 const router = express.Router();
+
+for (const page of [
+  ...Object.keys(publicPages),
+  ...Object.keys(policyPages),
+  "sell",
+  "rent",
+  "profile",
+]) {
+  router.use(`/${page}`, staticPageRateLimitMiddleware());
+}
 
 for (const page in publicPages) {
   router.get(`/${page}`, (req, res) => {
@@ -41,8 +54,8 @@ router.get("/profile", verifyTokenForStaticRoute, (req, res) => {
   }
 });
 
-router.get("/sell/:path", handleRentOrSell("sell", sellCategories));
-router.get("/rent/:path", handleRentOrSell("rent", rentCategories));
+router.get("/sell/:categoryName", handleRentOrSell("sell", sellCategories));
+router.get("/rent/:categoryName", handleRentOrSell("rent", rentCategories));
 
 router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
   try {
@@ -142,12 +155,15 @@ router.get("/admin.js", authorizeAdminUser, (req, res) => {
 function handleRentOrSell(sellOrRent, categoryList) {
   return async (req, res, next) => {
     try {
-      if (categoryList.includes(req.params.path)) {
-        const categoryName = req.params.path.split("-").join(" ").toUpperCase();
+      if (categoryList.includes(req.params.categoryName)) {
+        const categoryName = req.params.categoryName
+          .split("-")
+          .join(" ")
+          .toUpperCase();
         const pageNumber = parseInt(req.query.page) || 1;
 
         const { products, totalProducts } = await getProducts(
-          req.params.path,
+          req.params.categoryName,
           sellOrRent,
           pageNumber
         );

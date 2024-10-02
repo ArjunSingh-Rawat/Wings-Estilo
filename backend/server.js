@@ -13,6 +13,7 @@ require("./db/connection");
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+const { apiRateLimitMiddleware } = require("./api/middleware/rateLimit");
 const appRouter = require("./app/index");
 const userRouter = require("./api/routes/userRouter");
 const categoryRouter = require("./api/routes/categoryRouter");
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../frontend/public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../frontend/views"));
+app.use("/api/", apiRateLimitMiddleware());
 
 app.use("/", setUserInLocalsIfLoggedIn, appRouter);
 app.use("/api/user", userRouter);
