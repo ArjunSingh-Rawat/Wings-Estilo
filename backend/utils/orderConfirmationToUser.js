@@ -14,7 +14,6 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendOrderConfirmationToUserViaEmail(orderDetails, sellOrRent) {
-  sellOrRent = sellOrRent[0].toUpperCase() + sellOrRent.slice(1);
   const orderConfirmationFile = fs.readFileSync(
     path.join(__dirname, "../emailTemplates/orderConfirmationUser.ejs"),
     "utf-8"
@@ -35,6 +34,7 @@ async function sendOrderConfirmationToUserViaEmail(orderDetails, sellOrRent) {
     items,
     totalAmount,
     deliveryCharge,
+    showSubTotal: items.length > 1,
   });
   await sendMailViaNodemailer(emailTemplate, user.email);
 }

@@ -166,8 +166,9 @@
                               padding: 10px 0;
                             "
                           >
-                            Rs. <% sellOrRent === 'sell' ?
-                            item.product.sellPrice : item.product.rentPrice %>
+                            Rs. <%= sellOrRent === 'sell' ?
+                            item.product.sellPrice :
+                            `${item.product.rentPrice}/day` %>
                           </td>
                         </tr>
                       </table>
@@ -184,13 +185,21 @@
       <tr>
         <td style="padding: 20px; border-top: 1px solid grey">
           <table>
+            <%if(showSubTotal){%>
             <tr>
               <td>Subtotal: <span>Rs <%= totalAmount %></span></td>
             </tr>
+            <%}%>
             <tr>
               <td style="padding: 5px 0">
                 Delivery Charges: <span>Rs <%= deliveryCharge %></span>
               </td>
+              <%if(sellOrRent === 'rent'){%>
+              <td style="padding: 5px 0">
+                Deposit Charges:
+                <span>Rs <%= items[0].product.depositCharge %></span>
+              </td>
+              <%}%>
             </tr>
             <tr>
               <td
@@ -201,7 +210,11 @@
                   color: #ff8080;
                 "
               >
-                Grand Total: <span>Rs <% totalAmount + deliveryCharge %></span>
+                Grand Total:
+                <span
+                  >Rs <%= totalAmount + deliveryCharge + (sellOrRent ===
+                  'rent'?items[0].product.depositCharge:0)%></span
+                >
               </td>
             </tr>
           </table>

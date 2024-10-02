@@ -418,7 +418,7 @@ async function getAndSendOrderDetailsToAdmin(sellOrRent, orderId) {
     },
     {
       path: "items.product",
-      select: "name sellPrice rentPrice image",
+      select: "name sellPrice rentPrice image depositCharge",
     },
     {
       path: "payment.details",
