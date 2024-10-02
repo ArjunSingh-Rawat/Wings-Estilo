@@ -50,7 +50,7 @@ router.get("/products", getSelectedProduct, (req, res) => {
 
 router.get("/", getOrderDetails);
 
-router.put("/:id", authorizeAdminUser, updateOrder);
+router.put("/:id/:sellOrRent", authorizeAdminUser, updateOrder);
 
 router.get("/delivery-charge/:state", (req, res) => {
   try {

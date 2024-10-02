@@ -276,28 +276,38 @@ const getOrderDetails = asyncHandler(async (req, res) => {
 });
 
 const updateOrder = asyncHandler(async (req, res) => {
-  const orderId = req.params.id;
+  const { id: orderId, sellOrRent } = req.params;
   const { itemsDetailsToChange } = req.body;
 
-  const order = await Order.findOne({ _id: orderId });
-  for (const itemIndex in itemsDetailsToChange) {
-    order.items[itemIndex].status = itemsDetailsToChange[itemIndex];
-    order.items[itemIndex].updatedAt = Date.now();
-  }
-  let orderStatus = "incomplete";
-  for (const item of order.items) {
-    if (item.status !== "Delivered") {
-      orderStatus = "incomplete";
-      break;
-    } else orderStatus = "complete";
+  if (!["sell", "rent"].includes(sellOrRent)) {
+    throw new ApiError(406, "Order type should contain 'sell' or 'rent'!");
   }
 
-  order.orderStatus = orderStatus;
+  const OrderModel = sellOrRent === "sell" ? Order : RentOrder;
+  const order = await OrderModel.findById(orderId);
+  if (!order) {
+    throw new ApiError(404, "Order not found");
+  }
+
+  order.items.forEach((item, index) => {
+    if (itemsDetailsToChange[index]) {
+      item.status = itemsDetailsToChange[index];
+      item.updatedAt = Date.now();
+    }
+  });
+  const allStatusMet = order.items.every((item) =>
+    sellOrRent === "sell"
+      ? item.status === "Delivered"
+      : item.status === "Returned"
+  );
+  order.orderStatus = allStatusMet ? "complete" : "incomplete";
+
   await order.save();
 
-  res.status(202).json({
+  res.status(200).json({
     success: true,
     message: "order updated successfully",
+    orderStatus: order.orderStatus,
   });
 });
 

@@ -313,23 +313,17 @@ getOrders()
   .then((data) => {
     renderOrderListTable(data);
     orders = data;
-    arrayToSort = [...orders];
-    incompleteOrdersArray = orders.filter(
-      (order) => order.orderStatus === "incomplete"
-    );
-    completeOrdersArray = orders.filter(
-      (order) => order.orderStatus === "complete"
-    );
+    changeFilterOrdersArray(orders);
   })
   .catch((error) => console.log(error));
 
 orderListTable.addEventListener("click", (event) => {
   const element = event.target;
   if (element.classList.contains("show-details")) {
-    const orderIndex = element.dataset.orderIndex - 1;
+    indexOfOrderSelectedToUpdate = element.dataset.orderIndex - 1;
 
-    orderSelectedToUpdate = orders[orderIndex];
-    renderOrderDetails(orders[orderIndex]);
+    orderSelectedToUpdate = orders[indexOfOrderSelectedToUpdate];
+    renderOrderDetails(orders[indexOfOrderSelectedToUpdate]);
     toggleOrderDetailsSections("order-details");
   }
 });
@@ -345,6 +339,8 @@ orderedProductDetailsSection.addEventListener("click", async (event) => {
   const element = event.target;
   if (element.classList.contains("back-button")) {
     toggleOrderDetailsSections("order-list");
+    changeFilterOrdersArray(orders);
+    renderOrderListTable(orders);
   } else if (element.classList.contains("edit-product-status-btn")) {
     enableOrDisableProductStatusUpdate("enable");
     toggleEditOrUpdateDiv("edit");
@@ -353,7 +349,8 @@ orderedProductDetailsSection.addEventListener("click", async (event) => {
       startOrStopLoader("start");
       const response = await updateOrderProductStatus(
         orderSelectedToUpdate._id,
-        statusChangedOfProducts
+        statusChangedOfProducts,
+        orderSelectedToUpdate.orderType
       );
       startOrStopLoader("stop");
 
@@ -362,6 +359,8 @@ orderedProductDetailsSection.addEventListener("click", async (event) => {
           orderSelectedToUpdate.items[productChangedIndex].status =
             statusChangedOfProducts[productChangedIndex];
         }
+        orderSelectedToUpdate.orderStatus = response.orderStatus;
+
         renderOrderProductDetails(orderSelectedToUpdate.items);
         toggleEditOrUpdateDiv("update");
         getAlertPopup("Updated Successfully!");
@@ -684,50 +683,61 @@ function renderOrderUserDetails(orderDetails) {
 
 function renderOrderProductDetails(products) {
   const rows = orderedProductDetailTable.rows;
+  const tableBody = document.createDocumentFragment();
 
   while (rows.length > 1) {
     orderedProductDetailTable.deleteRow(1);
   }
+
+  const orderType = orderSelectedToUpdate.orderType;
   let i = 1;
+
   for (const item of products) {
-    const row = orderedProductDetailTable.insertRow(i);
-    const image = "/" + item.product.image.split("/").splice(2).join("/");
-    const productName = item.product.name;
-    const { productSize, quantity } = item;
+    const row = document.createElement("tr");
+    const image = "/" + item.product.image.split("/").slice(2).join("/");
+
+    const optionsHtml =
+      orderType === "sell"
+        ? `<option value="Processing">Processing</option>
+         <option value="Shipped">Shipped</option>
+         <option value="Delivered">Delivered</option>`
+        : `<option value="Processing">Processing</option>
+         <option value="Shipped">Shipped</option>
+         <option value="canceled">Canceled</option>
+         <option value="On Rent">On Rent</option>
+         <option value="Returning">Returning</option>
+         <option value="Returned">Returned</option>`;
+
     row.innerHTML = `
-    <td>${i}.</td>
-    <td id="op-img">
-      <img
-        src="${image}"
-        alt="${productName}"
-      />
-    </td>
-    <td id="op-name">${productName}</td>
-    <td id="op-size">${productSize}</td>
-    <td id="op-quantity">${quantity}</td>
-    <td id="op-status">${item.status}</td>
-    <td onclick="window.location.href = '/sell/${productName
-      .split(" ")
-      .join("-")}/${item.product._id}/buy'" id="op-open">Open product page</td>
-    <td id="update-product-status">
-      <select disabled data-item-index="${i}" name="productStatus">
-        <option value="Processing">Processing</option>
-        <option value="Shipped">Shipped</option>
-        <option value="Delivered">Delivered</option>
-      </select>
-    </td>
+      <td>${i}.</td>
+      <td id="op-img">
+        <img src="${image}" alt="${item.product.name}" />
+      </td>
+      <td id="op-name">${item.product.name}</td>
+      <td id="op-size">${item.productSize}</td>
+      <td id="op-quantity">${item.quantity}</td>
+      <td id="op-status">${item.status}</td>
+      <td id="op-open" onclick="window.location.href='/sell/${item.product.name
+        .split(" ")
+        .join("-")}/${item.product._id}/buy'">
+        Open product page
+      </td>
+      <td id="update-product-status">
+        <select disabled data-item-index="${i}" name="productStatus">
+          ${optionsHtml}
+        </select>
+      </td>
     `;
-    i++;
-    // pre select current status of product in selection options
+
     const options = row.querySelector("select").options;
     for (const option of options) {
-      if (option.value === item.status) {
-        option.selected = true;
-      } else {
-        option.selected = false;
-      }
+      option.selected = option.value === item.status;
     }
+
+    tableBody.appendChild(row);
+    i++;
   }
+  orderedProductDetailTable.appendChild(tableBody);
 }
 
 function resetProductStatusInSelectElement() {
@@ -826,6 +836,16 @@ function toggleDisplayOfConfirmDeletePopup(flexOrNone) {
   deleteOrCancelProductDiv.style.display = flexOrNone;
 }
 
+function changeFilterOrdersArray(orders) {
+  arrayToSort = [...orders];
+  incompleteOrdersArray = orders.filter(
+    (order) => order.orderStatus === "incomplete"
+  );
+  completeOrdersArray = orders.filter(
+    (order) => order.orderStatus === "complete"
+  );
+}
+
 /*---------- fetching data -----------*/
 
 async function getAllCategories() {
@@ -872,8 +892,12 @@ async function getOrders() {
   return false;
 }
 
-async function updateOrderProductStatus(orderId, changedItemIndexAndValue) {
-  const res = await fetch(`/api/order/${orderId}`, {
+async function updateOrderProductStatus(
+  orderId,
+  changedItemIndexAndValue,
+  sellOrRent
+) {
+  const res = await fetch(`/api/order/${orderId}/${sellOrRent}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

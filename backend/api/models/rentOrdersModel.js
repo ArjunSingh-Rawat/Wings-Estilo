@@ -69,6 +69,11 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    orderType: {
+      type: String,
+      default: "rent",
+      immutable: true,
+    },
   },
   { timestamps: true }
 );
