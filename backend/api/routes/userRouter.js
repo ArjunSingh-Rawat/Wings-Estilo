@@ -27,7 +27,7 @@ router.get("/info", verifyToken, getOneUser);
 
 router.put("/info", verifyToken, updateUserPersonalInfo);
 
-router.put("/phone-number/phone", verifyToken, updatePhoneNumber);
+// router.put("/phone-number/phone", verifyToken, updatePhoneNumber);
 
 router.put("/phone-number/email", verifyToken, updatePhoneNumberWithEmail);
 

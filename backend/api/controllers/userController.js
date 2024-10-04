@@ -269,23 +269,28 @@ const updatePhoneNumberWithEmail = asyncHandler(async (req, res) => {
   const { otp, phoneNumber } = req.body;
   validatePhoneNumber(phoneNumber);
 
-  const user = await User.findOne({ _id: req.user.userid });
+  const user = await User.findById(req.user.userid);
+  if (!user) {
+    throw new ApiError(404, "User not found!");
+  }
+
   await verifyEmailOtp(otp, user._id, phoneNumber);
 
   user.phoneNumber = phoneNumber;
   user.isNumberVerified = true;
+
   try {
     await user.save();
   } catch (error) {
     if (error.code === 11000) {
-      throw new ApiError(403, "Phone number not available!!");
-    } else {
-      throw error;
+      throw new ApiError(403, "Phone number not available!");
     }
+    throw new ApiError(500, "Internal server error. Please try again later.");
   }
+
   res.status(200).json({
     success: true,
-    message: "successfully added number",
+    message: "Phone number successfully updated.",
     user,
   });
 });

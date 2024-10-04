@@ -151,6 +151,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendOtpOnUserEmail(phoneNumber, userId, userEmail) {
+  const otpResendTime = 120 * 1000;
   try {
     const otp = otpGenerator();
     const otpData = await Otp.findOne({ user: userId });
@@ -163,24 +164,22 @@ async function sendOtpOnUserEmail(phoneNumber, userId, userEmail) {
         phoneNumber,
       });
     } else {
-      const currentTime = new Date().getTime();
-      const timeDifference =
-        currentTime - new Date(otpData.eOtpCreatedAt).getTime();
+      const timeDifference = Date.now() - otpData.eOtpCreatedAt;
 
-      const timeDifferenceInSeconds = timeDifference / 1000;
-      const otpTimeRemaining = 120 - timeDifferenceInSeconds;
-
-      if (timeDifferenceInSeconds < 120) {
+      if (timeDifference < otpResendTime) {
+        const remainingTime = Math.ceil(
+          (otpResendTime - timeDifference) / 1000
+        );
         throw new ApiError(
           406,
-          `You can send OTP after ${Math.ceil(otpTimeRemaining)} seconds.`
+          `You can send OTP after ${remainingTime} seconds.`
         );
-      } else {
-        otpData.emailOtp = otp;
-        otpData.eOtpCreatedAt = Date.now();
-        otpData.phoneNumber = phoneNumber;
-        await otpData.save();
       }
+
+      otpData.emailOtp = otp;
+      otpData.eOtpCreatedAt = Date.now();
+      otpData.phoneNumber = phoneNumber;
+      await otpData.save();
     }
 
     await sendOtpViaNodemailer(otp, userEmail);
@@ -191,33 +190,23 @@ async function sendOtpOnUserEmail(phoneNumber, userId, userEmail) {
 
 async function verifyEmailOtp(otp, userId, phoneNumber) {
   try {
-    if (!otp) {
-      throw new ApiError(406, "Otp not found!");
-    }
+    if (!otp) throw new ApiError(406, "Otp not found!");
 
     const otpData = await Otp.findOne({ user: userId });
+    if (!otpData) throw new ApiError(406, "No OTP data found!");
 
-    if (!otpData) {
-      throw new ApiError(406, "no otp data found!");
-    }
-
-    if (phoneNumber && +phoneNumber !== otpData.phoneNumber) {
+    if (phoneNumber && phoneNumber !== String(otpData.phoneNumber)) {
       throw new ApiError(406, "Phone number provided is not correct!");
     }
 
-    const dbOtp = otpData.emailOtp;
-
-    if (otp !== dbOtp) {
-      throw new ApiError(406, "Wrong otp provided!");
+    if (otp !== otpData.emailOtp) {
+      throw new ApiError(406, "Wrong OTP provided!");
     }
 
-    const currentTime = new Date().getTime();
-    const timeDifference =
-      currentTime - new Date(otpData.eOtpCreatedAt).getTime();
-    const timeDifferenceInMinute = timeDifference / 1000 / 60;
-
-    if (timeDifferenceInMinute > 2) {
-      throw new ApiError(403, "Otp Expired!!!");
+    const timeDifference = Date.now() - otpData.eOtpCreatedAt;
+    if (timeDifference > 300000) {
+      //expire after 5 minutes
+      throw new ApiError(403, "OTP Expired!!!");
     }
   } catch (error) {
     throw error;
@@ -225,18 +214,25 @@ async function verifyEmailOtp(otp, userId, phoneNumber) {
 }
 
 async function sendOtpViaNodemailer(otp, userEmail) {
-  const otpTemplateFile = fs.readFileSync(
-    path.join(__dirname, "../emailTemplates/emailOtp.ejs"),
-    "utf-8"
-  );
+  try {
+    const otpTemplateFile = fs.readFileSync(
+      path.join(__dirname, "../emailTemplates/emailOtp.ejs"),
+      "utf-8"
+    );
 
-  const emailTemplate = ejs.render(otpTemplateFile, { otp });
-  await transporter.sendMail({
-    from: process.env.WINGS_ESTILO_MAIL_ID,
-    to: userEmail,
-    subject: "OTP for updating phone number",
-    html: emailTemplate,
-  });
+    const emailTemplate = ejs.render(otpTemplateFile, { otp });
+    await transporter.sendMail({
+      from: process.env.WINGS_ESTILO_MAIL_ID,
+      to: userEmail,
+      subject: "OTP for updating phone number",
+      html: emailTemplate,
+    });
+  } catch (error) {
+    throw new ApiError(
+      500,
+      "Failed to send OTP email. Please try again later."
+    );
+  }
 }
 
 module.exports = {
