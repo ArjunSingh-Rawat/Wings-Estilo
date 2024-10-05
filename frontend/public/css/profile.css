@@ -175,6 +175,14 @@
   gap: 10px;
 }
 
+.fade-out {
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+.fade-out-hidden {
+  opacity: 0;
+}
+
 /* alert */
 .alert {
   font-size: 12px;

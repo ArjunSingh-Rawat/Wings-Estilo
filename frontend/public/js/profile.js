@@ -134,37 +134,33 @@ async function asyncHandler() {
     });
 
   function validatePhoneNumber(phoneNumber) {
-    phoneNumber = phoneNumber.split("+91");
-    phoneNumber = phoneNumber[phoneNumber.length - 1].split(" ");
-    phoneNumber = phoneNumber[phoneNumber.length - 1];
-    try {
-      const phoneNumberRegex = /^\d+$/;
+    phoneNumber = phoneNumber.split("+91").pop().trim();
 
-      if (!phoneNumber) {
-        throw new Error("Phone number not provided!");
-      }
-
-      if (!phoneNumberRegex.test(phoneNumber)) {
-        throw new Error("Phone number is not valid");
-      }
-
-      if (phoneNumber.length !== 10) {
-        throw new Error("Phone number length should be 10");
-      }
-
-      return phoneNumber;
-    } catch (error) {
-      throw error;
+    const phoneNumberRegex = /^\d+$/;
+    if (!phoneNumber) {
+      throw new Error("Phone number not provided!");
     }
+    if (!phoneNumberRegex.test(phoneNumber)) {
+      throw new Error("Phone number is not valid");
+    }
+    if (phoneNumber.length !== 10) {
+      throw new Error("Phone number length should be 10");
+    }
+
+    return phoneNumber;
   }
 
   function showValidationError(message, messageElementSelector) {
     const messageElement = document.querySelector(messageElementSelector);
+    messageElement.classList.remove("fade-out-hidden");
     messageElement.style.display = "block";
     messageElement.innerText = message;
 
     setTimeout(() => {
-      messageElement.style.display = "none";
+      messageElement.classList.add("fade-out-hidden");
+      setTimeout(() => {
+        messageElement.style.display = "none";
+      }, 500);
     }, 2000);
   }
 
@@ -360,15 +356,13 @@ asyncHandler();
 
 function toggleEditOrSaveBtn(editOrSave, editSection) {
   if (editOrSave === "edit") {
-    document.querySelector(
-      `#${editSection}-${editOrSave}-element`
-    ).style.display = "none";
+    document.querySelector(`#${editSection}-edit-element`).style.display =
+      "none";
     document.querySelector(`#${editSection}-save-element`).style.display =
       "flex";
   } else if (editOrSave === "save") {
-    document.querySelector(
-      `#${editSection}-${editOrSave}-element`
-    ).style.display = "none";
+    document.querySelector(`#${editSection}-save-element`).style.display =
+      "none";
     document.querySelector(`#${editSection}-edit-element`).style.display =
       "block";
   }
@@ -390,29 +384,25 @@ function toggleClass(currentDiv) {
 function renderUserInfo(userData) {
   const { firstName, lastName, email, phoneNumber, gender } = userData;
 
-  document.querySelector("#user-name").innerText = firstName + " " + lastName;
+  document.querySelector("#user-name").innerText = `${firstName} ${lastName}`;
   document.querySelector("#user-email").innerText = email;
 
   document.querySelector("#fname").value = firstName;
   document.querySelector("#lname").value = lastName;
   document.querySelector("#email").value = email;
   document.querySelector("#phone-number").value = phoneNumber
-    ? "+91 " + phoneNumber
+    ? `+91 ${phoneNumber}`
     : "+91 ";
 
-  if (gender) {
-    document.querySelector(`#${gender}`).checked = true;
-    document.querySelector("#gender-field-alert").style.display = "none";
-  } else {
-    document.querySelector("#gender-field-alert").style.display = "block";
-  }
+  document.querySelector(`#${gender}`).checked = true;
+  document.querySelector("#gender-field-alert").style.display = gender
+    ? "none"
+    : "block";
 
   const numberFieldAlert = document.querySelector("#number-field-alert");
-  if (phoneNumber) {
-    numberFieldAlert.style.display = "none";
-  } else {
+  numberFieldAlert.style.display = phoneNumber ? "none" : "block";
+  if (!phoneNumber) {
     numberFieldAlert.innerText = "! Please fill out this field";
-    numberFieldAlert.style.display = "block";
   }
 }
 
@@ -475,11 +465,9 @@ async function resendOtp() {
 }
 
 function getOtp() {
-  let otp = "";
-  otpInputElements.forEach((input) => {
-    otp += input.value;
-  });
-  return otp;
+  return Array.from(otpInputElements)
+    .map((input) => input.value)
+    .join("");
 }
 
 function startOtpExpireTimer() {
@@ -487,9 +475,10 @@ function startOtpExpireTimer() {
   otpTimeIntervalId = setInterval(() => {
     timeRemaining--;
     otpTimeElement.innerText = `${timeRemaining} sec`;
+
     if (timeRemaining === 0) {
       clearInterval(otpTimeIntervalId);
-      toggleSubmitOrResendBtn("resend");
+      toggleSubmitOrResendBtn("showBoth");
     }
   }, 1000);
 }
@@ -514,20 +503,20 @@ function handleOtpControl(inputsArray, event, index) {
     if (event.target.value.length === 1 && index + 1 < 6) {
       inputsArray[index + 1].focus();
     }
-    index + 1 < 5 ? (backspaceCount = 1) : (backspaceCount = 0);
+    backspaceCount = index + 1 < 5 ? 1 : 0;
   } else if (event.key === "Backspace") {
     backspaceCount++;
-    if (index - 1 >= 0) {
-      if (backspaceCount === 2) {
-        inputsArray[index - 1].focus();
-        backspaceCount = 0;
-      }
-    }
-  } else if (event.key === "Tab") {
-    if (index !== 0 && inputsArray[index - 1].value === "") {
+    if (index - 1 >= 0 && backspaceCount === 2) {
       inputsArray[index - 1].focus();
+      backspaceCount = 0;
     }
-    index + 1 < 5 ? (backspaceCount = 1) : (backspaceCount = 0);
+  } else if (
+    event.key === "Tab" &&
+    index !== 0 &&
+    inputsArray[index - 1].value === ""
+  ) {
+    inputsArray[index - 1].focus();
+    backspaceCount = index + 1 < 5 ? 1 : 0;
   }
 }
 
@@ -540,9 +529,13 @@ function closeOtpDiv() {
 
 function toggleSubmitOrResendBtn(buttonToShow) {
   otpButtonsArray.forEach((e) => (e.style.display = "none"));
+
   if (buttonToShow === "submit") {
     otpButtonsArray[0].style.display = "inline-block";
   } else if (buttonToShow === "resend") {
+    otpButtonsArray[1].style.display = "inline-block";
+  } else if (buttonToShow === "showBoth") {
+    otpButtonsArray[0].style.display = "inline-block";
     otpButtonsArray[1].style.display = "inline-block";
   }
 }

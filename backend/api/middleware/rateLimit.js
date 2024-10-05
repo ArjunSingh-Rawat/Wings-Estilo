@@ -46,7 +46,7 @@ function apiRateLimitMiddleware() {
 function otpRateLimitMiddleware() {
   return rateLimit({
     windowMs: otpRateLimitTime,
-    max: 6,
+    max: 10,
     standardHeaders: true,
     legacyHeaders: false,
     keyGenerator: (req) => {
