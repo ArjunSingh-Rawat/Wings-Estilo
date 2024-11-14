@@ -30,7 +30,7 @@ const redirectToGoogleOauth = asyncHandler((req, res) => {
     maxAge: 1000 * 60 * 5,
     signed: true,
     httpOnly: true,
-    // secure: true,
+    secure: process.env.NODE_ENV === "production",
   };
 
   res.cookie("CSRF", oauthState, cookieOptions);
@@ -107,9 +107,9 @@ const signInSignUpHandler = asyncHandler(async (req, res) => {
   const { accessToken } = await generateAccessAndRefreshTokens(user._id);
 
   const options = {
-    httpOnly: true,
-    // secure: true,
     maxAge: 1000 * 60 * 60 * 6,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
   };
   pageRedirectUrl = redirectUrlSanitizer(pageRedirectUrl);
 
@@ -156,7 +156,7 @@ async function registerUser(firstName, lastName, email) {
 const logoutUser = asyncHandler((req, res) => {
   const options = {
     httpOnly: true,
-    // secure: true,
+    secure: process.env.NODE_ENV === "production",
   };
 
   return res.status(200).clearCookie("accessToken", options).redirect("/");

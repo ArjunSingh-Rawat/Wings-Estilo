@@ -95,6 +95,7 @@ let statusChangedOfProducts = {};
 let arrayToSort = [];
 let incompleteOrdersArray = [];
 let completeOrdersArray = [];
+const maxSizeInBytes = 500 * 1024; // 500kb
 
 /*--------- Display correct section ------------*/
 
@@ -134,6 +135,11 @@ addFormMainCategoryElement.addEventListener("change", (event) => {
 addProductImageSection.addEventListener("change", (event) => {
   const imageFile = event.target.files[0];
   if (imageTypes.includes(imageFile.type)) {
+    if (imageFile.size > maxSizeInBytes) {
+      alert("File size exceeds 500kb MB. Please choose a smaller file.");
+      event.target.value = "";
+      return;
+    }
     const imageUrl = imageFileToBlobToUrl(imageFile);
     if (imageUrl) {
       setImageInDiv(imageUrl, event.target.parentElement);
@@ -234,6 +240,11 @@ updateProductsDiv.addEventListener("click", (event) => {
 updateProductImageSection.addEventListener("change", (event) => {
   const imageFile = event.target.files[0];
   if (imageTypes.includes(imageFile.type)) {
+    if (imageFile.size > maxSizeInBytes) {
+      alert("File size exceeds 500kb MB. Please choose a smaller file.");
+      event.target.value = "";
+      return;
+    }
     const imageUrl = imageFileToBlobToUrl(imageFile);
     const index = +event.target.id.split("-").pop();
     updatedImageIndexes.push(index);

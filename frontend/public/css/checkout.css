@@ -134,6 +134,33 @@ body {
   align-items: center;
 }
 
+/* rent-instruction */
+.rent-instruction {
+  padding: 10px;
+  border: 1px solid lightgrey;
+  box-shadow: 0 0 5px lightgray;
+  background-color: white;
+  margin-bottom: 20px;
+}
+
+.rent-instruction h2 {
+  padding-bottom: 10px;
+}
+
+.rent-instruction ol,
+.rent-instruction ul {
+  padding: 30px;
+}
+
+.rent-instruction li {
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+.rent-instruction li p {
+  font-weight: 400;
+}
+
 /* checkout-continue-div */
 .checkout-continue-div {
   padding: 10px;
@@ -248,6 +275,25 @@ body {
 
   .ordered-product-detail #ordered-product-size {
     font-size: 12px;
+  }
+
+  /* rent-instruction */
+
+  .rent-instruction h2 {
+    font-size: 20px;
+  }
+
+  .rent-instruction h3 {
+    font-size: 16px;
+  }
+
+  .rent-instruction ol,
+  .rent-instruction ul {
+    padding: 20px;
+  }
+
+  .rent-instruction li {
+    font-size: 14px;
   }
 
   /* checkout-continue-div */
