@@ -186,6 +186,10 @@
   position: relative;
 }
 
+.dropdown-link {
+  cursor: pointer;
+}
+
 .dropdown:hover .dropdown-content {
   display: block;
 }

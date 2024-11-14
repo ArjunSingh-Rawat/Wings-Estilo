@@ -1,7 +1,7 @@
 <header class="main-header">
   <div class="top-bar">
     <marquee>
-      ALL INDIAN SHIPPING AVAILABLE | CASH ON DELIVERY AVAILABLE
+      ALL INDIAN SHIPPING AVAILABLE | DRESSES ON RENT AVAILABLE
     </marquee>
   </div>
 
@@ -83,8 +83,8 @@
         </ul>
       </li>
       <li class="dropdown">
-        <a id="rental-dresses" class="dropdown-link" href="/rental">
-          RENTAL DRESSES
+        <a id="rental-dresses" class="dropdown-link">
+          RENTAL
           <i class="bx bx-chevron-down"></i>
         </a>
         <ul class="dropdown-content">
@@ -220,20 +220,21 @@
   );
 
   // mobile-nav2
-  var acc = document.getElementsByClassName("header-accordion");
-  var i;
-
-  for (i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function () {
+  const headerAccordion = document.getElementsByClassName("header-accordion");
+  for (let i = 0; i < headerAccordion.length; i++) {
+    headerAccordion[i].addEventListener("click", function () {
       this.classList.toggle("activate");
       var panel = this.nextElementSibling;
       if (panel.style.maxHeight) {
         panel.style.maxHeight = null;
       } else {
-        for (var j = 0; j < acc.length; j++) {
-          if (acc[j] !== this && acc[j].classList.contains("activate")) {
-            acc[j].classList.remove("activate");
-            acc[j].nextElementSibling.style.maxHeight = null;
+        for (let j = 0; j < headerAccordion.length; j++) {
+          if (
+            headerAccordion[j] !== this &&
+            headerAccordion[j].classList.contains("activate")
+          ) {
+            headerAccordion[j].classList.remove("activate");
+            headerAccordion[j].nextElementSibling.style.maxHeight = null;
           }
         }
         panel.style.maxHeight = panel.scrollHeight + "px";

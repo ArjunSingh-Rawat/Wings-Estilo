@@ -239,6 +239,9 @@
 }
 
 #description p {
+  display: inline;
+  line-height: 30px;
+  word-spacing: 2px;
   white-space: pre;
 }
 

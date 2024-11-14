@@ -50,5 +50,7 @@ function toggleClass(currentDiv) {
   // Manage active navigation class
   const navItems = document.querySelectorAll(".nav");
   navItems.forEach((item) => item.classList.remove("nav-active")); // Remove active class from all
-  document.getElementById(currentDiv).classList.add("nav-active"); // Add active class to current
+  if (window.innerWidth > 799) {
+    document.getElementById(currentDiv).classList.add("nav-active");
+  }
 }

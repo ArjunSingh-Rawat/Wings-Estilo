@@ -2,6 +2,11 @@
 <html lang="en">
   <head>
     <%- include("../partials/head") %>
+    <title><%= rentOrSell === 'sell'?"buy":"rent"%> <%=name%> | <%=shortDescription%> for <%= rentOrSell === 'sell'?"sell":"rent"%> | WINGS ESTILO</title>
+    <meta
+    name="description"
+    content="<%=description%>"
+  />
     <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
@@ -37,7 +42,6 @@
     ></script>
 
     <link rel="stylesheet" href="/css/product-page.css" />
-    <title>Product buy page</title>
   </head>
   <body>
     <%- include("../partials/header") %>
@@ -147,11 +151,9 @@
           <button class="accordion">SHIPPING INFORMATION</button>
           <div class="panel">
               <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                  nisi ut aliquip ex ea commodo consequat.
+                We endeavor to provide a pleasant and zero-hassle shopping experience for you. All our policies and terms of use are crafted to ensure ease of purchase and support. We request you to thoroughly review them and make informed purchases.
               </p>
+              <p>We at WingsEstilo, understand the importance of delivering your products timely and safely. Therefore, we partner with some of the most reputed Indian Courier partner such as Bluedart, Delhivery, DHL etc., to ensure seamless delivery of all orders.</p>
           </div>
           
         </div>
@@ -178,11 +180,9 @@
 
     <!-- accordion js -->
     <script>
-      var acc = document.getElementsByClassName("accordion");
-      var i;
-
-      for (i = 0; i < acc.length; i++) {
-          acc[i].addEventListener("click", function() {
+      const productAccordion = document.getElementsByClassName("accordion");
+      for (let i = 0; i < productAccordion.length; i++) {
+        productAccordion[i].addEventListener("click", function() {
               this.classList.toggle("des-active");
               var panel = this.nextElementSibling;
               if (panel.style.maxHeight) {
@@ -199,9 +199,7 @@
           prevArrow: ".arrow-prev",
           nextArrow: ".arrow-next",
       });
-    
-
-    </script>
+  </script>
     <% if (rentOrSell === 'sell') { %>
       <script src="/js/product.js"></script>
       <% } else { %>
