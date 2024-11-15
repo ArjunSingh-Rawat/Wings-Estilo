@@ -40,10 +40,10 @@ async function addImage(files, categoryId, productName, indexes) {
         file.originalname.split(".").pop() === "jpeg"
           ? "jpg"
           : file.originalname.split(".").pop();
-
+      console.log(fileType, file.originalname);
       const imageName = `${Date.now()}-${productName
         .split(" ")
-        .join("-")}-${i}.${fileType}`;
+        .join("-")}-${i}.${fileType.toLowerCase()}`;
 
       imageNames.push(imageName);
 
