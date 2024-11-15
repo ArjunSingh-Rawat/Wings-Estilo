@@ -4,8 +4,8 @@ const ejs = require("ejs");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: "smtp-relay.sendinblue.com",
-  port: 465,
+  host: process.env.NODEMAILER_HOST,
+  port: process.env.NODEMAILER_PORT,
   secure: true,
   auth: {
     user: process.env.NODEMAILER_AUTH_USER,
@@ -41,7 +41,7 @@ async function sendOrderConfirmationToUserViaEmail(orderDetails, sellOrRent) {
 
 async function sendMailViaNodemailer(emailTemplate, receiverEmail) {
   await transporter.sendMail({
-    from: process.env.WINGS_ESTILO_MAIL_ID,
+    from: `Wings Estilo ${process.env.WINGS_ESTILO_MAIL_ID}`,
     to: receiverEmail,
     subject: "Order Placed",
     html: emailTemplate,

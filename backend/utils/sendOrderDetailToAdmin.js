@@ -56,8 +56,8 @@ async function sendOrderDetailsToAdminViaWhatsapp(orderDetails, sellOrRent) {
 }
 
 const transporter = nodemailer.createTransport({
-  host: "smtp-relay.sendinblue.com",
-  port: 465,
+  host: process.env.NODEMAILER_HOST,
+  port: process.env.NODEMAILER_PORT,
   secure: true,
   auth: {
     user: process.env.NODEMAILER_AUTH_USER,
@@ -97,7 +97,7 @@ async function sendOrderDetailsToAdminViaEmail(orderDetails, sellOrRent) {
 
 async function sendMailViaNodemailer(emailTemplate) {
   await transporter.sendMail({
-    from: process.env.WINGS_ESTILO_MAIL_ID,
+    from: `Wings Estilo ${process.env.WINGS_ESTILO_MAIL_ID}`,
     to: process.env.ADMIN_MAIL_ID,
     subject: "Order Received",
     html: emailTemplate,

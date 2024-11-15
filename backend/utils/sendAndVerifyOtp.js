@@ -141,8 +141,8 @@ async function sendTwilioMessage(message, phoneNumber) {
 }
 
 const transporter = nodemailer.createTransport({
-  host: "smtp-relay.sendinblue.com",
-  port: 465,
+  host: process.env.NODEMAILER_HOST,
+  port: process.env.NODEMAILER_PORT,
   secure: true,
   auth: {
     user: process.env.NODEMAILER_AUTH_USER,
@@ -222,7 +222,7 @@ async function sendOtpViaNodemailer(otp, userEmail) {
 
     const emailTemplate = ejs.render(otpTemplateFile, { otp });
     await transporter.sendMail({
-      from: process.env.WINGS_ESTILO_MAIL_ID,
+      from: `Wings Estilo ${process.env.WINGS_ESTILO_MAIL_ID}`,
       to: userEmail,
       subject: "OTP for updating phone number",
       html: emailTemplate,
