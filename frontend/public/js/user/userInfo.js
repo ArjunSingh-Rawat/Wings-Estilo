@@ -66,16 +66,20 @@ export const renderUserInfo = (userData) => {
     ? `+91 ${phoneNumber}`
     : "+91 ";
 
-  document.querySelector(`#${gender}`).checked = true;
+  if (gender) {
+    document.querySelector(`#${gender}`).checked = true;
+    document.querySelector("#gender-field-alert").style.display = "none";
+  } else {
+    document.querySelector("#gender-field-alert").style.display = "block";
+  }
 
-  document.querySelector("#gender-field-alert").style.display = gender
-    ? "none"
-    : "block";
   const numberFieldAlert = document.querySelector("#number-field-alert");
-  numberFieldAlert.style.display = phoneNumber ? "none" : "block";
-  numberFieldAlert.innerText = phoneNumber
-    ? ""
-    : "! Please fill out this field";
+  if (phoneNumber) {
+    numberFieldAlert.style.display = "none";
+  } else {
+    numberFieldAlert.innerText = "! Please fill out this field";
+    numberFieldAlert.style.display = "block";
+  }
 };
 
 // Main event listener for personal info section
