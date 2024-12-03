@@ -94,7 +94,7 @@ async function deleteImages(parentCategory, image, images, indexes) {
         const imageName = image.split("/").pop();
         const imageIndex = imageName.split("-").pop().split(".")[0];
         if (indexes.includes(imageIndex)) {
-          const imagePath = folderPath + "\\" + imageName;
+          const imagePath = path.join(folderPath, imageName);
           fs.unlinkSync(imagePath);
 
           await deleteImageFromCloudinary(image);
@@ -109,14 +109,14 @@ async function deleteImages(parentCategory, image, images, indexes) {
     }
     if (fs.existsSync(folderPath)) {
       if (image) {
-        const imagePath = folderPath + "\\" + image.split("/").pop();
+        const imagePath = path.join(folderPath, image.split("/").pop());
         fs.unlinkSync(imagePath);
 
         await deleteImageFromCloudinary(image);
       }
       if (images.length) {
         for (const image of images) {
-          const imagePath = folderPath + "\\" + image.split("/").pop();
+          const imagePath = path.join(folderPath, image.split("/").pop());
           fs.unlinkSync(imagePath);
 
           await deleteImageFromCloudinary(image);
