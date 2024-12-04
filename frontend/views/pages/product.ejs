@@ -14,34 +14,60 @@
     <%- include("../partials/header") %>
     <section class="product-section">
       <div class="product">
-        <div class="product-small-img">
-          <img
-              src="<%= image %>"
-              alt=""
-              onclick="myFunction(this)"
-            />
-          <% for(let i=0; i<images.length; i++){ %>
-          
-            <img
-              src="<%= images[i]%>"
-              alt=""
-              onclick="myFunction(this)"
-            />
-            <% } %>
+        <div class="product-small-img swiper swiper-thumbs">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src="<%= image %>" alt="<%= name + " | " + shortDescription%>" />
+            </div>
+            <% for(let i=0; i<images.length; i++){ %>
+              <div class="swiper-slide">
+                <img
+                src="<%= images[i]%>"
+                alt="<%= name + " | " + shortDescription%>"
+              />
+              </div>   
+              <% } %>
+          </div>     
         </div>
 
-        <div class="img-container">
-          <img id="imageBox" src="<%= image %>" alt="" />
+        <div class="img-container dsk-swiper swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="swiper-zoom-container">
+                <img src="<%= image %>" alt="<%= name + " | " + shortDescription%>" />
+              </div>
+              <div class="dsk-zoom-icon" onclick="toggleZoom('desktop')">
+                <i class='bx bx-zoom-in'></i>
+                <i class='bx bx-zoom-out' style="display: none;"></i>
+              </div>
+            </div>
+            <% for(let i=0; i<images.length; i++){ %>
+              <div class="swiper-slide">
+                
+                <div class="swiper-zoom-container">
+                  <img 
+                  src="<%= images[i]%>"
+                  alt="<%= name + " | " + shortDescription%>"
+                  />
+                </div>
+                <div class="dsk-zoom-icon" onclick="toggleZoom('desktop')">
+                  <i class='bx bx-zoom-in'></i>
+                  <i class='bx bx-zoom-out' style="display: none;"></i>
+                </div>
+              </div>
+           
+            <% } %> 
+          </div>
         </div>
       </div>
 
-      <div class="swiper product-slider">
+      <div class="swiper mobile-swiper product-slider">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="swiper-zoom-container">
                 <img src="<%= image %>" alt="<%= name + " | " + shortDescription%>">
               </div>
-              <div class="zoom-icon" onclick="toggleZoom()">
+              <div class="zoom-icon" onclick="toggleZoom('mobile')">
                 <i class='bx bx-zoom-in'></i>
                 <i class='bx bx-zoom-out' style="display: none;"></i>
               </div>
@@ -55,7 +81,7 @@
                     alt="<%= name + " | " + shortDescription%>"
                     />
                   </div>
-                  <div class="zoom-icon" onclick="toggleZoom()">
+                  <div class="zoom-icon" onclick="toggleZoom('mobile')">
                     <i class='bx bx-zoom-in'></i>
                     <i class='bx bx-zoom-out' style="display: none;"></i>
                   </div>
@@ -147,12 +173,6 @@
     <!-- footer -->
     <%- include('../partials/footer') %>
     <script>
-      // image change
-      function myFunction(smallImg) {
-        let fullImg = document.getElementById("imageBox");
-        fullImg.src = smallImg.src;
-      }
-
       // accordion
       const productAccordion = document.getElementsByClassName("accordion");
       for (let i = 0; i < productAccordion.length; i++) {

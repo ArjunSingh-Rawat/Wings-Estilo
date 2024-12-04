@@ -188,7 +188,7 @@ relatedProductsDiv.addEventListener("click", async (event) => {
 });
 
 /*---- slider ----*/
-const swiper = new Swiper(".product-slider", {
+const mobileSwiper = new Swiper(".product-slider", {
   speed: 400,
   pagination: {
     el: ".swiper-pagination",
@@ -199,7 +199,7 @@ const swiper = new Swiper(".product-slider", {
   },
   on: {
     zoomChange: (swiperInstance, scale) => {
-      const activeSlide = swiper.slides[swiper.activeIndex];
+      const activeSlide = mobileSwiper.slides[mobileSwiper.activeIndex];
       const zoomElement = activeSlide.querySelector(".zoom-icon");
       if (scale > 1) {
         updateZoomIcon("out", zoomElement);
@@ -208,16 +208,52 @@ const swiper = new Swiper(".product-slider", {
       }
     },
     slideChangeTransitionStart: () => {
-      swiper.zoom.out();
-      const activeSlide = swiper.slides[swiper.activeIndex];
+      mobileSwiper.zoom.out();
+      const activeSlide = mobileSwiper.slides[mobileSwiper.activeIndex];
       const zoomElement = activeSlide.querySelector(".zoom-icon");
       updateZoomIcon("in", zoomElement);
     },
   },
 });
 
-function toggleZoom() {
-  const activeSlide = document.querySelector(".swiper-slide-active");
+const dskSwiperThumbs = new Swiper(".swiper-thumbs", {
+  direction: "vertical",
+  spaceBetween: 10,
+  slidesPerView: 6,
+});
+
+const dskSwiper = new Swiper(".dsk-swiper", {
+  speed: 500,
+  zoom: {
+    minRatio: 1,
+  },
+  on: {
+    zoomChange: (swiperInstance, scale) => {
+      const activeSlide = dskSwiper.slides[dskSwiper.activeIndex];
+      const zoomElement = activeSlide.querySelector(".dsk-zoom-icon");
+      if (scale > 1) {
+        updateZoomIcon("out", zoomElement);
+      } else {
+        updateZoomIcon("in", zoomElement);
+      }
+    },
+    slideChangeTransitionStart: () => {
+      dskSwiper.zoom.out();
+      const activeSlide = dskSwiper.slides[dskSwiper.activeIndex];
+      const zoomElement = activeSlide.querySelector(".dsk-zoom-icon");
+      updateZoomIcon("in", zoomElement);
+    },
+  },
+  thumbs: {
+    swiper: dskSwiperThumbs,
+  },
+});
+
+function toggleZoom(device) {
+  const swiper = device === "mobile" ? mobileSwiper : dskSwiper;
+  const activeSlide = document.querySelector(
+    `${device === "desktop" ? ".dsk-swiper" : ""} .swiper-slide-active`
+  );
   if (activeSlide) {
     const isZoomedIn = activeSlide.classList.contains("swiper-slide-zoomed");
     if (isZoomedIn) {
