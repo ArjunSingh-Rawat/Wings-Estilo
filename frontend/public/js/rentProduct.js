@@ -187,6 +187,55 @@ relatedProductsDiv.addEventListener("click", async (event) => {
   }
 });
 
+/*---- slider ----*/
+const swiper = new Swiper(".product-slider", {
+  speed: 400,
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  zoom: {
+    minRatio: 1,
+  },
+  on: {
+    zoomChange: (swiperInstance, scale) => {
+      const activeSlide = swiper.slides[swiper.activeIndex];
+      const zoomElement = activeSlide.querySelector(".zoom-icon");
+      if (scale > 1) {
+        updateZoomIcon("out", zoomElement);
+      } else {
+        updateZoomIcon("in", zoomElement);
+      }
+    },
+    slideChangeTransitionStart: () => {
+      swiper.zoom.out();
+      const activeSlide = swiper.slides[swiper.activeIndex];
+      const zoomElement = activeSlide.querySelector(".zoom-icon");
+      updateZoomIcon("in", zoomElement);
+    },
+  },
+});
+
+function toggleZoom() {
+  const activeSlide = document.querySelector(".swiper-slide-active");
+  if (activeSlide) {
+    const isZoomedIn = activeSlide.classList.contains("swiper-slide-zoomed");
+    if (isZoomedIn) {
+      swiper.zoom.out();
+    } else {
+      swiper.zoom.in();
+    }
+  }
+}
+
+function updateZoomIcon(state, zoomElement) {
+  const zoomInIcon = zoomElement.querySelector(".bx-zoom-in");
+  const zoomOutIcon = zoomElement.querySelector(".bx-zoom-out");
+
+  zoomInIcon.style.display = state === "in" ? "block" : "none";
+  zoomOutIcon.style.display = state === "out" ? "block" : "none";
+}
+
 /*----------- fetch data ---------------*/
 async function getWishlistItems() {
   const res = await fetch("/api/wishlist");
