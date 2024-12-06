@@ -1,19 +1,22 @@
 const descriptionDiv = document.querySelector("#description");
-renderDescription(descriptionDiv.children[0].innerText, descriptionDiv);
+renderDescription(descriptionDiv.innerHTML, descriptionDiv);
+function renderDescription(description, container) {
+  container.innerHTML = "";
+  const lines = description.split("\n").filter((line) => line.trim() !== "");
 
-function renderDescription(des, parentDiv) {
-  parentDiv.innerHTML = "";
-  const arr = des.split("**");
-  arr.forEach((s) => {
-    if (s[0] === "*") {
-      const b = document.createElement("strong");
-      b.innerText = s.split("*").join("");
-      parentDiv.appendChild(b);
-    } else {
-      const p = document.createElement("p");
-      p.innerText = s;
-      parentDiv.appendChild(p);
-    }
+  lines.forEach((line) => {
+    const parts = line.split("**").filter((part) => part.trim() !== "");
+    const paragraph = document.createElement("p");
+    parts.forEach((part) => {
+      if (part.startsWith("*")) {
+        const boldText = document.createElement("strong");
+        boldText.innerText = part.replace(/\*/g, "");
+        paragraph.appendChild(boldText);
+      } else {
+        paragraph.appendChild(document.createTextNode(part));
+      }
+    });
+    container.appendChild(paragraph);
   });
 }
 
@@ -188,12 +191,16 @@ relatedProductsDiv.addEventListener("click", async (event) => {
 });
 
 /*---- slider ----*/
+const mobileSwiperThumbs = new Swiper(".mobile-swiper-thumbs", {
+  spaceBetween: 5,
+  slidesPerView: 4,
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
 const mobileSwiper = new Swiper(".product-slider", {
   speed: 400,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
   zoom: {
     minRatio: 1,
   },
@@ -214,9 +221,12 @@ const mobileSwiper = new Swiper(".product-slider", {
       updateZoomIcon("in", zoomElement);
     },
   },
+  thumbs: {
+    swiper: mobileSwiperThumbs,
+  },
 });
 
-const dskSwiperThumbs = new Swiper(".swiper-thumbs", {
+const dskSwiperThumbs = new Swiper(".dsk-swiper-thumbs", {
   direction: "vertical",
   spaceBetween: 10,
   slidesPerView: 6,

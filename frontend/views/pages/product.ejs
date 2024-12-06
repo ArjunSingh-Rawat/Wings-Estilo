@@ -14,7 +14,7 @@
     <%- include("../partials/header") %>
     <section class="product-section">
       <div class="product">
-        <div class="product-small-img swiper swiper-thumbs">
+        <div class="product-small-img swiper dsk-swiper-thumbs">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <img src="<%= image %>" alt="<%= name + " | " + shortDescription%>" />
@@ -60,8 +60,8 @@
           </div>
         </div>
       </div>
-
-      <div class="swiper mobile-swiper product-slider">
+      <div class="mobile-slider">
+        <div class="swiper mobile-swiper product-slider">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="swiper-zoom-container">
@@ -88,9 +88,29 @@
                 </div>
              
               <% } %> 
+          </div>
+        </div>
+        
+        <div class="mobile-swiper-thumbs swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src="<%= image %>" alt="<%= name + " | " + shortDescription%>" />
             </div>
-            <div class="swiper-pagination"></div>
+           
+            <% for(let i=0; i<images.length; i++){ %>
+              <div class="swiper-slide">
+                <img
+                src="<%= images[i]%>"
+                alt="<%= name + " | " + shortDescription%>"
+              />
+              </div>   
+              <% } %>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
       </div>
+      
       <div class="product-info">
         <p class="brand-name">Wings Estilo</p>
         <h1 class="product-name"><%= name %></h1>

@@ -202,12 +202,16 @@ relatedProductsDiv.addEventListener("click", async (event) => {
 });
 
 /*---- slider ----*/
+const mobileSwiperThumbs = new Swiper(".mobile-swiper-thumbs", {
+  spaceBetween: 5,
+  slidesPerView: 4,
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
 const mobileSwiper = new Swiper(".product-slider", {
   speed: 400,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
   zoom: {
     minRatio: 1,
   },
@@ -228,9 +232,12 @@ const mobileSwiper = new Swiper(".product-slider", {
       updateZoomIcon("in", zoomElement);
     },
   },
+  thumbs: {
+    swiper: mobileSwiperThumbs,
+  },
 });
 
-const dskSwiperThumbs = new Swiper(".swiper-thumbs", {
+const dskSwiperThumbs = new Swiper(".dsk-swiper-thumbs", {
   direction: "vertical",
   spaceBetween: 10,
   slidesPerView: 6,
