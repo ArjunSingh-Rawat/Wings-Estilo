@@ -1,19 +1,23 @@
 const descriptionDiv = document.querySelector("#description");
-renderDescription(descriptionDiv.children[0].innerText, descriptionDiv);
 
-function renderDescription(des, parentDiv) {
-  parentDiv.innerHTML = "";
-  const arr = des.split("**");
-  arr.forEach((s) => {
-    if (s[0] === "*") {
-      const b = document.createElement("strong");
-      b.innerText = s.split("*").join("");
-      parentDiv.appendChild(b);
-    } else {
-      const p = document.createElement("p");
-      p.innerText = s;
-      parentDiv.appendChild(p);
-    }
+renderDescription(descriptionDiv.innerHTML, descriptionDiv);
+function renderDescription(description, container) {
+  container.innerHTML = "";
+  const lines = description.split("\n").filter((line) => line.trim() !== "");
+
+  lines.forEach((line) => {
+    const parts = line.split("**").filter((part) => part.trim() !== "");
+    const paragraph = document.createElement("p");
+    parts.forEach((part) => {
+      if (part.startsWith("*")) {
+        const boldText = document.createElement("strong");
+        boldText.innerText = part.replace(/\*/g, "");
+        paragraph.appendChild(boldText);
+      } else {
+        paragraph.appendChild(document.createTextNode(part));
+      }
+    });
+    container.appendChild(paragraph);
   });
 }
 

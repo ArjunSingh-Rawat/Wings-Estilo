@@ -232,16 +232,18 @@
   transition: max-height 0.2s ease-out;
 }
 
-.panel p {
-  font-size: 14px;
-  padding: 20px 0;
+.panel-content {
+  margin-bottom: 10px;
 }
 
-#description p {
-  display: inline;
-  line-height: 30px;
+.panel-content p {
+  margin-top: 10px;
+  line-height: 21px;
   word-spacing: 2px;
-  white-space: pre;
+}
+
+.panel-content strong {
+  font-weight: 600;
 }
 
 .accordion:after {
@@ -493,6 +495,14 @@
 
   .price {
     font-size: 12px;
+  }
+
+  /*accordion*/
+  .panel-content p {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 21px;
+    word-spacing: 2px;
   }
 }
 
