@@ -98,6 +98,9 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
         );
       }
     }
+    const rentOrSell = req.params.rentOrSell;
+    const description =
+      rentOrSell === "sell" ? product.sellDescription : product.rentDescription;
 
     res.render("pages/product", {
       _id: product._id,
@@ -105,11 +108,11 @@ router.get("/:rentOrSell/:name/:id/buy", async (req, res, next) => {
       sellPrice: product.sellPrice,
       rentPrice: product.rentPrice,
       shortDescription: product.shortDescription,
-      description: product.description,
+      description,
       image: product.image,
       images,
       isProductInWishlist,
-      rentOrSell: req.params.rentOrSell,
+      rentOrSell,
     });
   } catch (error) {
     next();

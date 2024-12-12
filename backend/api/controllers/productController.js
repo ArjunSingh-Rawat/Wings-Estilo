@@ -40,7 +40,6 @@ async function addImage(files, categoryId, productName, indexes) {
         file.originalname.split(".").pop() === "jpeg"
           ? "jpg"
           : file.originalname.split(".").pop();
-      console.log(fileType, file.originalname);
       const imageName = `${Date.now()}-${productName
         .split(" ")
         .join("-")}-${i}.${fileType.toLowerCase()}`;
@@ -171,10 +170,19 @@ const addNewProduct = asyncHandler(async (req, res) => {
     throw new ApiError(400, "forSell and forRent value should be true/false");
   }
 
+  if (!req.body.forSell && !req.body.sellDescription) {
+    throw new ApiError(400, "sell description not provided!!");
+  }
+
+  if (!req.body.forRent && !req.body.rentDescription) {
+    throw new ApiError(400, "rent description not provided!!");
+  }
+
   let product = new Product({
     name: req.body.name,
     shortDescription: req.body.shortDescription,
-    description: req.body.description,
+    sellDescription: req.body.sellDescription,
+    rentDescription: req.body.rentDescription,
     forSell: req.body.forSell,
     forRent: req.body.forRent,
     sellPrice: req.body.forSell === "true" ? req.body.sellPrice : 0,

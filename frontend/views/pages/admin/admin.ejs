@@ -84,43 +84,130 @@
 
         <!-- product-info-section -->
         <section class="product-info-section">
-          <h1>Add Product Information</h1>
-          <div id="product-info-div">
-            <!-- form-left-div -->
-            <div class="form-left-div">
-              <!-- product-name -->
-              <div class="add-product-name">
-                <label for="product-name">Add product name:</label>
-                <input type="text" id="product-name" name="name" required />
+          <h1 class="heading info-section">PRODUCT INFORMATION</h1>
+          <div class="common-info">
+            <div class="block block1">
+              <div class="product-name width-50per">
+                <label for="product-name">Name</label>
+                <input type="text" name="name" id="product-name" required />
+              </div>
+              <div class="product-short-description width-50per">
+                <label for="product-short-description">Short Description</label>
+                <textarea
+                  name="shortDescription"
+                  id="product-short-description"
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div class="block">
+              <div class="product-categories width-50per">
+                <div class="main-category">
+                  <label for="main-category">Select Category:</label>
+                  <select id="main-category" name="category">
+                    <option disabled selected value="">
+                      Select main category
+                    </option>
+                  </select>
+                </div>
+                <div class="sub-category">
+                  <label for="sub-category">Select sub category:</label>
+                  <select id="sub-category" name="subCategory">
+                    <option disabled selected value="">
+                      Select sub category
+                    </option>
+                  </select>
+                </div>
               </div>
 
-              <!-- sell-rent -->
-              <div class="add-product-rent-sell">
-                <div class="sell">
-                  <input
-                    type="checkbox"
-                    id="sell"
-                    name="forSell"
-                    value="true"
-                  />
-                  <label for="sell">For selling</label>
-                </div>
-                <div class="rent">
-                  <input
-                    type="checkbox"
-                    id="rent"
-                    name="forRent"
-                    value="true"
-                  />
-                  <label for="rent">For rental</label>
+              <div class="product-sizes width-50per">
+                <p id="size-title">Product quantity in size:</p>
+                <div class="sizes">
+                  <div class="size">
+                    <label for="size-xs">XS</label>
+                    <input
+                      type="text"
+                      id="size-xs"
+                      class="size-input"
+                      name="xs"
+                    />
+                  </div>
+                  <div class="size">
+                    <label for="size-s">S</label>
+                    <input
+                      type="text"
+                      id="size-s"
+                      class="size-input"
+                      name="s"
+                    />
+                  </div>
+                  <div class="size">
+                    <label for="size-m">M</label>
+                    <input
+                      type="text"
+                      id="size-m"
+                      class="size-input"
+                      name="m"
+                    />
+                  </div>
+                  <div class="size">
+                    <label for="size-l">L</label>
+                    <input
+                      type="text"
+                      id="size-l"
+                      class="size-input"
+                      name="l"
+                    />
+                  </div>
+                  <div class="size">
+                    <label for="size-xl">XL</label>
+                    <input
+                      type="text"
+                      id="size-xl"
+                      class="size-input"
+                      name="xl"
+                    />
+                  </div>
+                  <div class="size">
+                    <label for="size-xxl">XXL</label>
+                    <input
+                      type="text"
+                      id="size-xxl"
+                      class="size-input"
+                      name="xxl"
+                    />
+                  </div>
+                  <div class="size">
+                    <label for="size-3xl">3XL</label>
+                    <input
+                      type="text"
+                      id="size-3xl"
+                      class="size-input"
+                      name="threeXl"
+                    />
+                  </div>
                 </div>
               </div>
-
-              <!-- product-price -->
-              <div class="product-price">
-                <div class="add-product-price">
-                  <label for="sell-price">Add selling product price:</label>
+            </div>
+          </div>
+          <div class="other-info">
+            <div class="sell-info width-50per block">
+              <div class="sell-checkbox center-checkbox">
+                <label for="sell">For Sell</label>
+                <input
+                  type="checkbox"
+                  id="sell"
+                  name="forSell"
+                  value="true"
+                  onchange="toggleAddProductPriceInputElements(event)"
+                  required
+                />
+              </div>
+              <div class="sell-more-info">
+                <div class="sell-price">
+                  <label for="sell-price">Selling price:</label>
                   <input
+                    class="price-input"
                     type="text"
                     id="sell-price"
                     name="sellPrice"
@@ -130,123 +217,85 @@
                     disabled
                   />
                 </div>
-                <div class="add-product-price">
-                  <label for="rent-price"
-                    >Add rental product price per day:</label
-                  >
-                  <input
-                    type="text"
-                    id="rent-price"
-                    name="rentPrice"
-                    required
-                    pattern="[0-9]+"
-                    title="value should be number"
-                    disabled
-                  />
-                </div>
-                <div class="add-product-price">
-                  <label for="deposit-charge">Deposit Charge:</label>
-                  <input
-                    type="text"
-                    id="deposit-charge"
-                    name="depositCharge"
-                    required
-                    pattern="[0-9]+"
-                    title="value should be number"
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <!-- product-category -->
-              <div class="product-category">
-                <div class="main-category">
-                  <label for="add-product-main-category"
-                    >Select category:</label
-                  >
-                  <select
-                    id="add-product-main-category"
-                    name="category"
-                  ></select>
-                </div>
-
-                <div class="sub-category">
-                  <label for="add-product-sub-category"
-                    >Select sub category:</label
-                  >
-                  <select id="add-product-sub-category" name="subCategory">
-                    <option disabled selected value="">
-                      --Select sub category--
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <!-- form-right-div -->
-            <div class="form-right-div">
-              <div class="product-description">
-                <div class="short-description">
-                  <label for="short-description">Add short-description:</label>
+                <div class="sell-description">
+                  <label for="sell-main-description">Sell description:</label>
                   <textarea
-                    id="short-description"
-                    name="shortDescription"
+                    id="sell-main-description"
+                    name="sellDescription"
+                    class="main-description-textarea"
+                    required
+                    disabled
                   ></textarea>
                 </div>
-
-                <div class="main-description">
-                  <label for="main-description">Add description:</label>
-                  <textarea id="main-description" name="description"></textarea>
-                </div>
-              </div>
-
-              <div class="product-size">
-                <p id="size-title">Product quantity in size:</p>
-
-                <div class="sizes">
-                  <div class="size">
-                    <label for="size">XS</label>
-                    <input type="text" id="size" name="xs" />
-                  </div>
-                  <div class="size">
-                    <label for="size">S</label>
-                    <input type="text" id="size" name="s" />
-                  </div>
-                  <div class="size">
-                    <label for="size">M</label>
-                    <input type="text" id="size" name="m" />
-                  </div>
-                  <div class="size">
-                    <label for="size">L</label>
-                    <input type="text" id="size" name="l" />
-                  </div>
-                  <div class="size">
-                    <label for="size">XL</label>
-                    <input type="text" id="size" name="xl" />
-                  </div>
-                  <div class="size">
-                    <label for="size">XXL</label>
-                    <input type="text" id="size" name="xxl" />
-                  </div>
-                  <div class="size">
-                    <label for="size">3XXL</label>
-                    <input type="text" id="size" name="threeXl" />
-                  </div>
-                </div>
-              </div>
-
-              <!-- form-buttons -->
-              <div class="form-buttons">
-                <button id="submit">SUBMIT</button>
-                <button
-                  id="resetBtn"
-                  type="reset"
-                  onclick="clearForm('add-product-form',event)"
-                >
-                  RESET
-                </button>
               </div>
             </div>
+            <div class="rent-info width-50per block">
+              <div class="rent-checkbox center-checkbox">
+                <label for="sell">For Rent</label>
+                <input
+                  type="checkbox"
+                  id="rent"
+                  name="forRent"
+                  value="true"
+                  onchange="toggleAddProductPriceInputElements(event)"
+                  required
+                />
+              </div>
+              <div class="rent-more-info">
+                <div class="rent-price-div">
+                  <div class="rent-price width-50per">
+                    <label for="update-product-rent-price"
+                      >Rental price per day:</label
+                    >
+                    <input
+                      class="price-input"
+                      type="text"
+                      id="rent-price"
+                      name="rentPrice"
+                      required
+                      pattern="[0-9]+"
+                      title="value should be number"
+                      disabled
+                    />
+                  </div>
+                  <div class="rent-deposit-price width-50per">
+                    <label for="update-product-deposit-charge"
+                      >Deposit Charge:</label
+                    >
+                    <input
+                      class="price-input"
+                      type="text"
+                      id="deposit-charge"
+                      name="depositCharge"
+                      required
+                      pattern="[0-9]+"
+                      title="value should be number"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div class="rent-description">
+                  <label for="rent-main-description">Rent description:</label>
+                  <textarea
+                    id="rent-main-description"
+                    name="rentDescription"
+                    class="main-description-textarea"
+                    required
+                    disabled
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-buttons">
+            <button id="submit">SUBMIT</button>
+            <button
+              id="resetBtn"
+              type="reset"
+              onclick="clearForm('add-product-form',event)"
+            >
+              RESET
+            </button>
           </div>
         </section>
       </form>
@@ -396,45 +445,132 @@
 
           <!-- product-info-section -->
           <section class="product-info-section">
-            <h1>Add Product Information</h1>
-            <div id="product-info-div">
-              <!-- form-left-div -->
-              <div class="form-left-div">
-                <!-- product-name -->
-                <div class="add-product-name">
-                  <label for="product-name">Add product name:</label>
-                  <input type="text" id="product-name" name="name" required />
+            <h1 class="heading info-section">PRODUCT INFORMATION</h1>
+            <div class="common-info">
+              <div class="block block1">
+                <div class="product-name width-50per">
+                  <label for="product-name">Name</label>
+                  <input type="text" name="name" id="product-name" />
+                </div>
+                <div class="product-short-description width-50per">
+                  <label for="product-short-description"
+                    >Short Description</label
+                  >
+                  <textarea
+                    name="shortDescription"
+                    id="product-short-description"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="block">
+                <div class="product-categories width-50per">
+                  <div class="main-category">
+                    <label for="main-category">Select Category:</label>
+                    <select id="main-category" name="category">
+                      <option disabled selected value="">
+                        Select main category
+                      </option>
+                    </select>
+                  </div>
+                  <div class="sub-category">
+                    <label for="sub-category">Select sub category:</label>
+                    <select id="sub-category" name="subCategory">
+                      <option disabled selected value="">
+                        Select sub category
+                      </option>
+                    </select>
+                  </div>
                 </div>
 
-                <!-- sell-rent -->
-                <div class="update-product-rent-sell">
-                  <div class="sell">
-                    <input
-                      type="checkbox"
-                      id="sell"
-                      name="forSell"
-                      value="true"
-                    />
-                    <label for="sell">For selling</label>
-                  </div>
-                  <div class="rent">
-                    <input
-                      type="checkbox"
-                      id="rent"
-                      name="forRent"
-                      value="true"
-                    />
-                    <label for="rent">For rental</label>
+                <div class="product-sizes width-50per">
+                  <p id="size-title">Product quantity in size:</p>
+                  <div class="sizes">
+                    <div class="size">
+                      <label for="size-xs">XS</label>
+                      <input
+                        type="text"
+                        id="size-xs"
+                        class="size-input"
+                        name="xs"
+                      />
+                    </div>
+                    <div class="size">
+                      <label for="size-s">S</label>
+                      <input
+                        type="text"
+                        id="size-s"
+                        class="size-input"
+                        name="s"
+                      />
+                    </div>
+                    <div class="size">
+                      <label for="size-m">M</label>
+                      <input
+                        type="text"
+                        id="size-m"
+                        class="size-input"
+                        name="m"
+                      />
+                    </div>
+                    <div class="size">
+                      <label for="size-l">L</label>
+                      <input
+                        type="text"
+                        id="size-l"
+                        class="size-input"
+                        name="l"
+                      />
+                    </div>
+                    <div class="size">
+                      <label for="size-xl">XL</label>
+                      <input
+                        type="text"
+                        id="size-xl"
+                        class="size-input"
+                        name="xl"
+                      />
+                    </div>
+                    <div class="size">
+                      <label for="size-xxl">XXL</label>
+                      <input
+                        type="text"
+                        id="size-xxl"
+                        class="size-input"
+                        name="xxl"
+                      />
+                    </div>
+                    <div class="size">
+                      <label for="size-3xl">3XL</label>
+                      <input
+                        type="text"
+                        id="size-3xl"
+                        class="size-input"
+                        name="threeXl"
+                      />
+                    </div>
                   </div>
                 </div>
-
-                <!-- product-price -->
-                <div class="product-price">
-                  <div class="add-product-price">
-                    <label for="sell-price">Add selling product price:</label>
+              </div>
+            </div>
+            <div class="other-info">
+              <div class="sell-info width-50per block">
+                <div class="sell-checkbox center-checkbox">
+                  <label for="sell">For Sell</label>
+                  <input
+                    type="checkbox"
+                    id="sell"
+                    name="forSell"
+                    value="true"
+                    onchange="toggleUpdateProductPriceInputElements(event)"
+                  />
+                </div>
+                <div class="sell-more-info">
+                  <div class="sell-price">
+                    <label for="sell-price">Selling price:</label>
                     <input
+                      class="price-input"
                       type="text"
-                      id="update-product-sell-price"
+                      id="sell-price"
                       name="sellPrice"
                       required
                       pattern="[0-9]+"
@@ -442,132 +578,82 @@
                       disabled
                     />
                   </div>
-                  <div class="add-product-price">
-                    <label for="update-product-rent-price"
-                      >Add rental product price per day:</label
-                    >
-                    <input
-                      type="text"
-                      id="update-product-rent-price"
-                      name="rentPrice"
-                      required
-                      pattern="[0-9]+"
-                      title="value should be number"
-                      disabled
-                    />
-                  </div>
-                  <div class="add-product-price">
-                    <label for="update-product-deposit-charge"
-                      >Deposit Charge:</label
-                    >
-                    <input
-                      type="text"
-                      id="update-product-deposit-charge"
-                      name="depositCharge"
-                      required
-                      pattern="[0-9]+"
-                      title="value should be number"
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                <!-- product-category -->
-                <div class="product-category">
-                  <div class="main-category">
-                    <label for="update-product-form-main-category"
-                      >Select category:</label
-                    >
-                    <select
-                      id="update-product-form-main-category"
-                      name="category"
-                    ></select>
-                  </div>
-
-                  <div class="sub-category">
-                    <label for="update-product-form-sub-category"
-                      >Select sub category:</label
-                    >
-                    <select
-                      id="update-product-form-sub-category"
-                      name="subCategory"
-                    >
-                      <option disabled selected value="">
-                        --Select sub category--
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <!-- form-right-div -->
-              <div class="form-right-div">
-                <div class="product-description">
-                  <div class="short-description">
-                    <label for="short-description"
-                      >Add short-description:</label
-                    >
+                  <div class="sell-description">
+                    <label for="sell-main-description">Sell description:</label>
                     <textarea
-                      id="short-description"
-                      name="shortDescription"
-                    ></textarea>
-                  </div>
-
-                  <div class="main-description">
-                    <label for="main-description">Add description:</label>
-                    <textarea
-                      id="main-description"
-                      name="description"
+                      id="sell-main-description"
+                      name="sellDescription"
+                      class="main-description-textarea"
+                      required
                     ></textarea>
                   </div>
                 </div>
-
-                <div class="product-size">
-                  <p id="size-title">Product quantity in size:</p>
-
-                  <div class="sizes">
-                    <div class="size">
-                      <label for="size">XS</label>
-                      <input type="text" id="size" name="xs" />
+              </div>
+              <div class="rent-info width-50per block">
+                <div class="rent-checkbox center-checkbox">
+                  <label for="sell">For Rent</label>
+                  <input
+                    type="checkbox"
+                    id="rent"
+                    name="forRent"
+                    value="true"
+                    onchange="toggleUpdateProductPriceInputElements(event)"
+                    required
+                  />
+                </div>
+                <div class="rent-more-info">
+                  <div class="rent-price-div">
+                    <div class="rent-price width-50per">
+                      <label for="update-product-rent-price"
+                        >Rental price per day:</label
+                      >
+                      <input
+                        class="price-input"
+                        type="text"
+                        id="rent-price"
+                        name="rentPrice"
+                        required
+                        pattern="[0-9]+"
+                        title="value should be number"
+                        disabled
+                      />
                     </div>
-                    <div class="size">
-                      <label for="size">S</label>
-                      <input type="text" id="size" name="s" />
-                    </div>
-                    <div class="size">
-                      <label for="size">M</label>
-                      <input type="text" id="size" name="m" />
-                    </div>
-                    <div class="size">
-                      <label for="size">L</label>
-                      <input type="text" id="size" name="l" />
-                    </div>
-                    <div class="size">
-                      <label for="size">XL</label>
-                      <input type="text" id="size" name="xl" />
-                    </div>
-                    <div class="size">
-                      <label for="size">XXL</label>
-                      <input type="text" id="size" name="xxl" />
-                    </div>
-                    <div class="size">
-                      <label for="size">3XXL</label>
-                      <input type="text" id="size" name="threeXl" />
+                    <div class="rent-deposit-price width-50per">
+                      <label for="update-product-deposit-charge"
+                        >Deposit Charge:</label
+                      >
+                      <input
+                        class="price-input"
+                        type="text"
+                        id="deposit-charge"
+                        name="depositCharge"
+                        required
+                        pattern="[0-9]+"
+                        title="value should be number"
+                        disabled
+                      />
                     </div>
                   </div>
-                </div>
-
-                <!-- form-buttons -->
-                <div class="form-buttons">
-                  <button id="submit">SUBMIT</button>
-                  <button
-                    id="update-product-resetBtn"
-                    onclick="clearForm('update-product-form',event)"
-                  >
-                    RESET
-                  </button>
+                  <div class="rent-description">
+                    <label for="rent-main-description">Rent description:</label>
+                    <textarea
+                      id="rent-main-description"
+                      name="rentDescription"
+                      class="main-description-textarea"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div class="form-buttons">
+              <button id="submit">SUBMIT</button>
+              <button
+                id="resetBtn"
+                type="reset"
+                onclick="clearForm('add-product-form',event)"
+              >
+                RESET
+              </button>
             </div>
           </section>
         </form>

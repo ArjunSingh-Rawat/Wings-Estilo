@@ -7,22 +7,28 @@ const loader = document.querySelector(".loader-container");
 
 const addProductForm = document.querySelector("#add-product-form");
 const addFormMainCategoryElement = document.querySelector(
-  "#add-product-main-category"
+  "#add-product-form #main-category"
 );
 const addFormSubCategoryElement = document.querySelector(
-  "#add-product-sub-category"
+  "#add-product-form #sub-category"
 );
 const addProductImageSection = document.querySelector(
   ".add-product-img-section"
 );
-const sellPriceInputElement = document.querySelector("#sell-price");
-const rentPriceInputElement = document.querySelector("#rent-price");
-const depositChargeInputElement = document.querySelector("#deposit-charge");
+const sellPriceInputElement = document.querySelector(
+  "#add-product-form #sell-price"
+);
+const rentPriceInputElement = document.querySelector(
+  "#add-product-form #rent-price"
+);
+const depositChargeInputElement = document.querySelector(
+  "#add-product-form #deposit-charge"
+);
 const updateFormMainCategoryElement = document.querySelector(
-  "#update-product-form-main-category"
+  "#update-product-form #main-category"
 );
 const updateFormSubCategoryElement = document.querySelector(
-  "#update-product-form-sub-category"
+  "#update-product-form #sub-category"
 );
 const updateProductCategoryElement = document.querySelector(
   "#update-product-main-category"
@@ -44,13 +50,13 @@ const updateProductImageSection = document.querySelector(
   ".update-product-img-section"
 );
 const updateProductSellPriceInput = document.querySelector(
-  "#update-product-sell-price"
+  "#update-product-form #sell-price"
 );
 const updateProductRentPriceInput = document.querySelector(
-  "#update-product-rent-price"
+  "#update-product-form #rent-price"
 );
 const updateProductDepositChargeInput = document.querySelector(
-  "#update-product-deposit-charge"
+  "#update-product-form #deposit-charge"
 );
 const orderListSection = document.querySelector(".ordered-list-section");
 const orderedProductDetailsSection = document.querySelector(
@@ -147,17 +153,12 @@ addProductImageSection.addEventListener("change", (event) => {
   }
 });
 
-// toggle sellPrice and rentPrice input
-document
-  .querySelector(".add-product-rent-sell")
-  .addEventListener("change", (event) => {
-    if (event.target.id === "sell") {
-      sellPriceInputElement.toggleAttribute("disabled");
-    } else if (event.target.id === "rent") {
-      rentPriceInputElement.toggleAttribute("disabled");
-      depositChargeInputElement.toggleAttribute("disabled");
-    }
-  });
+const sellDescription = document.querySelector(
+  "#add-product-form #sell-main-description"
+);
+const rentDescription = document.querySelector(
+  "#add-product-form #rent-main-description"
+);
 
 //submit add product form
 addProductForm.addEventListener("submit", async (event) => {
@@ -171,6 +172,19 @@ addProductForm.addEventListener("submit", async (event) => {
     productData.append("forRent", "false");
   }
 
+  if (productData.get("forSell") === "true" && !sellDescription.value) {
+    sellDescription.setCustomValidity("Please provide a description for sale.");
+  }
+
+  if (productData.get("forRent") === "true" && !rentDescription.value) {
+    rentDescription.setCustomValidity("Please provide a description for rent.");
+  }
+
+  if (!addProductForm.checkValidity()) {
+    addProductForm.reportValidity();
+    return;
+  }
+
   startOrStopLoader("start");
   const res = await fetch("/api/products", {
     method: "POST",
@@ -182,6 +196,18 @@ addProductForm.addEventListener("submit", async (event) => {
     clearForm("add-product-form");
   } else {
     getAlertPopup(res.message);
+  }
+});
+
+sellDescription.addEventListener("input", (event) => {
+  if (sellDescription.value) {
+    sellDescription.setCustomValidity("");
+  }
+});
+
+rentDescription.addEventListener("input", () => {
+  if (rentDescription.value) {
+    rentDescription.setCustomValidity("");
   }
 });
 
@@ -254,16 +280,12 @@ updateProductImageSection.addEventListener("change", (event) => {
   }
 });
 
-document
-  .querySelector(".update-product-rent-sell")
-  .addEventListener("change", (event) => {
-    if (event.target.id === "sell") {
-      updateProductSellPriceInput.toggleAttribute("disabled");
-    } else if (event.target.id === "rent") {
-      updateProductRentPriceInput.toggleAttribute("disabled");
-      updateProductDepositChargeInput.toggleAttribute("disabled");
-    }
-  });
+const updateSellDescription = document.querySelector(
+  "#update-product-form #sell-main-description"
+);
+const updateRentDescription = document.querySelector(
+  "#update-product-form #rent-main-description"
+);
 
 updateProductForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -277,6 +299,29 @@ updateProductForm.addEventListener("submit", async (event) => {
   }
 
   updateProductFormData.append("indexes", updatedImageIndexes);
+
+  if (
+    updateProductFormData.get("forSell") === "true" &&
+    !updateSellDescription.value
+  ) {
+    updateSellDescription.setCustomValidity(
+      "Please provide a description for sale."
+    );
+  }
+
+  if (
+    updateProductFormData.get("forRent") === "true" &&
+    !updateRentDescription.value
+  ) {
+    updateRentDescription.setCustomValidity(
+      "Please provide a description for rent."
+    );
+  }
+
+  if (!updateProductForm.checkValidity()) {
+    updateProductForm.reportValidity();
+    return;
+  }
 
   startOrStopLoader("start");
   const res = await fetch(`/api/products/${productSelectedForUpdate._id}`, {
@@ -292,6 +337,18 @@ updateProductForm.addEventListener("submit", async (event) => {
     updateFoundProductsData(data.newItem);
   } else {
     getAlertPopup(res.message);
+  }
+});
+
+updateSellDescription.addEventListener("input", (event) => {
+  if (updateSellDescription.value) {
+    updateSellDescription.setCustomValidity("");
+  }
+});
+
+updateRentDescription.addEventListener("input", () => {
+  if (updateRentDescription.value) {
+    updateRentDescription.setCustomValidity("");
   }
 });
 
@@ -418,6 +475,28 @@ orderFilterDiv.addEventListener("change", (event) => {
 });
 
 /*-------- Functions ---------*/
+function toggleAddProductPriceInputElements(event) {
+  if (event.target.id === "sell") {
+    sellPriceInputElement.toggleAttribute("disabled");
+    sellDescription.toggleAttribute("disabled");
+  } else if (event.target.id === "rent") {
+    rentPriceInputElement.toggleAttribute("disabled");
+    depositChargeInputElement.toggleAttribute("disabled");
+    rentDescription.toggleAttribute("disabled");
+  }
+}
+
+function toggleUpdateProductPriceInputElements(event) {
+  if (event.target.id === "sell") {
+    updateProductSellPriceInput.toggleAttribute("disabled");
+    updateSellDescription.toggleAttribute("disabled");
+  } else if (event.target.id === "rent") {
+    updateProductRentPriceInput.toggleAttribute("disabled");
+    updateProductDepositChargeInput.toggleAttribute("disabled");
+    updateRentDescription.toggleAttribute("disabled");
+  }
+}
+
 function toggleSections(sectionToShow) {
   for (const section in sections) {
     sections[section].button.classList.remove("nav-active");
@@ -437,7 +516,7 @@ function startOrStopLoader(startOrStop) {
 
 async function setMainCategories(selectElement) {
   const categories = await getAllCategories();
-  selectElement.innerHTML = `<option disabled selected value="">--Select main category--</option>`;
+  selectElement.innerHTML = `<option disabled selected value="">Select main category</option>`;
   for (const category of categories) {
     const option = document.createElement("option");
     option.value = category._id;
@@ -448,7 +527,7 @@ async function setMainCategories(selectElement) {
 
 async function setSubCategories(categoryId, selectElement) {
   const categories = await getAllSubCategory(categoryId);
-  selectElement.innerHTML = `<option disabled selected value="">--Select sub category--</option>`;
+  selectElement.innerHTML = `<option disabled selected value="">Select sub category</option>`;
   for (const category of categories) {
     const option = document.createElement("option");
     option.value = category._id;
@@ -563,7 +642,7 @@ async function preFillUpdateProductForm(product) {
     } else if (input.name === "subCategory") {
       input.value = product.category[1];
       input.disabled = true;
-    } else if (input.id === "size") {
+    } else if (input.classList.contains("size-input")) {
       input.value = product.sizeAvailable[input.name];
     } else if (input.type !== "submit" && input.type !== "reset") {
       input.value = product[input.name];

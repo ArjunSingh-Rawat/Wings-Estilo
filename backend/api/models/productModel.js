@@ -65,9 +65,13 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
+    sellDescription: {
       type: String,
-      required: true,
+      default: "",
+    },
+    rentDescription: {
+      type: String,
+      default: "",
     },
     image: {
       type: String,
