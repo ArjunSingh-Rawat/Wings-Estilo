@@ -123,9 +123,11 @@ const addPersonalInfoEventListeners = (userData) => {
             );
             if (userData.personalInfo.phoneNumber !== +phoneNumber) {
               userData.phoneNumberToUpdate = phoneNumber;
-              const response = await sendOtpOnEmail(phoneNumber);
+              const response = await updatePersonalInfo({ phoneNumber });
               if (response.success) {
-                showOtpPopup();
+                toggleEditOrSaveBtn("save", "phone-number");
+                renderUserInfo(response.user);
+                userData.personalInfo = response.user;
               } else {
                 getAlertPopup(response.message);
                 toggleEditOrSaveBtn("save", "phone-number");
@@ -168,7 +170,7 @@ async function updatePersonalInfo(info) {
     },
     body: JSON.stringify(info),
   });
-  return res.ok;
+  return await res.json();
 }
 
 // Function to initialize user information

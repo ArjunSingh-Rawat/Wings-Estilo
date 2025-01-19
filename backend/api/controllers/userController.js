@@ -215,6 +215,7 @@ const updateUserPersonalInfo = asyncHandler(async (req, res) => {
     firstName: "",
     lastName: "",
     gender: "",
+    phoneNumber: "",
   };
 
   for (const field in userInfoToUpdate) {
@@ -225,13 +226,18 @@ const updateUserPersonalInfo = asyncHandler(async (req, res) => {
     }
   }
 
-  await User.findOneAndUpdate({ _id: req.user.userid }, userInfoToUpdate, {
-    new: true,
-  });
+  const user = await User.findOneAndUpdate(
+    { _id: req.user.userid },
+    userInfoToUpdate,
+    {
+      new: true,
+    }
+  );
 
   res.status(200).json({
     success: true,
     message: "success!",
+    user,
   });
 });
 

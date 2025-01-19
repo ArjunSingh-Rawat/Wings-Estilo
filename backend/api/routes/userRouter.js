@@ -29,9 +29,9 @@ router.put("/info", verifyToken, updateUserPersonalInfo);
 
 // router.put("/phone-number/phone", verifyToken, updatePhoneNumber);
 
-router.put("/phone-number/email", verifyToken, updatePhoneNumberWithEmail);
+// router.put("/phone-number/email", verifyToken, updatePhoneNumberWithEmail);
 
-router.use("/otp", verifyToken, otpRouter);
+// router.use("/otp", verifyToken, otpRouter);
 
 router.get("/ping-me", verifyToken, (req, res) => {
   res.status(200).json({
