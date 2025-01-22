@@ -165,13 +165,17 @@ addProductForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const productData = new FormData(addProductForm);
+
+  if (!productData.get("forSell") && !productData.get("forRent")) {
+    getAlertPopup("Please select forSell or forRent");
+    return;
+  }
   if (!productData.get("forSell")) {
     productData.append("forSell", "false");
   }
   if (!productData.get("forRent")) {
     productData.append("forRent", "false");
   }
-
   if (productData.get("forSell") === "true" && !sellDescription.value) {
     sellDescription.setCustomValidity("Please provide a description for sale.");
   }
@@ -291,6 +295,15 @@ updateProductForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const updateProductFormData = new FormData(updateProductForm);
+
+  if (
+    !updateProductFormData.get("forSell") &&
+    !updateProductFormData.get("forRent")
+  ) {
+    getAlertPopup("Please select forSell or forRent");
+    return;
+  }
+
   if (!updateProductFormData.get("forSell")) {
     updateProductFormData.append("forSell", "false");
   }
