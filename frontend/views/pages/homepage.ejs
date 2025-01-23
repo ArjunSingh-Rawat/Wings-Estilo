@@ -2,56 +2,15 @@
 <html lang="en">
   <head>
     <%- include("../partials/head") %>
-
     <title>
       Exclusive Online Boutique | Rent & Buy Gowns, Dresses, Lehengas &
-      Accessories | WINGS ESTILO
+      Accessories
     </title>
-    <meta
-      name="description"
-      content="Explore our exclusive boutique for renting and buying a wide range of gowns, maternity gowns, dresses, lehengas, party wears, tiaras, and more. Perfect for every occasion—shop or rent now and elevate your style! Discover high-quality fashion at affordable prices"
-    />
+    <meta name="description" content="Explore our exclusive boutique for renting and buying a wide range of gowns, maternity gowns, dresses, lehengas, party wears, tiaras, and more. Perfect for every occasion—shop or rent now and elevate your style! Discover high-quality fashion at affordable prices" />
 
-    <meta
-      name="keywords"
-      content="wings estilo,www.wingsestilo.in, wings estilo online boutique, wings estilo rent products, gowns wings estilo,party dress, party dress wings estilo"
-    />
-    <!-- slick-slider -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
-      integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
-      integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <meta name="keywords" content="wings estilo,www.wingsestilo.in, wings estilo online boutique, wings estilo rent products, gowns wings estilo,party dress, party dress wings estilo" />
 
-    <!-- script -->
-
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"
-      integrity="sha512-KgffulL3mxrOsDicgQWA11O6q6oKeWcV00VxgfJw4TcM8XRQT8Df9EsrYxDf7tpVpfl3qcYD96BpyPvA4d1FDQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
-      integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <link rel="stylesheet" href="/css/wingsestilo-home.css" />
   </head>
@@ -60,68 +19,62 @@
     <%- include('../partials/header') %>
 
     <!-- carousel -->
-    <div class="img-slider">
-      <a href="sell/gowns">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/gown.png"
-          alt=""
-        />
-      </a>
-      <a href="sell/dresses">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/dress.png"
-          alt=""
-        />
-      </a>
-      <a href="rent/sarees">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/sarees.png"
-          alt=""
-        />
-      </a>
-      <a href="https://www.bnbstudio.in/" target="_blank">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/photoshoot.png"
-          alt=""
-        />
-      </a>
+    <%if(!isMobile){%>
+    <div class="img-slider swiper top-carousel" style="padding-bottom: 18px;">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <a href="sell/gowns">
+            <img src="/Images/home-images/carousel-images/gown.jpg" alt="" />
+          </a>
+        </div>
+        <div class="swiper-slide">
+          <a href="sell/dresses">
+            <img loading="lazy" src="/Images/home-images/carousel-images/dress.jpg" alt="" />
+          </a>
+        </div>
+        <div class="swiper-slide">
+          <a href="rent/sarees">
+            <img loading="lazy" src="/Images/home-images/carousel-images/sarees.jpg" alt="" />
+          </a>
+        </div>
+        <div class="swiper-slide">
+          <a href="https://www.bnbstudio.in/" target="_blank">
+            <img loading="lazy" src="/Images/home-images/carousel-images/photoshoot.jpg" alt="" />
+          </a>
+        </div>
+      </div>
+      <div class="swiper-pagination" style="margin-bottom: -10px;"></div>
     </div>
-
-    <div class="img-slider1">
-      <a href="">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/gown1.png"
-          alt=""
-        />
-      </a>
-      <a href="">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/dress1.png"
-          alt=""
-        />
-      </a>
-      <a href="">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/sarees1.png"
-          alt=""
-        />
-      </a>
-      <a href="https://www.bnbstudio.in/" target="_blank">
-        <img
-          loading="lazy"
-          src="/Images/home-images/carousel-images/photoshoot1.png"
-          alt=""
-        />
-      </a>
+    <%}else{%>
+    <div class="img-slider1 swiper top-carousel" style="padding-bottom: 18px;">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <a href="">
+            <img src="/Images/home-images/carousel-images/gown1.jpg" alt="" />
+          </a>
+        </div>
+        <div class="swiper-slide">
+          <a href="/sell/gowns">
+            <img loading="lazy" src="/Images/home-images/carousel-images/dress1.jpg" alt="" />
+          </a>
+          <div class="swiper-lazy-preloader"></div>
+        </div>
+        <div class="swiper-slide">
+          <a href="">
+            <img loading="lazy" src="/Images/home-images/carousel-images/sarees1.jpg" alt="" />
+          </a>
+          <div class="swiper-lazy-preloader"></div>
+        </div>
+        <div class="swiper-slide">
+          <a href="https://www.bnbstudio.in/" target="_blank">
+            <img loading="lazy" src="/Images/home-images/carousel-images/photoshoot1.jpg" alt="" />
+          </a>
+          <div class="swiper-lazy-preloader"></div>
+        </div>
+      </div>
+      <div class="swiper-pagination" style="margin-bottom: -10px;"></div>
     </div>
-
+    <%}%>  
     <!-- category-section -->
 
     <section class="category-section">
@@ -130,7 +83,7 @@
         <a class="category" href="/sell/gowns">
           <img
             loading="lazy"
-            src="/Images/home-images/categories/1.png"
+            src="/Images/home-images/categories/1.jpg"
             alt=""
           />
           <span>Gowns</span>
@@ -138,7 +91,7 @@
         <a class="category" href="/sell/dresses">
           <img
             loading="lazy"
-            src="/Images/home-images/categories/2.png"
+            src="/Images/home-images/categories/2.jpg"
             alt=""
           />
           <span>Dresses</span>
@@ -146,7 +99,7 @@
         <a class="category" href="/rent/lehenga">
           <img
             loading="lazy"
-            src="/Images/home-images/categories/3.png"
+            src="/Images/home-images/categories/3.jpg"
             alt=""
           />
           <span>Lehenga</span>
@@ -155,20 +108,20 @@
         <a class="category" href="/rent/sarees">
           <img
             loading="lazy"
-            src="/Images/home-images/categories/4.png"
+            src="/Images/home-images/categories/4.jpg"
             alt=""
           />
           <span>Sarees</span>
           <span class="category-rental">Rental</span>
         </a>
         <!-- <a class="category" href="/kids">
-          <img loading="lazy" src="/Images/home-images/categories/5.png" alt="" />
+          <img loading="lazy" src="/Images/home-images/categories/5.jpg" alt="" />
           <p>Kids</p>
         </a> -->
         <a class="category" href="/sell/accessories">
           <img
             loading="lazy"
-            src="/Images/home-images/categories/6.png"
+            src="/Images/home-images/categories/6.jpg"
             alt=""
           />
           <span>Accessories</span>
@@ -187,7 +140,7 @@
           <a class="home-gown-img" href="#">
             <img
               loading="lazy"
-              src="/Images/home-images/home-gowns/a.png"
+              src="/Images/home-images/home-gowns/a.jpg"
               alt=""
             />
           </a>
@@ -207,7 +160,7 @@
           >
             <img
               loading="lazy"
-              src="/Images/home-images/home-gowns/b.png"
+              src="/Images/home-images/home-gowns/b.jpg"
               alt=""
             />
           </a>
@@ -231,7 +184,7 @@
           >
             <img
               loading="lazy"
-              src="/Images/home-images/home-gowns/c.png"
+              src="/Images/home-images/home-gowns/c.jpg"
               alt=""
             />
           </a>
@@ -255,7 +208,7 @@
           >
             <img
               loading="lazy"
-              src="/Images/home-images/home-gowns/d.png"
+              src="/Images/home-images/home-gowns/d.jpg"
               alt=""
             />
           </a>
@@ -284,14 +237,15 @@
     <section class="m-gown-section">
       <div class="m-gown-slider">
         <img
-          src="/Images/home-images/home-maternity-gowns/maternity-gown-banner.png"
+          src="/Images/home-images/home-maternity-gowns/maternity-gown-banner.jpg"
           alt=""
+          loading="lazy"
         />
       </div>
 
       <div class="m-gown-slider1">
         <img
-          src="/Images/home-images/home-maternity-gowns/maternity-gown-banner-res.png"
+          src="/Images/home-images/home-maternity-gowns/maternity-gown-banner-res.jpg"
           alt=""
         />
       </div>
@@ -416,14 +370,14 @@
         <a href="#">
           <img
             loading="lazy"
-            src="/Images/home-images/home-lehenga/1.png"
+            src="/Images/home-images/home-lehenga/1.jpg"
             alt=""
           />
         </a>
         <a href="#">
           <img
             loading="lazy"
-            src="/Images/home-images/home-lehenga/2.png"
+            src="/Images/home-images/home-lehenga/2.jpg"
             alt=""
           />
         </a>
@@ -506,6 +460,20 @@
 
     <!-- footer -->
     <%- include('../partials/footer') %>
-    <script src="/js/carousel.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+      const swiperDesktop = new Swiper(".top-carousel", {
+        autoplay: {
+          delay: 5000,
+        },
+        speed: 500,
+        loop: true,
+        lazy: true,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+    </script>
   </body>
 </html>

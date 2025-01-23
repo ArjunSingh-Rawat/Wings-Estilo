@@ -7,10 +7,6 @@
   width: 100%;
 }
 
-.img-slider1 {
-  display: none;
-}
-
 /* category-section */
 
 .category-section {
@@ -288,17 +284,7 @@
 /* MEDIA QUERY */
 
 @media (max-width: 699px) {
-  /* carousel */
-
-  .img-slider1 {
-    display: block;
-  }
-  .img-slider {
-    display: none;
-  }
-
   /* category-section */
-
   .category-section h1 {
     font-size: 25px;
   }

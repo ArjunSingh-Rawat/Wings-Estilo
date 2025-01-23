@@ -35,7 +35,10 @@ for (const page of [
 
 for (const page in publicPages) {
   router.get(`/${page}`, (req, res) => {
-    res.render(`pages/${publicPages[page]}`);
+    const userAgent = req.headers["user-agent"];
+    isMobile = /mobile/i.test(userAgent);
+
+    res.render(`pages/${publicPages[page]}`, { isMobile });
   });
 }
 
