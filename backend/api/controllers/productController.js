@@ -243,7 +243,8 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (!product) {
     throw new ApiError(404, "Product not found!");
   }
-  const indexes = req.body.indexes ? [...req.body.indexes] : [];
+
+  const indexes = req.body.indexes ? req.body.indexes.split(",") : [];
 
   const parentCategory = product.category.find((obj) => obj.isParentCategory);
   let imageObj = "";
